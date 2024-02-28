@@ -1,8 +1,5 @@
-from bson import ObjectId
 
 from Domain.extension import employeesCollection
-
-
 
 def postUserRepository(user):
 
