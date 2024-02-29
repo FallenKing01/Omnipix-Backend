@@ -20,8 +20,11 @@ def loginService(account):
 
     userData = {
         "id": user["id"],
-        "username": user.get("email"),
-        "role": user.get("role"),
+        "name":user["name"],
+        "workingHours":user["workingHours"],
+        "email": user["email"],
+        "organizationId":user["organizationId"],
+        "departamentId":user["departamentId"]
     }
 
     expires = datetime.utcnow() + timedelta(days=30)
@@ -33,3 +36,5 @@ def loginService(account):
         )
 
     return token
+
+

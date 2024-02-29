@@ -4,23 +4,19 @@ from Domain.extension import salt
 import bcrypt
 
 def postUserService(user):
+
     existingUser = getUserByEmailRepository(user["email"])
 
     if existingUser is not None:
         raise CustomException(409, "The user with this email already exists")
 
-    if len(user["email"]) < 5:
-        raise CustomException(400, "Email is too short")
-
     # Encode the password as bytes before hashing
     password_bytes = user["password"].encode('utf-8')
     user["password"] = bcrypt.hashpw(password_bytes, salt)
 
+    token = postUserRepository(user)
 
-
-    user = postUserRepository(user)
-
-    return user
+    return token
 
 
 def deleteUserService(email):

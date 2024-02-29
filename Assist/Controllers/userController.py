@@ -12,14 +12,14 @@ nsUser = Namespace("user", authorizations=authorizations , description="User ope
 
 @nsUser.route("/create")
 class PostUser(Resource):
-
     @nsUser.expect(userPostExpect)
-    @nsUser.marshal_with(userPostResponse)
 
     def post(self):
         try:
-            user = postUserService(api.payload)
-            return user, 200
+            token = postUserService(api.payload)
+
+            return {"Token": token}, 200
+
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
@@ -35,13 +35,13 @@ class DeleteUser(Resource):
     def delete(self,email):
         try:
             deleteUserService(email)
+
             return {"message": "User deleted successfully"}, 200
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
 
         except Exception as e:
-            print(f"Unexpected exception: {e}")
             abort(500, "Something went wrong")
 
 @nsUser.route("/updatePassword/<string:email>/<string:newPassword>")
@@ -59,7 +59,6 @@ class UpdatePassword(Resource):
             abort(ce.statusCode, ce.message)
 
         except Exception as e:
-            print(f"Unexpected exception: {e}")
             abort(500, "Something went wrong")
 
 
