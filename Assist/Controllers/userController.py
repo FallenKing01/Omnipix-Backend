@@ -3,8 +3,8 @@ from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource
 
 from Application.Dtos.expect.userExpect import userPostExpect
-from Application.Dtos.post.userResponse import userPostResponse
 from Application.Services.userServices import *
+from Application.Services.organizationServices import *
 from Domain.extension import api,authorizations
 from Utils.Exceptions.customException import CustomException
 
@@ -16,6 +16,15 @@ class PostUser(Resource):
 
     def post(self):
         try:
+
+            organization = {
+                "name": api.payload["name"],
+                "adress": api.payload["adress"],
+                "url": api.payload["url"]
+            }
+
+            organization=postOrganizationService(organization)
+            api.payload["organizationId"] = organization["id"]
             token = postUserService(api.payload)
 
             return {"Token": token}, 200

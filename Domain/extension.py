@@ -19,7 +19,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 #collections
 employeesCollection = db.collection('employee')
-
+organizationCollection  = db.collection('organization')
 
 
 

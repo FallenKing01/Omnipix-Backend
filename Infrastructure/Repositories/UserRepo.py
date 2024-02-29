@@ -1,7 +1,5 @@
 
 from Domain.extension import employeesCollection
-from Utils.Exceptions.customException import CustomException
-import bcrypt
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 
@@ -32,8 +30,9 @@ def postUserRepository(user):
     insertedItm = employeesCollection.document()
     documentId = insertedItm.id
 
-    user["id"] = documentId
+    user["departamentId"]="null"
     user["workingHours"]=0
+    user["id"] = documentId
 
     insertedItm.set(user)
 
