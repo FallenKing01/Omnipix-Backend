@@ -34,6 +34,7 @@ def postUserRepository(user):
     user["workingHours"]=0
     user["id"] = documentId
 
+
     insertedItm.set(user)
 
     token = signUpToken(user)

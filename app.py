@@ -2,8 +2,9 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from Domain.extension import api
-from Assist.Controllers.userController import nsUser
+from Assist.Controllers.adminController import nsAdmin
 from Assist.Controllers.loginController import nsLogin
+from Assist.Controllers.employeeController import nsEmployee
 from Infrastructure.Repositories.UserRepo import getUserByIdRepository
 from Assist.Controllers.organizationController import nsOrganization
 app = Flask(__name__)
@@ -15,7 +16,8 @@ app.config["JWT_SECRET_KEY"] = "cookiemonster"
 
 
 api.init_app(app)
-api.add_namespace(nsUser)
+api.add_namespace(nsAdmin)
+api.add_namespace(nsEmployee)
 api.add_namespace(nsLogin)
 api.add_namespace(nsOrganization)
 #mongo = PyMongo(app)
