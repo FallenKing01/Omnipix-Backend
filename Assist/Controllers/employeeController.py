@@ -9,15 +9,13 @@ from Utils.Exceptions.customException import CustomException
 
 nsEmployee = Namespace("employee", authorizations=authorizations , description="User operations" )
 
-@nsEmployee.route("/create/<string:organizationId>")
+@nsEmployee.route("/create")
 class PostUser(Resource):
-    @nsEmployee.doc(params={"organizationId": "Organization id"})
     @nsEmployee.expect(employeePostExpect)
 
-    def post(self , organizationId):
+    def post(self ):
         try:
 
-            api.payload["organizationId"] = organizationId
             token = postUserService(api.payload)
 
             return {"Token": token}, 200

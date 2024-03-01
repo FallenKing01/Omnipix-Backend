@@ -7,4 +7,5 @@ employeePostExpect = api.model("Employee post expect",
                                 "name":fields.String,
                                 "email": fields.String,
                                 "password": fields.String,
+                                "organizationId":fields.String
                             })
