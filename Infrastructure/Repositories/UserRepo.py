@@ -34,18 +34,24 @@ def postUserRepository(user):
     user["workingHours"]=0
     user["id"] = documentId
 
-
     insertedItm.set(user)
 
     token = signUpToken(user)
 
-    return token
-
+    return token,documentId
 
 
 def getUserByIdRepository(id):
 
-    return employeesCollection.document(id).get()
+    query = employeesCollection.where("id", "==", id).limit(1).get()
+
+    user = None
+    for doc in query:
+        user = doc.to_dict()
+        break
+
+    return user
+
 
 def getUserByEmailRepository(email):
     query = employeesCollection.where("email", "==", email).limit(1).get()

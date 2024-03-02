@@ -20,6 +20,7 @@ db = firestore.client()
 #collections
 employeesCollection = db.collection('employee')
 organizationCollection  = db.collection('organization')
-
-
+organizationXadmin = db.collection('organizationXadmin')
+departament = db.collection("departament")
+departamentManager = db.collection('departamentManager')
 

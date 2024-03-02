@@ -19,6 +19,11 @@ def postUserService(user):
 
     return token
 
+def getUserByIdService(id):
+
+    existingUser = getUserByIdRepository(id)
+
+    return existingUser
 
 def deleteUserService(email):
 

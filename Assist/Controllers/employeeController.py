@@ -16,10 +16,9 @@ class PostUser(Resource):
     def post(self ):
         try:
 
-            token = postUserService(api.payload)
+            token,x = postUserService(api.payload)
 
             return {"Token": token}, 200
-
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

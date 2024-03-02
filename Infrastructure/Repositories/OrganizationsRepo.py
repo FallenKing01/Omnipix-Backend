@@ -12,3 +12,16 @@ def postOrganizationRepository(organization):
     insertedItm.set(organization)
 
     return organization
+
+def getOrganizationByIdRepository(organizationId):
+
+    query = organizationCollection.where("id", "==", organizationId).limit(1).get()
+
+    organization = None
+
+    for doc in query:
+        organization = doc.to_dict()
+        break
+
+    return organization
+

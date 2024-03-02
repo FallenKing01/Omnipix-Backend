@@ -7,6 +7,7 @@ from Assist.Controllers.loginController import nsLogin
 from Assist.Controllers.employeeController import nsEmployee
 from Infrastructure.Repositories.UserRepo import getUserByIdRepository
 from Assist.Controllers.organizationController import nsOrganization
+from Assist.Controllers.departamentController import nsDepartament
 app = Flask(__name__)
 
 CORS(app)
@@ -20,7 +21,8 @@ api.add_namespace(nsAdmin)
 api.add_namespace(nsEmployee)
 api.add_namespace(nsLogin)
 api.add_namespace(nsOrganization)
-#mongo = PyMongo(app)
+api.add_namespace(nsDepartament)
+
 jwt = JWTManager(app)
 
 @jwt.user_identity_loader

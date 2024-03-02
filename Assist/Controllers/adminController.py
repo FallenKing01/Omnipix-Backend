@@ -7,6 +7,7 @@ from Application.Services.userServices import *
 from Application.Services.organizationServices import *
 from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
+from Infrastructure.Repositories.organizationXadminRepo import postorganizationXadminRepository
 
 nsAdmin = Namespace("admin", authorizations=authorizations, description="Admin operations")
 
@@ -22,13 +23,18 @@ class PostUser(Resource):
                 "adress": api.payload["adress"],
                 "url": api.payload["url"]
             }
+            organizationXadmin={}
 
             organization = postOrganizationService(organization)
+
             api.payload["organizationId"] = organization["id"]
             api.payload.pop("url")
             api.payload.pop("adress")
             api.payload.pop("organizationName")
-            token = postUserService(api.payload)
+
+            token,organizationXadmin["employeeId"] = postUserService(api.payload)
+            organizationXadmin["organizationId"] = organization["id"]
+            organizationXadmin=postorganizationXadminRepository(organizationXadmin)
 
             return {"Token": token}, 200
 

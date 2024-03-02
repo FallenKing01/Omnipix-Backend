@@ -19,7 +19,6 @@ class PostOrganization(Resource):
         try:
             organization = postOrganizationService(api.payload)
 
-
             return organization
 
         except CustomException as ce:
