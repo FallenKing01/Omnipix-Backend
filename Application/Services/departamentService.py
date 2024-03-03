@@ -1,10 +1,13 @@
 from Utils.Exceptions.customException import CustomException
-from Infrastructure.Repositories.departamentRepo import *
+from Infrastructure.Repositories.DepartamentRepo import *
 from Application.Services.organizationServices import getOrganizationService
 from Application.Services.userServices import getUserByIdService
-def getDepartamentByEmployeeIdService(id):
+def getDepartamentManagerByEmployeeIdService(id):
 
-    isManager = getDepartamentByEmployeeIdRepo(id)
+    isManager = getDepartamentManagerByEmployeeIdRepo(id)
+
+    if isManager is None:
+        raise CustomException(404, "The employee is not departament manager!")
 
     return isManager
 def postDepartamentService(depart):
@@ -19,7 +22,7 @@ def postDepartamentService(depart):
     if existingEmployee is None:
         raise CustomException(404, "The employee does not exist")
 
-    isManager = getDepartamentByEmployeeIdService(depart["employeeId"])
+    isManager = getDepartamentManagerByEmployeeIdRepo(depart["employeeId"])
 
     if isManager is not None:
         raise CustomException(409, "The user is already manager")

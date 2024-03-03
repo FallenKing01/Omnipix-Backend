@@ -5,7 +5,7 @@ from flask_restx import Namespace, Resource
 from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 from Application.Services.departamentService import postDepartamentService
-nsDepartament = Namespace("departament", authorizations=authorizations, description="Admin operations")
+nsDepartament = Namespace("departament", authorizations=authorizations, description="Departament operations")
 
 @nsDepartament.route("/create")
 class PostDepartament(Resource):
