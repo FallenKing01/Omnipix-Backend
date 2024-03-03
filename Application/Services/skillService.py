@@ -23,3 +23,9 @@ def postSkillService(skill):
     skill = postSkillRepo(skill)
 
     return skill
+
+def getSkillService(id):
+
+    skills = getOrganizationSkillsRepo(id)
+
+    return skills

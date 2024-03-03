@@ -21,3 +21,18 @@ class PostSkill(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/getskills/<string:organizationId>")
+class GetSkills(Resource):
+    @nsDepartamentManager.doc(params={'organizationId': 'The ID of the organization for which to retrieve skills'})
+    def get(self, organizationId):
+
+        try:
+            skills = getSkillService(organizationId)
+            return skills
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

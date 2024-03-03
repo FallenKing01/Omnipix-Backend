@@ -12,3 +12,13 @@ def postSkillRepo(skill):
     insertedItm.set(skill)
 
     return skill
+
+def getOrganizationSkillsRepo(id):
+    skills = []
+
+    organizationSkills = skillCollection.where('organizationId', '==', id).stream()
+
+    for currentSkill in organizationSkills:
+        skills.append(currentSkill.to_dict())
+
+    return skills
