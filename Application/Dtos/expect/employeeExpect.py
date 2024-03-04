@@ -9,3 +9,18 @@ employeePostExpect = api.model("Employee post expect",
                                 "password": fields.String,
                                 "organizationId":fields.String
                             })
+
+endorsement = api.model("Endorsement", {
+    "title": fields.String,
+    "description": fields.String,
+
+})
+
+# Define the Assign skill model with a list of endorsements
+assignSkill = api.model("Assign skill", {
+    "employeeId": fields.String,
+    "skillId": fields.String,
+    "level": fields.Integer,
+    "experience": fields.Integer,
+    "endorsements": fields.List(fields.Nested(endorsement))  # Using fields.Nested to represent a nested structure
+})

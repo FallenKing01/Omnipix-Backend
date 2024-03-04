@@ -73,3 +73,4 @@ def updatePasswordRepository(email, new_password):
 
     for doc in query:
         doc.reference.update({"password": new_password})
+
