@@ -9,7 +9,7 @@ from Application.Services.assignSkillService import postSkillWithEndorsmentServi
 
 nsEmployee = Namespace("employee", authorizations=authorizations , description="User operations" )
 
-@nsEmployee.route("/")
+@nsEmployee.route("/create")
 class PostUser(Resource):
     @nsEmployee.expect(employeePostExpect)
 
@@ -57,5 +57,5 @@ class AssignDepartament(Resource):
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
 
-        except Exception as e:
+        except Exception:
             abort(500, "Something went wrong")
