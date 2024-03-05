@@ -56,9 +56,9 @@ def assignUserToDepartamentService(user):
     if employeeToAssign is None:
         raise CustomException(404,"Employee not found")
 
-    employeeToAssign = getDepartmentByIdRepo(user["departamentId"])
-
-    if employeeToAssign is None:
-        raise CustomException(404, "Departament not found")
+    # employeeToAssign = getDepartmentByIdRepo(user["departamentId"])
+    #
+    # if employeeToAssign is None:
+    #     raise CustomException(404, "Departament not found")
 
     updateUserDepartamentRepository(user)

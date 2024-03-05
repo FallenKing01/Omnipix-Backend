@@ -68,3 +68,4 @@ def updateDepartamentManager(user):
 
     for doc in query:
         doc.reference.update({"employeeId": user["employeeId"]})
+
