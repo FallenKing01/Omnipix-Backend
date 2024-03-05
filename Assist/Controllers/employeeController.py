@@ -23,12 +23,12 @@ class PostUser(Resource):
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
 
-        except Exception as e:
+        except Exception:
             abort(500, "Something went wrong")
 
 
 @nsEmployee.route("/assignskill")
-class AssignSkillResource(Resource):
+class AssignSkill(Resource):
     @nsEmployee.expect(assignSkill)
     def post(self):
         try:
@@ -38,5 +38,24 @@ class AssignSkillResource(Resource):
             postSkillWithEndorsmentService(data,endorsements)
 
             return {'message': 'Skill assigned successfully'}, 200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception as e:
+            abort(500, "Something went wrong")
+
+@nsEmployee.route("/assigndepartament")
+class AssignDepartament(Resource):
+    @nsEmployee.expect(assignDepartament)
+    def put(self):
+        try:
+            assignUserToDepartamentService(api.payload)
+
+            return {'message': 'Departament assigned successfully'}, 200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
         except Exception as e:
             abort(500, "Something went wrong")

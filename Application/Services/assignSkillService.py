@@ -1,7 +1,7 @@
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.UserRepo import getUserByIdRepository
 from Infrastructure.Repositories.assignedSkillRepo import postSkillWithEndorsmentRepo
-
+from Application.Services.departamentService import getDepartamentByIdService
 
 def postSkillWithEndorsmentService(skillAssigned,endorsementsAssigned):
 
@@ -15,4 +15,5 @@ def postSkillWithEndorsmentService(skillAssigned,endorsementsAssigned):
     skillAssigned,endorsementsAssigned = postSkillWithEndorsmentRepo(skillAssigned,endorsementsAssigned)
 
     return skillAssigned,endorsementsAssigned
+
 

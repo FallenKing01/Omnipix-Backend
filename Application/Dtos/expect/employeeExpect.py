@@ -24,3 +24,8 @@ assignSkill = api.model("Assign skill", {
     "experience": fields.Integer,
     "endorsements": fields.List(fields.Nested(endorsement))  # Using fields.Nested to represent a nested structure
 })
+
+assignDepartament = api.model("Assign departament",{
+    "employeeId": fields.String,
+    "departamentId":fields.String,
+})

@@ -74,3 +74,9 @@ def updatePasswordRepository(email, new_password):
     for doc in query:
         doc.reference.update({"password": new_password})
 
+def updateUserDepartamentRepository(user):
+
+    query = employeesCollection.where("id", "==", user["employeeId"]).limit(1).get()
+
+    for doc in query:
+        doc.reference.update({"departamentId": user["departamentId"]})
