@@ -10,4 +10,8 @@ userPostExpect = api.model("User post expect",
                                 "organizationName":fields.String,
                                 "adress":fields.String,
                                 "url":fields.String
-                            })
+})
+teamRolePostExpect = api.model("Team roll",{
+                                "name":fields.String,
+                                "organizationId":fields.String
+})

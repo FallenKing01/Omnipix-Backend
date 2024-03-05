@@ -1,8 +1,8 @@
 from Infrastructure.Repositories.UserRepo import *
 from Utils.Exceptions.customException import CustomException
+from Infrastructure.Repositories.OrganizationsRepo import getOrganizationByIdRepository
 from Domain.extension import salt
 import bcrypt
-#from Infrastructure.Repositories.DepartamentRepo import getDepartmentByIdRepo
 
 def postUserService(user):
 
@@ -62,3 +62,14 @@ def assignUserToDepartamentService(user):
     #     raise CustomException(404, "Departament not found")
 
     updateUserDepartamentRepository(user)
+
+def postCustomRoleService(role):
+
+    existOrganization = getOrganizationByIdRepository(role["organizationId"])
+
+    if existOrganization is None:
+        raise CustomException(404,"Organization is not found")
+
+    role = postCustomRoleRepository(role)
+
+    return role

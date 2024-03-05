@@ -1,5 +1,5 @@
 
-from Domain.extension import employeesCollection
+from Domain.extension import employeesCollection,customTeamRoleCollection
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 
@@ -80,3 +80,14 @@ def updateUserDepartamentRepository(user):
 
     for doc in query:
         doc.reference.update({"departamentId": user["departamentId"]})
+
+def postCustomRoleRepository(role):
+
+    insertedItm = customTeamRoleCollection.document()
+    documentId = insertedItm.id
+
+    role["id"] = documentId
+
+    insertedItm.set(role)
+
+    return role
