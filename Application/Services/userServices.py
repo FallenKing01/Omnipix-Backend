@@ -2,7 +2,7 @@ from Infrastructure.Repositories.UserRepo import *
 from Utils.Exceptions.customException import CustomException
 from Domain.extension import salt
 import bcrypt
-from Infrastructure.Repositories.DepartamentRepo import getDepartmentByIdRepo
+#from Infrastructure.Repositories.DepartamentRepo import getDepartmentByIdRepo
 
 def postUserService(user):
 
