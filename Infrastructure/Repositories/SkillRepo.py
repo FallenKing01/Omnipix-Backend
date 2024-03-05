@@ -1,6 +1,4 @@
-from Domain.extension import skillCollection
-
-
+from Domain.extension import skillCollection,assignedSkillCollection
 def postSkillRepo(skill):
 
     # GENEREZ INTAI ID PENTRU DOCUMENT DUPA APELEZ PENTRU POSTARE IN DATABASE
@@ -14,6 +12,7 @@ def postSkillRepo(skill):
     return skill
 
 def getOrganizationSkillsRepo(id):
+
     skills = []
 
     organizationSkills = skillCollection.where('organizationId', '==', id).stream()
@@ -25,6 +24,7 @@ def getOrganizationSkillsRepo(id):
 
 
 def getSkillByIdRepo(id):
+
     query = skillCollection.where('id', '==', id).stream()
 
     skill = None
@@ -34,3 +34,29 @@ def getSkillByIdRepo(id):
         break
 
     return skill
+
+
+def getSkillsOfEmployeeRepo(employeeId):
+
+    query = assignedSkillCollection.where("employeeId", "==", employeeId).stream()
+
+    skills = []
+    for doc in query:
+
+        data = doc.to_dict()
+
+        skillId = data.get("skillId", "")
+
+        skillDoc = skillCollection.document(skillId).get()
+
+        if skillDoc.exists:
+            skill = {}
+
+            skill_name = skillDoc.get("name")
+            skill["name"] = skill_name if skill_name is not None else ""
+            skill["level"] = data["level"]
+            skill["experience"] = data["experience"]
+            skills.append(skill)
+
+    return skills
+

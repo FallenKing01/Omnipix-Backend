@@ -6,6 +6,7 @@ from Application.Services.userServices import *
 from Domain.extension import api,authorizations
 from Utils.Exceptions.customException import CustomException
 from Application.Services.assignSkillService import postSkillWithEndorsmentService
+from Application.Services.skillService import getSkillOfEmployeeService
 
 nsEmployee = Namespace("employee", authorizations=authorizations , description="User operations" )
 
@@ -26,6 +27,19 @@ class PostUser(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsEmployee.route("/getskills/<string:userId>")
+class GetUserSkills(Resource):
+
+    def get(self,userId):
+        try:
+
+            return getSkillOfEmployeeService(userId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
 
 @nsEmployee.route("/assignskill")
 class AssignSkill(Resource):

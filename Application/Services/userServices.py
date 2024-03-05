@@ -23,6 +23,9 @@ def getUserByIdService(id):
 
     existingUser = getUserByIdRepository(id)
 
+    if existingUser is None:
+        raise CustomException(404,"User does not exist")
+
     return existingUser
 
 def deleteUserService(email):

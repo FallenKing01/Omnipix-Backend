@@ -3,6 +3,8 @@ from Utils.Exceptions.customException import CustomException
 from Application.Services.organizationServices import getOrganizationService
 from Application.Services.userServices import getUserByIdService
 from Application.Services.departamentService import getDepartamentManagerByEmployeeIdService
+from Infrastructure.Repositories.SkillRepo import getSkillsOfEmployeeRepo
+
 def postSkillService(skill):
 
     existingOrganization = getOrganizationService(skill["organizationId"])
@@ -24,8 +26,10 @@ def postSkillService(skill):
 
     return skill
 
-def getSkillService(id):
+def getSkillOfEmployeeService(employeeId):
 
-    skills = getOrganizationSkillsRepo(id)
+    getUserByIdService(employeeId)
+
+    skills = getSkillsOfEmployeeRepo(employeeId)
 
     return skills
