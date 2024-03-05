@@ -22,3 +22,15 @@ def getOrganizationSkillsRepo(id):
         skills.append(currentSkill.to_dict())
 
     return skills
+
+
+def getSkillByIdRepo(id):
+    query = skillCollection.where('id', '==', id).stream()
+
+    skill = None
+
+    for doc in query:
+        skill = doc.to_dict()
+        break
+
+    return skill

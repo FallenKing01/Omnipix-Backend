@@ -52,6 +52,7 @@ def getDepartamentManagerByEmployeeIdRepo(id):
     return department
 
 def getDepartmentByIdRepo(id):
+
     query = departamentCollection.where("id", "==", id).limit(1).get()
 
     department = None

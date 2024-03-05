@@ -43,8 +43,24 @@ class PostDepartament(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsDepartament.route("/skilltodepartament")
+class PostSkillToDepartament(Resource):
+    @nsDepartament.expect(postDepartamentSkills)
+    def post(self):
+        try:
+
+            postSkillToDepartamentService(api.payload)
+
+            return {"message":"Skill assigned succesfully to departament"}, 201
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
 @nsDepartament.route("/promotedepartamentmanager")
-class PostDepartament(Resource):
+class PromoteToManager(Resource):
     @nsDepartament.expect(promoteDepartamentManager)
     def put(self):
         try:
@@ -59,5 +75,15 @@ class PostDepartament(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsDepartament.route("/skillsofdepartament/<string:departamentId>")
+class PostDepartament(Resource):
+    def get(self,departamentId):
+        try:
 
+            return getSkillsFromDepartamentService(departamentId)
 
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

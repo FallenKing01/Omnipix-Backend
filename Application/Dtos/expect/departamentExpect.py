@@ -17,3 +17,7 @@ promoteDepartamentManager = api.model("Promote to departament manager",{
                                 "employeeId":fields.String,
                                 "departamentId":fields.String,
                             })
+postDepartamentSkills = api.model("Departament skill",{
+                                "skillId":fields.String,
+                                "departamentId":fields.String
+})
