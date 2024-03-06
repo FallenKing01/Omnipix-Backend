@@ -35,6 +35,18 @@ def getSkillByIdRepo(id):
 
     return skill
 
+def getSkillByAutorIdRepo(id):
+    query = skillCollection.where('authorId', '==', id).get()
+
+    skills = []
+
+    for doc in query:
+        # Append each document to the skills list
+        skills.append(doc.to_dict())
+
+    return skills
+
+
 
 def getSkillsOfEmployeeRepo(employeeId):
 

@@ -33,3 +33,15 @@ def getSkillOfEmployeeService(employeeId):
     skills = getSkillsOfEmployeeRepo(employeeId)
 
     return skills
+
+def getSkillService(id):
+
+    skills = getOrganizationSkillsRepo(id)
+
+    return skills
+
+def getSkillByAuthorIdService(id):
+
+    skills = getSkillByAutorIdRepo(id)
+
+    return skills

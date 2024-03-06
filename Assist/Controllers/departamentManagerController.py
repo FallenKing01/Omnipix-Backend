@@ -36,3 +36,19 @@ class GetSkills(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/ownedskills/<string:authorId>")
+class GetSkillsCreatedByDepartamentManager(Resource):
+    @nsDepartamentManager.doc(params={'authorId': 'The id of man who made the skill'})
+    def get(self, authorId):
+
+        try:
+            skills = getSkillByAuthorIdService(authorId)
+
+            return skills
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
