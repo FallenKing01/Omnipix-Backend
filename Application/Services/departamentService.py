@@ -13,26 +13,26 @@ def getDepartamentManagerByEmployeeIdService(id):
 
     return isManager
 
-# def postDepartamentServiceWithManager(depart):
-#
-#     existingOrganization = getOrganizationService(depart["organizationId"])
-#
-#     if existingOrganization is None:
-#         raise CustomException(404, "Organization not found")
-#
-#     existingEmployee = getUserByIdService(depart["employeeId"])
-#
-#     if existingEmployee is None:
-#         raise CustomException(404, "The employee does not exist")
-#
-#     isManager = getDepartamentManagerByEmployeeIdRepo(depart["employeeId"])
-#
-#     if isManager is not None:
-#         raise CustomException(409, "The user is already manager")
-#
-#     depart = postDepartamentWithManagerRepo(depart)
-#
-#     return depart
+def postDepartamentServiceWithManager(depart):
+
+    existingOrganization = getOrganizationService(depart["organizationId"])
+
+    if existingOrganization is None:
+        raise CustomException(404, "Organization not found")
+
+    existingEmployee = getUserByIdService(depart["employeeId"])
+
+    if existingEmployee is None:
+        raise CustomException(404, "The employee does not exist")
+
+    isManager = getDepartamentManagerByEmployeeIdRepo(depart["employeeId"])
+
+    if isManager is not None:
+        raise CustomException(409, "The user is already manager")
+
+    depart = postDepartamentWithManagerRepo(depart)
+
+    return depart
 
 def postDepartamentService(depart):
 
@@ -67,7 +67,7 @@ def promoteToDepartamentManagerService(user):
     if isManager is not None:
         raise CustomException(409, "The user is already manager")
 
-    updateDepartamentManager(user)
+    updateSecondTimeManagerOfDepartamentRepo(user)
 
 def postSkillToDepartamentService(skill):
 
@@ -100,7 +100,19 @@ def updateDepartamentManagerService(departament):
 
     isManager = getDepartamentManagerByEmployeeIdRepo(departament["employeeId"])
 
-
+    if isManager is not None:
+        raise CustomException(409, "The user is already manager")
 
     updateDepartamentManagerRepo(departament)
 
+
+def updateNameOfDepartamentService(departament):
+
+    getDepartamentByIdService(departament["departamentId"])
+
+    updateNameOfDepartamentRepo(departament)
+
+def deleteDepartamentService(id):
+
+    getDepartamentByIdService(id)
+    deleteDepartamentRepo(id)

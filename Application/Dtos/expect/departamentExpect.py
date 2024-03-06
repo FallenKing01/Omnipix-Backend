@@ -26,3 +26,8 @@ updateManagerExpect = api.model("Update departament manager ",{
     "departamentId":fields.String,
     "employeeId":fields.String,
 })
+
+updateDepartamentNameExpect = api.model("Update departament name ",{
+    "departamentId":fields.String,
+    "name":fields.String,
+})
