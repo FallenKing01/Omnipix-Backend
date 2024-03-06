@@ -7,23 +7,23 @@ from Utils.Exceptions.customException import CustomException
 from Application.Services.departamentService import *
 nsDepartament = Namespace("departament", authorizations=authorizations, description="Departament operations")
 
-@nsDepartament.route("/createdirectlywithmanager")
-class PostDepartamentWithManager(Resource):
-    @nsDepartament.expect(departamentPostExpectWithManager)
-    def post(self):
-        try:
-            api.payload["departamentId"]=str(uuid.uuid4())
-            api.payload["departamentManagerId"]=str(uuid.uuid4())
-
-            depart =  postDepartamentServiceWithManager(api.payload)
-
-            return depart
-
-        except CustomException as ce:
-            abort(ce.statusCode, ce.message)
-
-        except Exception:
-            abort(500, "Something went wrong")
+# @nsDepartament.route("/createdirectlywithmanager")
+# class PostDepartamentWithManager(Resource):
+#     @nsDepartament.expect(departamentPostExpectWithManager)
+#     def post(self):
+#         try:
+#             api.payload["departamentId"]=str(uuid.uuid4())
+#             api.payload["departamentManagerId"]=str(uuid.uuid4())
+#
+#             depart =  postDepartamentServiceWithManager(api.payload)
+#
+#             return depart
+#
+#         except CustomException as ce:
+#             abort(ce.statusCode, ce.message)
+#
+#         except Exception:
+#             abort(500, "Something went wrong")
 
 @nsDepartament.route("/create")
 class PostDepartament(Resource):
@@ -81,6 +81,22 @@ class PostDepartament(Resource):
         try:
 
             return getSkillsFromDepartamentService(departamentId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsDepartament.route("/updatemanager")
+class UpdateDepartamentManager(Resource):
+    @nsDepartament.expect(updateManagerExpect)
+    def put(self):
+        try:
+
+            updateDepartamentManagerService(api.payload)
+
+            return {"message":"Departament manager updated"}, 201
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

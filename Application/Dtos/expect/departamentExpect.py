@@ -21,3 +21,8 @@ postDepartamentSkills = api.model("Departament skill",{
                                 "skillId":fields.String,
                                 "departamentId":fields.String
 })
+
+updateManagerExpect = api.model("Update departament manager ",{
+    "departamentId":fields.String,
+    "employeeId":fields.String,
+})

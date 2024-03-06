@@ -4,7 +4,6 @@ from Infrastructure.Repositories.skillXdepartamentRepo import *
 from Infrastructure.Repositories.SkillRepo import getSkillByIdRepo
 from Application.Services.organizationServices import getOrganizationService
 from Application.Services.userServices import getUserByIdService
-
 def getDepartamentManagerByEmployeeIdService(id):
 
     isManager = getDepartamentManagerByEmployeeIdRepo(id)
@@ -14,26 +13,26 @@ def getDepartamentManagerByEmployeeIdService(id):
 
     return isManager
 
-def postDepartamentServiceWithManager(depart):
-
-    existingOrganization = getOrganizationService(depart["organizationId"])
-
-    if existingOrganization is None:
-        raise CustomException(404, "Organization not found")
-
-    existingEmployee = getUserByIdService(depart["employeeId"])
-
-    if existingEmployee is None:
-        raise CustomException(404, "The employee does not exist")
-
-    isManager = getDepartamentManagerByEmployeeIdRepo(depart["employeeId"])
-
-    if isManager is not None:
-        raise CustomException(409, "The user is already manager")
-
-    depart = postDepartamentWithManagerRepo(depart)
-
-    return depart
+# def postDepartamentServiceWithManager(depart):
+#
+#     existingOrganization = getOrganizationService(depart["organizationId"])
+#
+#     if existingOrganization is None:
+#         raise CustomException(404, "Organization not found")
+#
+#     existingEmployee = getUserByIdService(depart["employeeId"])
+#
+#     if existingEmployee is None:
+#         raise CustomException(404, "The employee does not exist")
+#
+#     isManager = getDepartamentManagerByEmployeeIdRepo(depart["employeeId"])
+#
+#     if isManager is not None:
+#         raise CustomException(409, "The user is already manager")
+#
+#     depart = postDepartamentWithManagerRepo(depart)
+#
+#     return depart
 
 def postDepartamentService(depart):
 
@@ -55,6 +54,7 @@ def getDepartamentByIdService(id):
 
     return departament
 
+#devine pentru prima data manager
 def promoteToDepartamentManagerService(user):
 
     existingEmployee = getUserByIdService(user["employeeId"])
@@ -88,3 +88,19 @@ def getSkillsFromDepartamentService(departamentId):
     skills = getSkillsFromDepartmentRepo(departamentId)
 
     return skills
+
+#Se schimba managerul pe departament era deja cineva acum e altu!
+def updateDepartamentManagerService(departament):
+
+    existDepartament = getDepartamentByIdService(departament["departamentId"])
+    existUser = getUserByIdService(departament["employeeId"])
+
+    if existDepartament["organizationId"] != existUser["organizationId"]:
+        raise CustomException(409,"User and departament are not in the same organization")
+
+    isManager = getDepartamentManagerByEmployeeIdRepo(departament["employeeId"])
+
+
+
+    updateDepartamentManagerRepo(departament)
+
