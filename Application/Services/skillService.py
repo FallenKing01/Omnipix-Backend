@@ -20,7 +20,7 @@ def postSkillService(skill):
     if existingUser["organizationId"] != skill["organizationId"]:
         raise CustomException(409,"The user is not in organzation provided")
 
-    isManager = getDepartamentManagerByEmployeeIdService(skill["authorId"])
+    getDepartamentManagerByEmployeeIdService(skill["authorId"])
 
     skill = postSkillRepo(skill)
 

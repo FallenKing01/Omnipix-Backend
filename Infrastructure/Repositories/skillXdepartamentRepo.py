@@ -15,7 +15,7 @@ def postSkillToDepartamentRepo(skill):
 def getSkillsFromDepartmentRepo(departmentId):
 
     query = skillXdepartamentCollection.where("departamentId", "==", departmentId).get()
-    print(query)
+
     skills = []
 
     for doc in query:

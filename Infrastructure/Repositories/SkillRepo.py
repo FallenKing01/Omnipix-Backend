@@ -5,6 +5,7 @@ def postSkillRepo(skill):
     insertedItm = skillCollection.document()
     documentId = insertedItm.id
 
+    skill["currentManager"] = skill["authorId"]
     skill["id"] = documentId
 
     insertedItm.set(skill)
