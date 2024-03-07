@@ -45,3 +45,13 @@ def getSkillByAuthorIdService(id):
     skills = getSkillByAutorIdRepo(id)
 
     return skills
+
+def updateSkillService(skill):
+
+    existSkill = getSkillByIdRepo(skill["skillId"])
+
+    if existSkill is None:
+        raise CustomException(404,"Skill not found")
+
+
+    return updateSkillRepo(skill)

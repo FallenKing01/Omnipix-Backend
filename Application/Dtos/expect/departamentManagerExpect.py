@@ -9,3 +9,12 @@ skillPostExpect = api.model("Skill post expect",
                                 "authorId":fields.String,
                                 "organizationId":fields.String
                             })
+
+skillUpdateExpect = api.model("Skill update expect",
+                              {
+                                  "skillId":fields.String,
+                                  "managerId":fields.String,
+                                  "name":fields.String,
+                                  "category":fields.String,
+                                  "description":fields.String,
+                              })

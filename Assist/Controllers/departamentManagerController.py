@@ -52,3 +52,20 @@ class GetSkillsCreatedByDepartamentManager(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsDepartamentManager.route("/editskill")
+class UpdateSkill(Resource):
+    @nsDepartamentManager.expect(skillUpdateExpect)
+    def put(self):
+
+        try:
+            updatedSkill = updateSkillService(api.payload)
+
+            return updatedSkill
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
