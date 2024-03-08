@@ -10,3 +10,7 @@ postProjectExpect = api.model("Create project" , {
 
 })
 
+updateProjectStatus = api.model("Update project status" , {
+    "projectId":fields.String,
+    "status":fields.String,
+})

@@ -34,14 +34,14 @@ def postDepartamentServiceWithManager(depart):
 
     return depart
 
-def postDepartamentService(depart):
+def postDepartamentServiceADDITIONAL(depart):
 
     existingOrganization = getOrganizationService(depart["organizationId"])
 
     if existingOrganization is None:
         raise CustomException(404, "Organization not found")
 
-    depart = postDepartamentRepo(depart)
+    depart = postDepartamentRepoADDITIONAL(depart)
 
     return depart
 
@@ -112,7 +112,33 @@ def updateNameOfDepartamentService(departament):
 
     updateNameOfDepartamentRepo(departament)
 
+def createDepartamentManagerService(employee):
+
+    getUserByIdService(employee["employeeId"])
+
+    createDepartamentManagerRepo(employee)
+
+    return employee
+
 def deleteDepartamentService(id):
 
     getDepartamentByIdService(id)
     deleteDepartamentRepo(id)
+
+def postDepartamentService(departament):
+    getOrganizationService(departament["organizationId"])
+
+    departament = postDepartamentRepo(departament)
+
+    return departament
+
+def firstDepartamentManagerPromotionService(depart):
+
+    existDepartament = getDepartmentByIdRepo(depart["departamentId"])
+
+    if existDepartament is None:
+        raise  CustomException(404,"Departament does not exist")
+
+    getUserByIdService(depart["employeeId"])
+
+    firstDepartamentManagerPromotionRepo(depart)

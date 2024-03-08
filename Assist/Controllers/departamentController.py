@@ -7,7 +7,23 @@ from Utils.Exceptions.customException import CustomException
 from Application.Services.departamentService import *
 nsDepartament = Namespace("departament", authorizations=authorizations, description="Departament operations")
 
-@nsDepartament.route("/createdirectlywithmanager")
+@nsDepartament.route("/createdepartamentmanager")
+class PostDepartamentManager(Resource):
+    @nsDepartament.expect(postDepartamentManagerExpect)
+    def post(self):
+        try:
+
+
+            depart =  createDepartamentManagerService(api.payload)
+
+            return depart
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+@nsDepartament.route("/createdirectlywithmanagerADDITIONAL")
 class PostDepartamentWithManager(Resource):
     @nsDepartament.expect(departamentPostExpectWithManager)
     def post(self):
@@ -25,13 +41,29 @@ class PostDepartamentWithManager(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
-@nsDepartament.route("/create")
+@nsDepartament.route("/createADDITIONAL")
 class PostDepartament(Resource):
     @nsDepartament.expect(departamentPostExpect)
     def post(self):
         try:
             api.payload["departamentId"]=str(uuid.uuid4())
             api.payload["departamentManagerId"]=str(uuid.uuid4())
+
+            depart =  postDepartamentServiceADDITIONAL(api.payload)
+
+            return depart
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsDepartament.route("/create")
+class PostDepartament(Resource):
+    @nsDepartament.expect(departamentPostExpect)
+    def post(self):
+        try:
 
             depart =  postDepartamentService(api.payload)
 
@@ -59,7 +91,7 @@ class PostSkillToDepartament(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
-@nsDepartament.route("/promotedepartamentmanager")
+@nsDepartament.route("/promotedepartamentmanagerADDITIONAL")
 class PromoteToManager(Resource):
     @nsDepartament.expect(promoteDepartamentManager)
     def put(self):
@@ -128,6 +160,24 @@ class DeleteDepartament(Resource):
             deleteDepartamentService(departamentId)
 
             return {"message":"Departament was deleted"}, 202
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+
+
+@nsDepartament.route("/firstpromotedepartamentmanager")
+class PromoteFirstTimeToDepartamentManager(Resource):
+    @nsDepartament.expect(promoteDepartamentManager)
+    def put(self):
+        try:
+
+            firstDepartamentManagerPromotionService(api.payload)
+
+            return {"message":"The employee was promoted"}, 201
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

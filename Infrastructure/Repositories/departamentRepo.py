@@ -1,5 +1,5 @@
 from Domain.extension import departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
-def postDepartamentRepo(depart):
+def postDepartamentRepoADDITIONAL(depart):
 
     # IAU DOAR CE AM NEV PENTRU MANAGER
     managerDepartament = {
@@ -18,6 +18,19 @@ def postDepartamentRepo(depart):
     departamentCollection.add(depart)
 
     return depart
+
+def postDepartamentRepo(depart):
+
+    insertedItm = departamentCollection.document()
+    insertedItmId = insertedItm.id
+
+    depart["id"]= insertedItmId
+    depart["departamentManagerId"]=None
+
+    departamentCollection.add(depart)
+
+    return depart
+
 
 def postDepartamentWithManagerRepo(depart):
 
@@ -152,5 +165,32 @@ def deleteDepartamentRepo(id):
 
     for doc in query:
         doc.reference.update({"departamentId": None})
+
+
+def createDepartamentManagerRepo(employee):
+
+    insertItm = departamentManagerCollection.document()
+    insertItmId = insertItm.id
+
+    employee["id"] = insertItmId
+    employee["departamentId"]=None
+
+    departamentManagerCollection.add(employee)
+
+    return employee
+
+
+def firstDepartamentManagerPromotionRepo(depart):
+
+    query = departamentManagerCollection.where("employeeId", "==", depart["employeeId"]).limit(1).get()
+
+    for doc in query:
+        doc.reference.update({"departamentId": depart["departamentId"]})
+        idChange = doc.get("id")  # Corrected this line
+    query = departamentCollection.where("id","==",depart["departamentId"]).limit(1).get()
+
+    for doc in query:
+        doc.reference.update({"departamentManagerId": idChange})
+
 
 
