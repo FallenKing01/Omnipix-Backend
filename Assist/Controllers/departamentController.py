@@ -13,7 +13,6 @@ class PostDepartamentManager(Resource):
     def post(self):
         try:
 
-
             depart =  createDepartamentManagerService(api.payload)
 
             return depart

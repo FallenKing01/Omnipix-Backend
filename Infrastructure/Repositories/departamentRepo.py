@@ -186,11 +186,36 @@ def firstDepartamentManagerPromotionRepo(depart):
 
     for doc in query:
         doc.reference.update({"departamentId": depart["departamentId"]})
-        idChange = doc.get("id")  # Corrected this line
+        idChange = doc.get("id")
     query = departamentCollection.where("id","==",depart["departamentId"]).limit(1).get()
 
     for doc in query:
         doc.reference.update({"departamentManagerId": idChange})
+
+
+
+def getDepartamentManagerWithNoDepartament(id):
+    query = departamentManagerCollection.where('organizationId', '==', id).where('departamentId', '==', None)
+    managerDocs = query.stream()
+
+    employeeIds = []
+
+    for doc in managerDocs:
+        employeeIds.append(doc.to_dict()['employeeId'])
+
+    employees = employeesCollection.where('id', 'in', employeeIds).stream()
+
+    employeeData = []
+
+    for employee in employees:
+        employeeDict = employee.to_dict()
+
+        employeeDict.pop('password')
+        employeeData.append(employeeDict)
+
+    return employeeData
+
+# Example usage
 
 
 

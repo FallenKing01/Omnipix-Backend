@@ -142,3 +142,11 @@ def firstDepartamentManagerPromotionService(depart):
     getUserByIdService(depart["employeeId"])
 
     firstDepartamentManagerPromotionRepo(depart)
+
+def getDepartamentManagerWithNoDepartamentService(id):
+
+    getOrganizationService(id)
+
+    managers = getDepartamentManagerWithNoDepartament(id)
+
+    return managers
