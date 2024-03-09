@@ -112,8 +112,9 @@ def updateNameOfDepartamentService(departament):
 
     updateNameOfDepartamentRepo(departament)
 
-def createDepartamentManagerService(employee):
 
+
+def postDepartManService(employee):
     getUserByIdService(employee["employeeId"])
 
     createDepartManRepo(employee)
