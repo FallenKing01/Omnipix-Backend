@@ -7,21 +7,7 @@ from Utils.Exceptions.customException import CustomException
 from Application.Services.departamentService import *
 nsDepartament = Namespace("departament", authorizations=authorizations, description="Departament operations")
 
-@nsDepartament.route("/createdepartamentmanager")
-class PostDepartamentManager(Resource):
-    @nsDepartament.expect(postDepartamentManagerExpect)
-    def post(self):
-        try:
 
-            depart =  postDepartManService(api.payload)
-
-            return depart
-
-        except CustomException as ce:
-            abort(ce.statusCode, ce.message)
-
-        except Exception:
-            abort(500, "Something went wrong")
 
 @nsDepartament.route("/createdirectlywithmanagerADDITIONAL")
 class PostDepartamentWithManager(Resource):

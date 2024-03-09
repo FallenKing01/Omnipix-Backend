@@ -112,25 +112,6 @@ def updateNameOfDepartamentService(departament):
 
     updateNameOfDepartamentRepo(departament)
 
-def createDepartManRepo(employee):
-
-    insertItm = departamentManagerCollection.document()
-    insertItmId = insertItm.id
-
-    employee["id"] = insertItmId
-    employee["departamentId"]=None
-
-    departamentManagerCollection.add(employee)
-
-    return employee
-
-
-def postDepartManService(employee):
-    getUserByIdService(employee["employeeId"])
-
-    createDepartManRepo(employee)
-
-    return employee
 
 
 def deleteDepartamentService(id):

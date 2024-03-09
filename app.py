@@ -10,7 +10,7 @@ from Assist.Controllers.organizationController import nsOrganization
 from Assist.Controllers.departamentController import nsDepartament
 from Assist.Controllers.departamentManagerController import nsDepartamentManager
 from Assist.Controllers.projectManagerController import nsProjectManager
-
+from Assist.Controllers.promoteDepartController import nsTest
 app = Flask(__name__)
 
 CORS(app)
@@ -25,6 +25,8 @@ api.add_namespace(nsOrganization)
 api.add_namespace(nsDepartament)
 api.add_namespace(nsDepartamentManager)
 api.add_namespace(nsProjectManager)
+api.add_namespace(nsTest)
+
 jwt = JWTManager(app)
 
 @jwt.user_identity_loader
