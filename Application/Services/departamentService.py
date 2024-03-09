@@ -116,7 +116,7 @@ def createDepartamentManagerService(employee):
 
     getUserByIdService(employee["employeeId"])
 
-    createDepartamentManagerRepo(employee)
+    createDepartManRepo(employee)
 
     return employee
 

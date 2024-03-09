@@ -167,7 +167,7 @@ def deleteDepartamentRepo(id):
         doc.reference.update({"departamentId": None})
 
 
-def createDepartamentManagerRepo(employee):
+def createDepartManRepo(employee):
 
     insertItm = departamentManagerCollection.document()
     insertItmId = insertItm.id
