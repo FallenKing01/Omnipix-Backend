@@ -1,6 +1,5 @@
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.DepartamentRepo import *
-from Infrastructure.Repositories.DepartamentRepo import createDepartManRepo
 from Infrastructure.Repositories.skillXdepartamentRepo import *
 from Infrastructure.Repositories.SkillRepo import getSkillByIdRepo
 from Application.Services.organizationServices import getOrganizationService
@@ -113,6 +112,17 @@ def updateNameOfDepartamentService(departament):
 
     updateNameOfDepartamentRepo(departament)
 
+def createDepartManRepo(employee):
+
+    insertItm = departamentManagerCollection.document()
+    insertItmId = insertItm.id
+
+    employee["id"] = insertItmId
+    employee["departamentId"]=None
+
+    departamentManagerCollection.add(employee)
+
+    return employee
 
 
 def postDepartManService(employee):
@@ -121,6 +131,7 @@ def postDepartManService(employee):
     createDepartManRepo(employee)
 
     return employee
+
 
 def deleteDepartamentService(id):
 

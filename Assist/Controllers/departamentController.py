@@ -22,6 +22,7 @@ class PostDepartamentManager(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
 @nsDepartament.route("/createdirectlywithmanagerADDITIONAL")
 class PostDepartamentWithManager(Resource):
     @nsDepartament.expect(departamentPostExpectWithManager)
