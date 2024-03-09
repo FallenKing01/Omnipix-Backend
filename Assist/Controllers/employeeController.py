@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort,jsonify
 from flask_restx import Namespace, Resource
 
 from Application.Dtos.expect.employeeExpect import *
@@ -73,3 +73,4 @@ class AssignDepartament(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+

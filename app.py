@@ -10,13 +10,12 @@ from Assist.Controllers.organizationController import nsOrganization
 from Assist.Controllers.departamentController import nsDepartament
 from Assist.Controllers.departamentManagerController import nsDepartamentManager
 from Assist.Controllers.projectManagerController import nsProjectManager
+
 app = Flask(__name__)
 
 CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "cookiemonster"
-
-
 
 api.init_app(app)
 api.add_namespace(nsAdmin)
@@ -26,7 +25,6 @@ api.add_namespace(nsOrganization)
 api.add_namespace(nsDepartament)
 api.add_namespace(nsDepartamentManager)
 api.add_namespace(nsProjectManager)
-
 jwt = JWTManager(app)
 
 @jwt.user_identity_loader
