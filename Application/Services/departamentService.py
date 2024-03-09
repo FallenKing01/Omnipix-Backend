@@ -1,5 +1,6 @@
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.DepartamentRepo import *
+from Infrastructure.Repositories.DepartamentRepo import createDepartManRepo
 from Infrastructure.Repositories.skillXdepartamentRepo import *
 from Infrastructure.Repositories.SkillRepo import getSkillByIdRepo
 from Application.Services.organizationServices import getOrganizationService
