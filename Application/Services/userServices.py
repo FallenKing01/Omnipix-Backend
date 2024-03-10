@@ -76,3 +76,11 @@ def postCustomRoleService(role):
     role = postCustomRoleRepository(role)
 
     return role
+
+def getUserRolesService(id):
+
+    getUserByIdService(id)
+
+    roles = getUserRolesRepo(id)
+
+    return roles

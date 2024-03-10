@@ -74,3 +74,16 @@ class AssignDepartament(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsEmployee.route("/roles/<string:id>")
+class GetUserRoles(Resource):
+    def get(self,id):
+        try:
+            roles = getUserRolesService(id)
+
+            return roles,200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

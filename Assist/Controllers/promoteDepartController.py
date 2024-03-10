@@ -7,9 +7,9 @@ from Application.Services.departamentService import *
 createManager = Namespace("test", authorizations=authorizations, description="Departament operations")
 from Application.Services.createDepartService import postDepartManService
 
-nsTest = Namespace("test", authorizations=authorizations, description="Test operations")
+nsTest = Namespace("departamentpromotion", authorizations=authorizations, description="departament promotion")
 
-@nsTest.route("/createdepartamentmanager")
+@nsTest.route("/")
 class PostDepartamentManager(Resource):
     @nsTest.expect(postDepartamentManagerExpect)
     def post(self):

@@ -1,5 +1,4 @@
-
-from Domain.extension import employeesCollection,customTeamRoleCollection
+from Domain.extension import employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 
@@ -91,3 +90,13 @@ def postCustomRoleRepository(role):
     insertedItm.set(role)
 
     return role
+
+def getUserRolesRepo(id):
+    employeeRoles = {
+        "admin": bool(organizationXadminCollection.where("employeeId", "==", id).get()),
+        "departmentManager": bool(departamentManagerCollection.where("employeeId", "==", id).get()),
+        "projectManager": bool(projectManagerCollection.where("employeeId", "==", id).get()),
+    }
+
+    return employeeRoles
+
