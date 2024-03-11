@@ -15,3 +15,19 @@ def postProjectManagerRepo(id):
 
     return insertedProjectManager
 
+
+def updateProjectsOfManager(project):
+    documents = projectManagerCollection.where("employeeId", "==", project["employeeId"]).get()
+
+    print(documents)
+
+    for document in documents:
+        projectIds = document.get("projectId")
+
+        if projectIds is None:
+            projectIds = []
+
+        projectIds.append(project["projectId"])
+        print(projectIds)
+
+        document.reference.update({"projectId": projectIds})
