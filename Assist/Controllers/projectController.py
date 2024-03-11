@@ -5,7 +5,7 @@ from Domain.extension import  authorizations,api
 from Utils.Exceptions.customException import CustomException
 from Application.Services.projectService import postProjectService
 nsProject = Namespace("project",authorizations=authorizations,description="Project operations")
-
+from Infrastructure.Repositories.projectRepo import updateProjectRepo
 @nsProject.route("")
 class CreateProject(Resource):
     @nsProject.expect(postProjectExpect)
@@ -13,6 +13,22 @@ class CreateProject(Resource):
         try:
 
             project = postProjectService(api.payload)
+
+            return project
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+@nsProject.route("/updateproject")
+class UpdateProject(Resource):
+    @nsProject.expect(updateProjectExpect)
+    def put(self):
+
+        try:
+
+            project = updateProjectRepo(api.payload)
 
             return project
 
