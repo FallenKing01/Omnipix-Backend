@@ -16,7 +16,7 @@ class LoginApi(Resource):
         try:
             token = loginService(api.payload)
 
-            return {"Authentication successful" : token},201
+            return {"Token" : token},201
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
 

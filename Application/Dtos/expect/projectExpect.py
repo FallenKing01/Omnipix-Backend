@@ -33,3 +33,20 @@ updateProjectExpect =api.model("Update project", {
     "teamRolesToAdd": fields.Raw,
     "teamRolesToDelete": fields.Raw,
 })
+
+assignmentProposalExpect =api.model("Assignment proposal", {
+    "projectId":fields.String,
+    "employeeId":fields.String,
+    "numberOfHours":fields.Integer,
+    "teamRolesId": fields.List(fields.String),
+    "comment":fields.String,
+    "departamentId":fields.String,
+
+})
+
+dealocationProposalExpect = api.model("Dealocation proposal",{
+    "projectId": fields.String,
+    "employeeId": fields.String,
+    "reason": fields.String,
+    "departamentId": fields.String,
+})

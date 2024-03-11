@@ -1,4 +1,4 @@
-from Domain.extension import projectManagerCollection
+from Domain.extension import projectManagerCollection,employeesCollection
 def postProjectManagerRepo(id):
 
     insertedProjectManager = {
@@ -31,3 +31,34 @@ def updateProjectsOfManager(project):
         print(projectIds)
 
         document.reference.update({"projectId": projectIds})
+
+
+def searchForUserRepo(employee):
+    query = employeesCollection.where("organizationId", "==", employee["organizationId"]).get()
+
+    searchResult = []
+
+    for doc in query:
+        employee_data = doc.to_dict()
+
+        # Remove the 'password' field if it exists
+        employee_data.pop("password", None)
+
+        # Convert both input name and employee name to lowercase for case-insensitive comparison
+        input_name_lower = employee["name"].lower()
+        employee_name_lower = employee_data["name"].lower()
+
+        # Check if the input name is contained within the employee name (case-insensitive)
+        if input_name_lower in employee_name_lower:
+            # Include the document data in the search result
+            searchResult.append(employee_data)
+
+    return searchResult
+
+
+
+
+
+
+
+

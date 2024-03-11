@@ -1,4 +1,4 @@
-from Domain.extension import projectCollection,projectStatusCollection
+from Domain.extension import projectCollection,projectStatusCollection,employeesCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 
@@ -81,5 +81,19 @@ def getProjectByIdRepo(id):
         project = doc.to_dict()
 
     return project
+
+def getEmployeesPartiallyAvailable(id):
+
+    query = employeesCollection.where("organizationId", "==", id).order_by("workingHours").get()
+
+    employeeSorted = []
+
+    for doc in query:
+        employee_data = doc.to_dict()
+        employeeSorted.append(employee_data)
+
+    return employeeSorted
+
+
 
 
