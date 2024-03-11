@@ -5,7 +5,7 @@ from Domain.extension import  authorizations,api
 from Utils.Exceptions.customException import CustomException
 from Application.Services.projectService import postProjectService
 nsProject = Namespace("project",authorizations=authorizations,description="Project operations")
-from Infrastructure.Repositories.projectRepo import updateProjectRepo
+from Application.Services.projectService import *
 @nsProject.route("")
 class CreateProject(Resource):
     @nsProject.expect(postProjectExpect)
@@ -28,7 +28,7 @@ class UpdateProject(Resource):
 
         try:
 
-            project = updateProjectRepo(api.payload)
+            project = updateProjectService(api.payload)
 
             return project
 
