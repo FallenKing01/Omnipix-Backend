@@ -1,4 +1,4 @@
-from Domain.extension import projectCollection,assignementProposalCollection,projectStatusCollection,employeesCollection
+from Domain.extension import projectCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 
@@ -117,4 +117,14 @@ def getAssignmentProjectRequestRepo(id):
 
     return assignments
 
+def closeProjectRepo(id):
 
+    query = projectXemployeeCollection.where("projectId","==",id).get()
+
+    for doc in query:
+        doc.reference.update({"isActive":False})
+
+    query = projectStatusCollection.where("projectId","==",id).get()
+
+    for doc in query:
+        doc.reference.update({"status" : "Closed"})

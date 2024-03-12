@@ -66,3 +66,18 @@ class GetAssignRequest(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/closeproject/<string:id>")
+class CloseProject(Resource):
+    def put(self,id):
+        try:
+
+            closeProjectService(id)
+
+            return {"message":"You closed a project!"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

@@ -31,3 +31,9 @@ def assignProposalService(assignRequest):
 def getAssignmentProjectRequestService(id):
 
     return getAssignmentProjectRequestRepo(id)
+
+def closeProjectService(id):
+
+    getProjectByIdService(id)
+
+    closeProjectRepo(id)
