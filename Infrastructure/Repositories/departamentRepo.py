@@ -25,7 +25,7 @@ def postDepartamentRepo(depart):
     insertedItmId = insertedItm.id
 
     depart["id"]= insertedItmId
-    depart["departamentManagerId"] = "null"
+    depart["departamentManagerId"] =None
 
     departamentCollection.add(depart)
 
