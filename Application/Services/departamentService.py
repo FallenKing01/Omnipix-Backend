@@ -4,7 +4,7 @@ from Infrastructure.Repositories.skillXdepartamentRepo import *
 from Infrastructure.Repositories.SkillRepo import getSkillByIdRepo
 from Application.Services.organizationServices import getOrganizationService
 from Application.Services.userServices import getUserByIdService
-from Infrastructure.Repositories.DepartamentRepo import getDepartmentByIdRepo
+from Utils.getDepartamentById import getDepartmentByIdRepo
 def getDepartamentManagerByEmployeeIdService(id):
 
     isManager = getDepartamentManagerByEmployeeIdRepo(id)
