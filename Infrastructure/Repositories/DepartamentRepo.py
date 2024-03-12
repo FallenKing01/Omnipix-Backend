@@ -203,16 +203,12 @@ def getDepartamentManagerWithNoDepartament(id):
     return employeeData
 
 
-from google.cloud import firestore
 
 def acceptProjectProposalRepo(project):
-    # Assuming projectXemployeeCollection, employeesCollection, and assignementProposalCollection are initialized Firestore collections
 
-    # Get a reference to a new document in the projectXemployeeCollection
     insertedItm = projectXemployeeCollection.document()
     insertedItmId = insertedItm.id
 
-    # Add the ID to the project dictionary
     project["id"] = insertedItmId
 
     query = employeesCollection.where("id", "==", project["employeeId"]).limit(1).get()
@@ -234,3 +230,14 @@ def acceptProjectProposalRepo(project):
             raise CustomException(409, "An employee can't work more than 8 hours a day")
 
     return project
+
+def declineProposalProjectRepo(id):
+
+    query = assignementProposalCollection.where("id", "==", id).get()
+
+    for doc in query:
+        doc.reference.delete()
+
+
+
+

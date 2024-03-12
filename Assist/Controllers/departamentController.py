@@ -185,3 +185,19 @@ class AcceptProjectProposal(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsDepartament.route("/declineproposal/<string:id>")
+class DeclineProposal(Resource):
+    def delete(self,id):
+        try:
+
+            declineProposalProjectRepo(id)
+
+            return {"message":"Declined a employee succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

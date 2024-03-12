@@ -145,3 +145,7 @@ def acceptProjectProposalService(project):
     getOrganizationService(project["organizationId"])
 
     return acceptProjectProposalRepo(project)
+
+def declineProposalProjectService(id):
+
+    declineProposalProjectRepo(id)
