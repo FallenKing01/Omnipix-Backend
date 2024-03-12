@@ -29,3 +29,9 @@ assignDepartament = api.model("Assign departament",{
     "employeeId": fields.String,
     "departamentId":fields.String,
 })
+
+postProjectSkill = api.model("Post project skill",{
+    "projectId" :fields.String,
+    "skillId": fields.String,
+    "minimumLevel": fields.Integer,
+})

@@ -29,7 +29,7 @@ class GetSkills(Resource):
     def get(self, organizationId):
 
         try:
-            skills = getSkillService(organizationId)
+            skills = getSkillByIdService(organizationId)
             return skills
 
         except CustomException as ce:

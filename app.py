@@ -19,6 +19,7 @@ CORS(app)
 app.config["JWT_SECRET_KEY"] = "cookiemonster"
 
 api.init_app(app)
+
 api.add_namespace(nsAdmin)
 api.add_namespace(nsEmployee)
 api.add_namespace(nsLogin)
@@ -28,6 +29,7 @@ api.add_namespace(nsDepartamentManager)
 api.add_namespace(nsProjectManager)
 api.add_namespace(nsTest)
 api.add_namespace(nsProject)
+
 jwt = JWTManager(app)
 
 @jwt.user_identity_loader

@@ -27,6 +27,23 @@ class PostUser(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsEmployee.route("/postskillinproject")
+class PostProjectSkill(Resource):
+    @nsEmployee.expect(postProjectSkill)
+
+    def post(self):
+        try:
+            skill = postSkillInProjectService(api.payload)
+
+            return skill,200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+
 @nsEmployee.route("/getskills/<string:userId>")
 class GetUserSkills(Resource):
 
@@ -81,6 +98,35 @@ class GetUserRoles(Resource):
             roles = getUserRolesService(id)
 
             return roles,200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+
+@nsEmployee.route("/deleteskillfromproject/<string:id>")
+class DeleteSkillFromProject(Resource):
+    def delete(self,id):
+        try:
+            deleteSkillFromProjectService(id)
+
+            return {"message":"Deleted succesfully"},200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsEmployee.route("/getskillsfromproject/<string:id>")
+class GetSkillsFromProject(Resource):
+    def get(self,id):
+        try:
+            skills = getSkillsFromProjectService(id)
+
+            return skills
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

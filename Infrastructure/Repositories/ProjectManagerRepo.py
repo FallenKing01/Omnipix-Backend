@@ -41,16 +41,12 @@ def searchForUserRepo(employee):
     for doc in query:
         employee_data = doc.to_dict()
 
-        # Remove the 'password' field if it exists
         employee_data.pop("password", None)
 
-        # Convert both input name and employee name to lowercase for case-insensitive comparison
         input_name_lower = employee["name"].lower()
         employee_name_lower = employee_data["name"].lower()
 
-        # Check if the input name is contained within the employee name (case-insensitive)
         if input_name_lower in employee_name_lower:
-            # Include the document data in the search result
             searchResult.append(employee_data)
 
     return searchResult

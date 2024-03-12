@@ -34,9 +34,12 @@ def getSkillOfEmployeeService(employeeId):
 
     return skills
 
-def getSkillService(id):
+def getSkillByIdService(id):
 
     skills = getOrganizationSkillsRepo(id)
+
+    if not skills:
+        CustomException(404,"Skills not found")
 
     return skills
 

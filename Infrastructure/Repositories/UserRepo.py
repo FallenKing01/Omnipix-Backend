@@ -1,4 +1,4 @@
-from Domain.extension import employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
+from Domain.extension import skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 
@@ -100,3 +100,36 @@ def getUserRolesRepo(id):
 
     return employeeRoles
 
+def postSkillInProjectRepo(skill):
+
+    insertedItm = skillXprojectCollection.document()
+    insertedItmId = insertedItm.id
+
+    skill["id"] = insertedItmId
+
+    skillXprojectCollection.add(skill)
+
+    return skill
+
+
+def deleteSkillFromProjectRepo(id):
+
+    query = skillXprojectCollection.where("id", "==", id).get()
+
+    for doc in query:
+
+        doc_ref = skillXprojectCollection.document(doc.id)
+        doc_ref.delete()
+
+
+def getSkillsFromProjectRepo(id):
+
+    query = skillXprojectCollection.where("projectId", "==", id).get()
+
+    skills = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        skills.append(currentDoc)
+
+    return skills
