@@ -1,4 +1,5 @@
-from Domain.extension import departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
+from Domain.extension import projectXemployeeCollection,assignementProposalCollection,departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
+from Utils.Exceptions.customException import CustomException
 def postDepartamentRepoADDITIONAL(depart):
 
     # IAU DOAR CE AM NEV PENTRU MANAGER
@@ -202,5 +203,34 @@ def getDepartamentManagerWithNoDepartament(id):
     return employeeData
 
 
+from google.cloud import firestore
 
+def acceptProjectProposalRepo(project):
+    # Assuming projectXemployeeCollection, employeesCollection, and assignementProposalCollection are initialized Firestore collections
 
+    # Get a reference to a new document in the projectXemployeeCollection
+    insertedItm = projectXemployeeCollection.document()
+    insertedItmId = insertedItm.id
+
+    # Add the ID to the project dictionary
+    project["id"] = insertedItmId
+
+    query = employeesCollection.where("id", "==", project["employeeId"]).limit(1).get()
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password", None)
+
+        totalWorkingHours = currentDoc.get("workingHours", 0) + project.get("workingHours", 0)
+
+        if totalWorkingHours <= 8:
+            employeesCollection.document(doc.id).update({"workingHours": totalWorkingHours})
+
+            # Delete the proposal document from the collection
+            proposal_query = assignementProposalCollection.where("id", "==", project["assignementProposalId"]).limit(1).get()
+            for proposal_doc in proposal_query:
+                proposal_doc.reference.delete()
+        else:
+            raise CustomException(409, "An employee can't work more than 8 hours a day")
+
+    return project

@@ -145,3 +145,10 @@ def getDepartamentManagerWithNoDepartamentService(id):
     managers = getDepartamentManagerWithNoDepartament(id)
 
     return managers
+
+def acceptProjectProposalService(project):
+
+    getUserByIdService(project["employeeId"])
+    getOrganizationService(project["organizationId"])
+
+    return acceptProjectProposalRepo(project)

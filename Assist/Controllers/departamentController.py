@@ -170,3 +170,18 @@ class PromoteFirstTimeToDepartamentManager(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsDepartament.route("/acceptprojectproposal")
+class AcceptProjectProposal(Resource):
+    @nsDepartament.expect(acceptProposalExpect)
+    def post(self):
+        try:
+
+            return acceptProjectProposalService(api.payload)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

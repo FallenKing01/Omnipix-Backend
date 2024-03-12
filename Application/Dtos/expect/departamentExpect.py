@@ -36,3 +36,19 @@ postDepartamentManagerExpect = api.model("Post departament manager",{
     "organizationId":fields.String,
 })
 
+acceptProposalExpect = api.model("Accept proposal",{
+    "projectId": fields.String,
+    "assignementProposalId": fields.String,
+    "employeeId": fields.String,
+    "organizationId" : fields.String,
+    "workingHours":fields.Integer,
+    "employeRolesId":fields.List(fields.String),
+    "isActive":fields.String
+})
+
+dealocationProposalExpect = api.model("Dealocation proposal",{
+    "projectId": fields.String,
+    "employeeId": fields.String,
+    "reason": fields.String,
+    "departamentId": fields.String,
+})
