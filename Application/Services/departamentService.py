@@ -5,14 +5,7 @@ from Infrastructure.Repositories.SkillRepo import getSkillByIdRepo
 from Application.Services.organizationServices import getOrganizationService
 from Application.Services.userServices import getUserByIdService
 from Utils.getDepartamentById import getDepartmentByIdRepo
-def getDepartamentManagerByEmployeeIdService(id):
 
-    isManager = getDepartamentManagerByEmployeeIdRepo(id)
-
-    if isManager is None:
-        raise CustomException(404, "The employee is not departament manager!")
-
-    return isManager
 
 def postDepartamentServiceWithManager(depart):
 

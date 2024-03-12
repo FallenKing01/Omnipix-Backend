@@ -9,3 +9,12 @@ def getDepartmentByIdRepo(id):
         break
 
     return department
+
+def getDepartamentManagerByEmployeeIdService(id):
+
+    isManager = getDepartamentManagerByEmployeeIdRepo(id)
+
+    if isManager is None:
+        raise CustomException(404, "The employee is not departament manager!")
+
+    return isManager

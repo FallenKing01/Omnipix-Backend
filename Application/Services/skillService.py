@@ -2,7 +2,7 @@ from Infrastructure.Repositories.SkillRepo import *
 from Utils.Exceptions.customException import CustomException
 from Application.Services.organizationServices import getOrganizationService
 from Application.Services.userServices import getUserByIdService
-from Application.Services.departamentService import getDepartamentManagerByEmployeeIdService
+from Utils.getDepartamentById import getDepartamentManagerByEmployeeIdService
 from Infrastructure.Repositories.SkillRepo import getSkillsOfEmployeeRepo
 
 def postSkillService(skill):
