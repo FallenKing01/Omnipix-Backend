@@ -1,4 +1,4 @@
-from Domain.extension import projectCollection,projectStatusCollection,employeesCollection
+from Domain.extension import projectCollection,assignementProposalCollection,projectStatusCollection,employeesCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 
