@@ -133,3 +133,27 @@ def getSkillsFromProjectRepo(id):
         skills.append(currentDoc)
 
     return skills
+
+def getOrganizationEmployeesRepo(id):
+    query = employeesCollection.where("organizationId", "==", id).get()
+    employees = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password", None)
+        employees.append(currentDoc)
+
+    return employees
+
+def getDepartamentEmployeesRepo(id):
+    query = employeesCollection.where("departamentId", "==", id).get()
+
+    employees = []
+
+    for doc in query:
+
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password", None)
+        employees.append(currentDoc)
+
+    return employees

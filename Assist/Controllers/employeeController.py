@@ -133,3 +133,32 @@ class GetSkillsFromProject(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsEmployee.route("/organizationemployees/<string:id>")
+class GetOrganizationEmployees(Resource):
+    def get(self,id):
+        try:
+            employees = getOrganizationEmployeesService(id)
+
+            return employees
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsEmployee.route("/departamentemployees/<string:id>")
+class GetDepartamentEmployees(Resource):
+    def get(self,id):
+        try:
+            employees = getDepartamentEmployeeService(id)
+
+            return employees
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

@@ -182,6 +182,11 @@ def firstDepartamentManagerPromotionRepo(depart):
     for doc in query:
         doc.reference.update({"departamentManagerId": idChange})
 
+    query = employeesCollection.where("id","==",depart["employeeId"]).limit(1).get()
+
+    for doc in query:
+        doc.reference.update({"departamentId":depart["departamentId"]})
+
 
 
 def getDepartamentManagerWithNoDepartament(id):

@@ -101,3 +101,17 @@ def getSkillsFromProjectService(projectId):
     getProjectByIdService(projectId)
 
     return getSkillsFromProjectRepo(projectId)
+
+def getOrganizationEmployeesService(id):
+
+    getOrganizationByIdRepository(id)
+
+    employee = getOrganizationEmployeesRepo(id)
+
+    return employee
+
+def getDepartamentEmployeeService(id):
+
+    employee = getDepartamentEmployeesRepo(id)
+
+    return employee
