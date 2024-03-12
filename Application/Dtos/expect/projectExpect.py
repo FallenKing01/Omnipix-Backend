@@ -11,6 +11,7 @@ postProjectExpect = api.model("Create project", {
     "teamRoles": fields.Raw,  # Using Raw field to accept any JSON structure
     "status": fields.String,
     "organizationId": fields.String,
+    "employeeId":fields.String
 })
 
 

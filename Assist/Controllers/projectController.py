@@ -37,3 +37,32 @@ class UpdateProject(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/assignproposal")
+class CreateAssignmentProposal(Resource):
+    @nsProject.expect(assignmentProposalExpect)
+    def post(self):
+        try:
+
+            assignment = assignProposalService(api.payload)
+
+            return assignment
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsProject.route("/assgnmentrequest/<string:departamentId>")
+class GetAssignRequest(Resource):
+    def get(self,departamentId):
+        try:
+
+            return getAssignmentProjectRequestService(departamentId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

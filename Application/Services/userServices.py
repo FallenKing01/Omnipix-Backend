@@ -1,7 +1,6 @@
 from Infrastructure.Repositories.UserRepo import *
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.OrganizationsRepo import getOrganizationByIdRepository
-from Application.Services.projectService import getProjectByIdService
 from Domain.extension import salt
 import bcrypt
 
@@ -97,8 +96,6 @@ def deleteSkillFromProjectService(id):
     deleteSkillFromProjectRepo(id)
 
 def getSkillsFromProjectService(projectId):
-
-    getProjectByIdService(projectId)
 
     return getSkillsFromProjectRepo(projectId)
 
