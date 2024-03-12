@@ -19,8 +19,7 @@ def postDepartamentRepoADDITIONAL(depart):
     departamentCollection.add(depart)
 
     return depart
-def schimbare():
-    pass
+
 def postDepartamentRepo(depart):
 
     insertedItm = departamentCollection.document()
