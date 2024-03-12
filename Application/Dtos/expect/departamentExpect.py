@@ -52,3 +52,11 @@ dealocationProposalExpect = api.model("Dealocation proposal",{
     "reason": fields.String,
     "departamentId": fields.String,
 })
+
+acceptDealocationProposal = api.model("Accept dealocation proposal" , {
+    "projectId": fields.String,
+    "employeeId": fields.String,
+    "reason": fields.String,
+    "departamentId": fields.String,
+    "dealocatedId":fields.String,
+})

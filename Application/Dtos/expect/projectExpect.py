@@ -9,7 +9,7 @@ postProjectExpect = api.model("Create project", {
     "description": fields.String,
     "technologyStack": fields.List(fields.String),
     "teamRoles": fields.Raw,  # Using Raw field to accept any JSON structure
-    "status": fields.Boolean,
+    "status": fields.String,
     "organizationId": fields.String,
     "employeeId":fields.String
 })
@@ -22,7 +22,7 @@ updateProjectStatus = api.model("Update project status" , {
 })
 updateProjectExpect =api.model("Update project", {
     "projectId":fields.String,
-    "status":fields.Boolean,
+    "status":fields.String,
     "name": fields.String,
     "period": fields.String,
     "startDate": fields.DateTime,

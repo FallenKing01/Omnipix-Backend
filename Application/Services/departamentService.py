@@ -149,3 +149,17 @@ def acceptProjectProposalService(project):
 def declineProposalProjectService(id):
 
     declineProposalProjectRepo(id)
+
+def dealocationProposalService(dealocation):
+
+    return dealocationProposalRepo(dealocation)
+
+def acceptDealocationProposalService(dealocation):
+
+    acceptDealocationProposalRepo(dealocation)
+
+def declineDealocationProposalService(id):
+
+    declineDealocationProposalRepo(id)
+
+

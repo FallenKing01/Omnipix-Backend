@@ -1,4 +1,4 @@
-from Domain.extension import projectXemployeeCollection,assignementProposalCollection,departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
+from Domain.extension import dealocationProposalCollection,projectXemployeeCollection,assignementProposalCollection,departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
 from Utils.Exceptions.customException import CustomException
 def postDepartamentRepoADDITIONAL(depart):
 
@@ -229,6 +229,7 @@ def acceptProjectProposalRepo(project):
         else:
             raise CustomException(409, "An employee can't work more than 8 hours a day")
 
+        projectXemployeeCollection.add(project)
     return project
 
 def declineProposalProjectRepo(id):
@@ -239,5 +240,44 @@ def declineProposalProjectRepo(id):
         doc.reference.delete()
 
 
+def dealocationProposalRepo(dealocation):
 
+    insertedItm = dealocationProposalCollection.document()
+    insertedItmId = insertedItm.id
+
+    dealocation["id"] = insertedItmId
+
+    dealocationProposalCollection.add(dealocation)
+
+    return dealocation
+
+def acceptDealocationProposalRepo(deallocation):
+    projectEmployeeQuery = projectXemployeeCollection.where("projectId", "==", deallocation["projectId"]).where("employeeId", "==", deallocation["employeeId"]).get()
+
+    for projectEmployeeDoc in projectEmployeeQuery:
+        projectEmployeeDoc.reference.update({"isActive": False})
+
+    employeeQuery = employeesCollection.where("id", "==", deallocation["employeeId"]).get()
+
+    for employeeDoc in employeeQuery:
+        employeeDocDict = employeeDoc.to_dict()
+        employeeDocDict.pop("password", None)
+        updatedWorkingHours = employeeDocDict["workingHours"] - projectEmployeeDoc.to_dict()["workingHours"]
+        employeeDoc.reference.update({"workingHours": updatedWorkingHours})
+
+    # Delete dealocation proposal
+    dealocationQuery = dealocationProposalCollection.where("id", "==", deallocation["dealocatedId"]).get()
+
+    for dealocationDoc in dealocationQuery:
+        dealocationDoc.reference.delete()
+
+
+
+
+def declineDealocationProposalRepo(id):
+
+    query = dealocationProposalCollection.where("id","==",id).get()
+
+    for doc in query:
+        doc.reference.delete()
 

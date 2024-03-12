@@ -187,7 +187,7 @@ class AcceptProjectProposal(Resource):
             abort(500, "Something went wrong")
 
 
-@nsDepartament.route("/declineproposal/<string:id>")
+@nsDepartament.route("/declineprojectproposal/<string:id>")
 class DeclineProposal(Resource):
     def delete(self,id):
         try:
@@ -195,6 +195,49 @@ class DeclineProposal(Resource):
             declineProposalProjectRepo(id)
 
             return {"message":"Declined a employee succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsDepartament.route("/declinedealocationproposal/<string:id>")
+class DeclineDealocationProposal(Resource):
+    def delete(self,id):
+        try:
+
+            declineDealocationProposalService(id)
+
+            return {"message":"Declined a dealocation proposal succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsDepartament.route("/createadealocationproposal")
+class CreateDealocationProposal(Resource):
+    @nsDepartament.expect(dealocationProposalExpect)
+    def post(self):
+        try:
+
+            return dealocationProposalService(api.payload)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsDepartament.route("/acceptdealocatioproposal")
+class AcceptDealocationProposal(Resource):
+    @nsDepartament.expect(acceptDealocationProposal)
+    def put(self):
+        try:
+
+            return acceptDealocationProposalService(api.payload)
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
