@@ -1,7 +1,6 @@
 from Infrastructure.Repositories.projectRepo import *
 from Application.Services.organizationServices import getOrganizationService
 from Utils.Exceptions.customException import CustomException
-from Application.Services.departamentService import getDepartamentByIdService
 def getProjectByIdService(id):
     isProject = getProjectByIdRepo(id)
 
@@ -26,7 +25,6 @@ def updateProjectService(project):
 def assignProposalService(assignRequest):
 
     getProjectByIdService(assignRequest["projectId"])
-    getDepartamentByIdService(assignRequest["departamentId"])
 
     return assignProposalRepo(assignRequest)
 
