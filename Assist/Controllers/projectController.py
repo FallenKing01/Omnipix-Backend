@@ -136,3 +136,29 @@ class GetActiveUserInfoFromProject(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/getprojectsfromorganization/<string:organizationId>")
+class GetProjectsFromOrganization(Resource):
+    def get(self,organizationId):
+        try:
+
+            return getProjectsFromOrganizationRepo(organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsProject.route("/getprojectsfromadepartamentmembers/<string:departamentId>")
+class GetProjectsFromOrganization(Resource):
+    def get(self,departamentId):
+        try:
+
+            return getProjectsForDepartamentManagerEmployeeRepo(departamentId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

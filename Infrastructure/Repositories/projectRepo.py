@@ -224,3 +224,61 @@ def getInfoCurrentProjectsRepo(employeeId):
         projectData.append(currentDoc)
 
     return projectData
+
+def getProjectsFromOrganizationRepo(organizationId):
+
+    query = projectCollection.where("organizationId","==",organizationId).get()
+
+    projects = []
+
+    for doc in query:
+        projects.append(doc.to_dict())
+
+    if not projects:
+        raise CustomException(404,"No projects")
+
+    return projects
+
+def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
+
+    queryEmployee = employeesCollection.where("departamentId","==",departamentId).get()
+
+    employeeIds = []
+
+    for doc in queryEmployee:
+        currentDoc = doc.to_dict()
+        currentDoc.pop('password', None)
+        employeeIds.append(currentDoc["id"])
+
+    if not employeeIds:
+        CustomException(404,"Employees not found in departament")
+
+    projectIds = []
+
+    queryProjectEmployee = projectXemployeeCollection.where("employeeId","in",employeeIds).get()
+
+    for doc in queryProjectEmployee:
+        currentDoc = doc.to_dict()
+        projectIds.append(currentDoc["projectId"])
+
+    if not projectIds:
+        CustomException(404,"Project not found in members of your departament")
+
+    projectsData = []
+
+    queryProject = projectCollection.where("id","in",projectIds).get()
+
+    for doc in queryProject:
+        projectsData.append(doc.to_dict())
+
+    if not queryProject:
+        CustomException(404, "Project not found ")
+
+    return projectsData
+
+
+
+
+
+
+
