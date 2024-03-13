@@ -1,4 +1,4 @@
-from Domain.extension import assignedSkillCollection,skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
+from Domain.extension import endorsmentCollection,assignedSkillCollection,skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 from Utils.Exceptions.customException import CustomException
@@ -199,3 +199,11 @@ def declineProposalForSkill(id):
     for doc in query:
         doc.reference.delete()
 
+
+def getEndorsmentOfSkill(skillId):
+    query = endorsmentCollection.where("assignedSkillId","==",skillId).get()
+
+    for doc in query:
+        endorsment = doc.to_dict()
+
+    return endorsment

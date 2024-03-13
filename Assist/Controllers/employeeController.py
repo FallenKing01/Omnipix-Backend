@@ -221,3 +221,18 @@ class DeclineSkill(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsEmployee.route("/getendorsmentofskill/<string:assignedSkillId>")
+class GetEndorsmentOfSkill(Resource):
+    def get(self, assignedSkillId):
+        try:
+            endorsment = getEndorsmentOfSkill(assignedSkillId)
+
+            return endorsment
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
