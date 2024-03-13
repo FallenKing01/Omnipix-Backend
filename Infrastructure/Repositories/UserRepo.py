@@ -1,7 +1,8 @@
-from Domain.extension import skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
+from Domain.extension import assignedSkillCollection,skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
-
+from Utils.Exceptions.customException import CustomException
+import time
 def signUpToken(user):
 
     userData = {
@@ -157,3 +158,44 @@ def getDepartamentEmployeesRepo(id):
         employees.append(currentDoc)
 
     return employees
+
+def getInactiveAssignSkills(departamentId):
+
+    query = employeesCollection.where("departamentId","==",departamentId).get()
+
+    employeeIds = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password",None)
+        employeeIds.append(currentDoc["id"])
+
+    if not employeeIds:
+        raise CustomException(404,"Employees not found")
+
+    query = assignedSkillCollection.where("employeeId","in",employeeIds).where("isApproved","==",None).get()
+
+    skills = []
+
+    for doc in query:
+        skills.append(doc.to_dict())
+
+    if not skills:
+        raise CustomException(404, "Skills not found")
+
+    return skills
+
+def acceptProposalForSkill(id):
+
+    query = assignedSkillCollection.where("id","==",id).get()
+
+    for doc in query:
+        doc.reference.update({"isApproved":True,"dateTime":datetime.utcnow()})
+
+def declineProposalForSkill(id):
+
+    query = assignedSkillCollection.where("id", "==", id).get()
+
+    for doc in query:
+        doc.reference.delete()
+

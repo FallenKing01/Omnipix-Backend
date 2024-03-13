@@ -52,7 +52,7 @@ def getSkillByAutorIdRepo(id):
 
 def getSkillsOfEmployeeRepo(employeeId):
 
-    query = assignedSkillCollection.where("employeeId", "==", employeeId).stream()
+    query = assignedSkillCollection.where("employeeId", "==", employeeId).get()
 
     skills = []
     for doc in query:
@@ -63,14 +63,11 @@ def getSkillsOfEmployeeRepo(employeeId):
 
         skillDoc = skillCollection.document(skillId).get()
 
-        if skillDoc.exists:
-            skill = {}
 
-            skill_name = skillDoc.get("name")
-            skill["name"] = skill_name if skill_name is not None else ""
-            skill["level"] = data["level"]
-            skill["experience"] = data["experience"]
-            skills.append(skill)
+        if skillDoc.exists:
+            skillDoc = skillDoc.to_dict()
+            skillDoc["isApproved"] = data["isApproved"]
+            skills.append(skillDoc)
 
     return skills
 

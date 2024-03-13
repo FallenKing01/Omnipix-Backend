@@ -162,3 +162,62 @@ class GetDepartamentEmployees(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsEmployee.route("/inactiveskils/<string:departamentId>")
+class GetInactiveSkills(Resource):
+    def get(self,departamentId):
+        try:
+            skills = getInactiveAssignSkills(departamentId)
+
+            return skills
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+
+
+
+@nsEmployee.route("/activateaskill/<string:skillId>")
+class GetInactiveSkills(Resource):
+    def get(self,skillId):
+        try:
+            acceptProposalForSkill(skillId)
+
+            return {"message":"Skill accepted succesfuly"},200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsEmployee.route("/activateaskill/<string:skillId>")
+class ActivateSkill(Resource):
+    def put(self,skillId):
+        try:
+            acceptProposalForSkill(skillId)
+
+            return {"message":"Skill accepted succesfuly"},200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsEmployee.route("/declineproposalskill/<string:skillId>")
+class DeclineSkill(Resource):
+    def delete(self,skillId):
+        try:
+            declineProposalForSkill(skillId)
+
+            return {"message":"Skill declined succesfuly"},200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
