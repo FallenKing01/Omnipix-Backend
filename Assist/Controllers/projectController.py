@@ -162,3 +162,16 @@ class GetProjectsFromOrganization(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/getprojectdetail/<string:projectId>")
+class GetProjectDetail(Resource):
+    def get(self,projectId):
+        try:
+
+            return getProjectDetailsRepo(projectId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

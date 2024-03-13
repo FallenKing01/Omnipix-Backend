@@ -277,6 +277,19 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
     return projectsData
 
 
+def getProjectDetailsRepo(projectId):
+
+    query = projectCollection.where("id","==",projectId).get()
+
+    project = None
+
+    for doc in query:
+        project = doc.to_dict()
+
+    if project is None:
+        raise CustomException(404,"There is no project with this id")
+
+    return project
 
 
 
