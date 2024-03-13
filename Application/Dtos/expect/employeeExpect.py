@@ -13,7 +13,7 @@ employeePostExpect = api.model("Employee post expect",
 endorsement = api.model("Endorsement", {
     "title": fields.String,
     "description": fields.String,
-
+    "projectId":fields.String,
 })
 
 # Define the Assign skill model with a list of endorsements
@@ -22,7 +22,7 @@ assignSkill = api.model("Assign skill", {
     "skillId": fields.String,
     "level": fields.Integer,
     "experience": fields.Integer,
-    "endorsements": fields.List(fields.Nested(endorsement))  # Using fields.Nested to represent a nested structure
+    "endorsements": fields.List(fields.Nested(endorsement)),  # Using fields.Nested to represent a nested structure
 })
 
 assignDepartament = api.model("Assign departament",{

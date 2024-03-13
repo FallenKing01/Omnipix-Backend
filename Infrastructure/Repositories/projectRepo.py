@@ -1,4 +1,4 @@
-from Domain.extension import projectCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
+from Domain.extension import dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 from Utils.Exceptions.customException import CustomException
@@ -290,6 +290,49 @@ def getProjectDetailsRepo(projectId):
         raise CustomException(404,"There is no project with this id")
 
     return project
+
+
+def projectToDeleteRepo(projectId):
+
+
+        query = projectCollection.where("id", "==", projectId).get()
+
+        for doc in query:
+            doc.reference.delete()
+
+        query = projectManagerCollection.where("projectId", "==", projectId).get()
+
+        for doc in query:
+            doc.reference.delete()
+
+        query = projectStatusCollection.where("projectId","==",projectId).get()
+
+        for doc in query:
+            doc.reference.delete()
+
+        query = skillXprojectCollection.where("projectId","==",projectId).get()
+
+        for doc in query:
+            doc.reference.delete()
+
+        query = projectXemployeeCollection.where("projectId","==",projectId).get()
+
+
+        for doc in query:
+            doc.reference.delete()
+
+        query = assignementProposalCollection.where("projectId","==",projectId).get()
+
+        for doc in query:
+            doc.reference.delete()
+
+        query = dealocationProposalCollection.where("projectId","==",projectId).get()
+
+        for doc in query:
+            doc.reference.delete()
+
+
+
 
 
 

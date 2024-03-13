@@ -17,20 +17,16 @@ def postProjectManagerRepo(id):
 
 
 def updateProjectsOfManager(project):
-    documents = projectManagerCollection.where("employeeId", "==", project["employeeId"]).get()
 
-    print(documents)
+    insertProject = {}
+    insertedItm = projectManagerCollection.document()
+    insertedItmId = insertedItm.id
+    insertProject["id"] = insertedItmId
+    insertProject["employeeId"] = project["employeeId"]
+    insertProject["projectId"] = project["projectId"]
 
-    for document in documents:
-        projectIds = document.get("projectId")
+    projectManagerCollection.add(insertProject)
 
-        if projectIds is None:
-            projectIds = []
-
-        projectIds.append(project["projectId"])
-        print(projectIds)
-
-        document.reference.update({"projectId": projectIds})
 
 
 def searchForUserRepo(employee):
