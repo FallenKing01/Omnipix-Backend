@@ -1,7 +1,7 @@
 from Domain.extension import projectCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
-
+from Utils.Exceptions.customException import CustomException
 def postProjectRepo(project):
 
     insertedItm = projectCollection.document()
@@ -128,3 +128,53 @@ def closeProjectRepo(id):
 
     for doc in query:
         doc.reference.update({"status" : "Closed"})
+
+def getPastProjectMembersRepo(projectId):
+
+    query = projectXemployeeCollection.where("projectId","==",projectId).where("isActive","==",False    ).get()
+
+    employeeIds= []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop('password', None)
+        employeeIds.append(currentDoc["employeeId"])
+
+    if not employeeIds:
+        raise CustomException(404,"No employees")
+
+    employeesQuery = employeesCollection.where("id", "in", employeeIds).get()
+
+    employeeData = []
+
+    for doc in employeesQuery:
+        currentDoc = doc.to_dict()
+        currentDoc.pop('password', None)
+        employeeData.append(currentDoc)
+
+    return employeeData
+
+def getCurrentProjectMembersRepo(projectId):
+
+    query = projectXemployeeCollection.where("projectId","==",projectId).where("isActive","==",True).get()
+
+    employeeIds= []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop('password', None)
+        employeeIds.append(currentDoc["employeeId"])
+
+    if not employeeIds:
+        raise CustomException(404,"No employees")
+
+    employeesQuery = employeesCollection.where("id", "in", employeeIds).get()
+
+    employeeData = []
+
+    for doc in employeesQuery:
+        currentDoc = doc.to_dict()
+        currentDoc.pop('password', None)
+        employeeData.append(currentDoc)
+
+    return employeeData

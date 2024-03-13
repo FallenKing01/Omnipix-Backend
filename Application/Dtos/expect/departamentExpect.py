@@ -43,7 +43,7 @@ acceptProposalExpect = api.model("Accept proposal",{
     "organizationId" : fields.String,
     "workingHours":fields.Integer,
     "employeRolesId":fields.List(fields.String),
-    "isActive":fields.String
+    "isActive":fields.Boolean
 })
 
 dealocationProposalExpect = api.model("Dealocation proposal",{

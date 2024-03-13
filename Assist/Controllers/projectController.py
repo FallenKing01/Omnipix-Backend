@@ -81,3 +81,31 @@ class CloseProject(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/inactivemembersproject/<string:projectId>")
+class GetInactiveMembersFromProject(Resource):
+    def get(self,projectId):
+        try:
+
+            return getPastProjectMembersRepo(projectId)
+
+
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsProject.route("/activemembersproject/<string:projectId>")
+class GetActiveMembersFromProject(Resource):
+    def get(self,projectId):
+        try:
+
+            return getCurrentProjectMembersRepo(projectId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
