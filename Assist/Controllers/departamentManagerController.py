@@ -116,3 +116,17 @@ class GetDeallocationsProposals(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/getdepartamentsfromorganization/<string:organizationId>")
+class GetDepartamentsFromOrganization(Resource):
+    def get(self,organizationId):
+
+        try:
+            return getDepartamentsRepo(organizationId)
+
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

@@ -308,3 +308,18 @@ def getDealocationProposalRepo(departamentId):
 
     return dealocations
 
+def getDepartamentsRepo(organizationId):
+
+    query = departamentCollection.where("organizationId","==",organizationId).get()
+
+    departaments = []
+
+    for doc in query:
+
+        departaments.append(doc.to_dict())
+
+    if not departaments:
+        raise CustomException(404,"No departaments ")
+
+    return departaments
+
