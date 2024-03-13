@@ -137,7 +137,6 @@ def getPastProjectMembersRepo(projectId):
 
     for doc in query:
         currentDoc = doc.to_dict()
-        currentDoc.pop('password', None)
         employeeIds.append(currentDoc["employeeId"])
 
     if not employeeIds:
@@ -178,3 +177,50 @@ def getCurrentProjectMembersRepo(projectId):
         employeeData.append(currentDoc)
 
     return employeeData
+
+def getInfoPastProjectsRepo(employeeId):
+
+    query = projectXemployeeCollection.where("isActive", "==", False).where("employeeId","==",employeeId).get()
+
+    projectIds = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        projectIds.append(currentDoc["projectId"])
+
+    if not projectIds:
+        raise CustomException(404, "No projects")
+
+
+    projectQuery = projectCollection.where("id", "in", projectIds).get()
+
+    projectData = []
+
+    for doc in projectQuery:
+        currentDoc = doc.to_dict()
+        projectData.append(currentDoc)
+
+    return projectData
+
+
+def getInfoCurrentProjectsRepo(employeeId):
+    query = projectXemployeeCollection.where("isActive", "==", True).where("employeeId","==",employeeId).get()
+
+    projectIds = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        projectIds.append(currentDoc["projectId"])
+
+    if not projectIds:
+        raise CustomException(404, "No projects")
+
+    projectQuery = projectCollection.where("id", "in", projectIds).get()
+
+    projectData = []
+
+    for doc in projectQuery:
+        currentDoc = doc.to_dict()
+        projectData.append(currentDoc)
+
+    return projectData
