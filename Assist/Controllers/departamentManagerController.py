@@ -130,3 +130,19 @@ class GetDepartamentsFromOrganization(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/assignskilldirectly")
+class AssignSkillDirectly(Resource):
+    @nsDepartamentManager.expect(assignSkillDirectlyExpect)
+
+    def post(self):
+
+        try:
+            return assignSkillDirectlyRepo(api.payload)
+
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

@@ -1,5 +1,9 @@
-from Domain.extension import dealocationProposalCollection,projectXemployeeCollection,assignementProposalCollection,departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
+import datetime
+
+from Domain.extension import assignedSkillCollection,dealocationProposalCollection,projectXemployeeCollection,assignementProposalCollection,departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
 from Utils.Exceptions.customException import CustomException
+import datetime
+
 def postDepartamentRepoADDITIONAL(depart):
 
     # IAU DOAR CE AM NEV PENTRU MANAGER
@@ -323,3 +327,17 @@ def getDepartamentsRepo(organizationId):
 
     return departaments
 
+
+def assignSkillDirectlyRepo(skill):
+    # Assuming assignedSkillCollection is a Firestore collection reference
+    insertedItm = assignedSkillCollection.document()
+    insertedItmId = insertedItm.id
+
+    # Adding necessary fields to the skill dictionary
+    skill["id"] = insertedItmId
+    skill["isApproved"] = True
+    skill["dateTime"] = datetime.datetime.utcnow().isoformat()
+
+    assignedSkillCollection.add(skill)
+
+    return skill

@@ -18,3 +18,12 @@ skillUpdateExpect = api.model("Skill update expect",
                                   "category":fields.String,
                                   "description":fields.String,
                               })
+
+assignSkillDirectlyExpect = api.model("Assign skill directly",
+                              {
+                                  "departamentId":fields.String,
+                                  "employeeId":fields.String,
+                                  "experience":fields.String,
+                                  "level":fields.String,
+                                  "skillId":fields.String,
+                              })
