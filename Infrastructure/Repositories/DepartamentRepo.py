@@ -182,25 +182,29 @@ def firstDepartamentManagerPromotionRepo(depart):
 
 
 def getDepartamentManagerWithNoDepartament(id):
-    query = departamentManagerCollection.where('organizationId', '==', id).where('departamentId', '==', None)
-    managerDocs = query.stream()
-
+    query = departamentManagerCollection.where('organizationId', '==', id).where("departamentId","==",None).get()
     employeeIds = []
 
-    for doc in managerDocs:
-        employeeIds.append(doc.to_dict()['employeeId'])
+    for doc in query:
+        currentDoc = doc.to_dict()
+        employeeIds.append(currentDoc["employeeId"])
 
-    employees = employeesCollection.where('id', 'in', employeeIds).stream()
+    if not employeeIds:
+        raise CustomException(404, "Are not managers with no departament in organization")
 
-    employeeData = []
+    query = employeesCollection.where("id","in",employeeIds).get()
 
-    for employee in employees:
-        employeeDict = employee.to_dict()
+    managers = []
 
-        employeeDict.pop('password')
-        employeeData.append(employeeDict)
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password",None)
+        managers.append(currentDoc)
 
-    return employeeData
+    if not managers:
+        raise CustomException(404,"Departament managers not found")
+
+    return managers
 
 
 
