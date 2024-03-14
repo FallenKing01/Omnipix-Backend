@@ -59,3 +59,17 @@ class PostTechnologyStack(Resource):
             abort(500, "Something went wrong")
 
 
+@nsProjectManager.route("/demoteprojectmanager/<string:employeeId>")
+class DemoteProjectManager(Resource):
+    def delete(self,employeeId):
+        try:
+
+            deleteProjectManagerRepo(employeeId)
+
+            return {"message":"Demoted user from project manager succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

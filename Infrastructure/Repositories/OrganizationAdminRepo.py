@@ -24,3 +24,10 @@ def createNewOrganizationAdminRepo(employeeId,organizationId):
     }
 
     organizationXadminCollection.add(newAdmin)
+
+def deleteOrganizationAdminRoleRepo(employeeId):
+
+    query = organizationXadminCollection.where("employeeId","==",employeeId).get()
+
+    for doc in query:
+        doc.reference.delete()

@@ -8,7 +8,7 @@ from Application.Services.organizationServices import *
 from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.organizationXadminRepo import postorganizationXadminRepository
-from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo
+from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo,deleteOrganizationAdminRoleRepo
 
 nsAdmin = Namespace("admin", authorizations=authorizations, description="Admin operations")
 
@@ -113,3 +113,24 @@ class PromoteAdmin(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+
+
+@nsAdmin.route("/demoteorganizationadmin/<string:employeeId>")
+class DemoteOrganizationAdmin(Resource):
+    def delete(self, employeeId):
+        try:
+
+            deleteOrganizationAdminRoleRepo(employeeId)
+
+            return {"message": "Demoted user succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+
+

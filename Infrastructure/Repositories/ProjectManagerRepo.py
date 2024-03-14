@@ -47,6 +47,13 @@ def searchForUserRepo(employee):
 
     return searchResult
 
+def DdeleteProjectManagerRepo(employeeId):
+
+    query = projectManagerCollection.where("employeeId","==",employeeId).get()
+
+    for doc in query:
+        doc.reference.delete()
+
 
 
 
