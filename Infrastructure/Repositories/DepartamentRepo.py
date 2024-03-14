@@ -334,11 +334,11 @@ def getDepartamentsRepo(organizationId):
     for doc in query_departament_manager:
         current_doc = doc.to_dict()
         employeesId.append(current_doc["employeeId"])
-    print(employeesId)
+
     # Querying employee names
     query_employee = employeesCollection.where("id", "in", employeesId).get()
     managerNames = [doc.to_dict()["name"] for doc in query_employee]
-    print(managerNames)
+
     for i, doc in enumerate(managerNames):
         departaments[i]["managersName"] = doc
 
@@ -374,3 +374,35 @@ def assignSkillDirectlyRepo(skill):
     assignedSkillCollection.add(skill)
 
     return skill
+
+
+def getChartSkillsRepo(departmentId, skillId):
+    # Query employees in the specified department
+    query_employee = employeesCollection.where("departamentId", "==", departmentId).stream()
+    employees = [doc.id for doc in query_employee]
+
+    # Check if employees exist in the department
+    if not employees:
+        raise CustomException(404, "No employees found in the department")
+
+    # Query assigned skills for the retrieved employees and specified skillId
+    query_skills = assignedSkillCollection.where("employeeId", "in", employees).where("skillId", "==", skillId).stream()
+
+    # Initialize counters for each skill level
+    skill_levels = {level: 0 for level in range(1, 6)}
+
+    # Count occurrences of each skill level
+    for doc in query_skills:
+        current_doc = doc.to_dict()
+        level = current_doc.get("level")
+        if level in skill_levels:
+            skill_levels[level] += 1
+
+    return skill_levels
+
+
+
+
+
+
+

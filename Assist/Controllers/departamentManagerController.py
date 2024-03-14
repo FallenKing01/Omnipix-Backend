@@ -146,3 +146,18 @@ class AssignSkillDirectly(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/chartdiagramspecialistlevel/<string:departamentId>/<string:skillId>")
+class ChartSpecialistLevel(Resource):
+    def get(self,departamentId,skillId):
+
+        try:
+            return getChartSkillsRepo(departamentId,skillId)
+
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
