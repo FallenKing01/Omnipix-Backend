@@ -236,3 +236,16 @@ class GetEndorsmentOfSkill(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsEmployee.route("/info/<string:employeeId>")
+class GetInfoParticularyEmployee(Resource):
+    def get(self, employeeId):
+        try:
+            return getInfoAboutUserRepo(employeeId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+

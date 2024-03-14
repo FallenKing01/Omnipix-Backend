@@ -207,3 +207,19 @@ def getEndorsmentOfSkill(skillId):
         endorsment = doc.to_dict()
 
     return endorsment
+
+def getInfoAboutUserRepo(id):
+    query = employeesCollection.where("id", "==", id).limit(1).get()
+
+    userInfo = {}
+
+    for doc in query:
+        user_data = doc.to_dict()
+
+        for key, value in user_data.items():
+            if isinstance(value, bytes):
+                user_data[key] = value.decode('utf-8')
+
+        userInfo = user_data
+
+    return userInfo
