@@ -1,4 +1,4 @@
-from Domain.extension import organizationCollection
+from Domain.extension import organizationCollection,organizationXadminCollection
 
 def postOrganizationAdminRepository(organizationAdmin):
 
@@ -11,3 +11,16 @@ def postOrganizationAdminRepository(organizationAdmin):
     insertedItm.set(organizationAdmin)
 
     return organizationAdmin
+
+def createNewOrganizationAdminRepo(employeeId,organizationId):
+
+    insertedItm = organizationXadminCollection.document()
+    insertedItmId = insertedItm.id
+
+    newAdmin = {
+        "id":insertedItmId,
+        "employeeId":employeeId,
+        "organizationId":organizationId,
+    }
+
+    organizationXadminCollection.add(newAdmin)

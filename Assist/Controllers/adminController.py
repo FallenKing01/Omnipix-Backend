@@ -8,6 +8,7 @@ from Application.Services.organizationServices import *
 from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.organizationXadminRepo import postorganizationXadminRepository
+from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo
 
 nsAdmin = Namespace("admin", authorizations=authorizations, description="Admin operations")
 
@@ -91,6 +92,21 @@ class PostRole(Resource):
             insertedRole = postCustomRoleService(api.payload)
 
             return insertedRole
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsAdmin.route("/promoteadmin/<string:employeeId>/<string:organizationId>")
+class PromoteAdmin(Resource):
+    def put(self,employeeId,organizationId):
+        try:
+
+            createNewOrganizationAdminRepo(employeeId,organizationId)
+
+            return {"message":"Employee promoted succesfully"}
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
