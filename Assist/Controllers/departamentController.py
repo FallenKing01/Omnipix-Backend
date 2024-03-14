@@ -244,3 +244,17 @@ class AcceptDealocationProposal(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsDepartament.route("/getnamedepartament/<string:employeeId>")
+class GetNameDepartament(Resource):
+    def get(self,employeeId):
+        try:
+
+            return getDepartamentNameRepo(employeeId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

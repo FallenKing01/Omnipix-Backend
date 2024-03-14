@@ -400,8 +400,29 @@ def getChartSkillsRepo(departmentId, skillId):
 
     return skill_levels
 
+def getDepartamentNameRepo(employeeId):
 
+    query = departamentManagerCollection.where("employeeId","==",employeeId).get()
 
+    departamentId = []
+    for doc in query:
+        departamentId.append(doc.to_dict()["departamentId"])
+
+    if not departamentId:
+        raise CustomException(404,"Departament not found")
+
+    query = departamentCollection.where("id","in",departamentId).get()
+
+    departaments = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        departaments.append(currentDoc)
+
+    if not departaments:
+        raise CustomException(404,"Departaments not found")
+
+    return departaments
 
 
 
