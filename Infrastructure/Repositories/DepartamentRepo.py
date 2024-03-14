@@ -313,17 +313,50 @@ def getDealocationProposalRepo(departamentId):
     return dealocations
 
 def getDepartamentsRepo(organizationId):
-
-    query = departamentCollection.where("organizationId","==",organizationId).get()
-
+    # Querying departments
+    query_departments = departamentCollection.where("organizationId", "==", organizationId).get()
     departaments = []
 
-    for doc in query:
+    departamentManagerId = []
+    for doc in query_departments:
+        current_doc = doc.to_dict()
+        departaments.append(current_doc)
+        if current_doc["departamentManagerId"] is not None:
+            departamentManagerId.append(current_doc["departamentManagerId"])
 
-        departaments.append(doc.to_dict())
+    if not departamentManagerId:
+        raise CustomException(404, "Departments not found")
+
+    # Querying department managers
+    query_departament_manager = departamentManagerCollection.where("id", "in", departamentManagerId).get()
+    employeesId = []
+
+    for doc in query_departament_manager:
+        current_doc = doc.to_dict()
+        employeesId.append(current_doc["employeeId"])
+    print(employeesId)
+    # Querying employee names
+    query_employee = employeesCollection.where("id", "in", employeesId).get()
+    managerNames = [doc.to_dict()["name"] for doc in query_employee]
+    print(managerNames)
+    for i, doc in enumerate(managerNames):
+        departaments[i]["managersName"] = doc
+
+    # Counting members per department
+    query_employee = employeesCollection.where("organizationId", "==", organizationId).get()
+    count_members = {}
+    for doc in query_employee:
+        current_doc = doc.to_dict()
+        department_id = current_doc.get("departamentId")  # Assuming this is the department ID field
+        # Increment the count for the department
+        count_members[department_id] = count_members.get(department_id, 0) + 1
+
+    values = count_members.values()
+    for i, value in enumerate(values):
+        departaments[i]["numberOfEmployees"] = value
 
     if not departaments:
-        raise CustomException(404,"No departaments ")
+        raise CustomException(404, "No departments")
 
     return departaments
 
