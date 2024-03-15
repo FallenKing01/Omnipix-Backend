@@ -1,4 +1,4 @@
-from Domain.extension import dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
+from Domain.extension import technologyStackCollection,customTeamRoleCollection,dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 from Utils.Exceptions.customException import CustomException
@@ -226,23 +226,55 @@ def getInfoCurrentProjectsRepo(employeeId):
     return projectData
 
 def getProjectsFromOrganizationRepo(organizationId):
+    query = projectCollection.where("organizationId", "==", organizationId).get()
 
-    query = projectCollection.where("organizationId","==",organizationId).get()
-
-    projects = []
+    finalProjects = []
 
     for doc in query:
-        projects.append(doc.to_dict())
+        project = doc.to_dict()
 
-    if not projects:
-        raise CustomException(404,"No projects")
+        teamRolesIds = []
+        teamRolesValues = []
 
-    return projects
+        for key, value in project["teamRoles"].items():
+            teamRolesIds.append(key)
+            teamRolesValues.append(value)
+
+        if teamRolesIds:
+            queryRoles = customTeamRoleCollection.where("id", "in", teamRolesIds).get()
+            toInsertRoles = []
+
+            for docRoles, value in zip(queryRoles, teamRolesValues):
+                currentDoc = docRoles.to_dict()
+                currentDoc["value"] = value
+                toInsertRoles.append(currentDoc)
+
+            project["teamRoles"] = toInsertRoles
+
+        technologyStackId = []
+
+        for valueTec in project["technologyStack"]:
+            technologyStackId.append(valueTec)
+
+        if technologyStackId:
+            queryTech = technologyStackCollection.where("id", "in", technologyStackId).get()
+            technologyStackToReturn = []
+
+            for docTechnology in queryTech:
+                technologyStackToReturn.append(docTechnology.to_dict())
+
+            project["technologyStack"] = technologyStackToReturn
+
+        finalProjects.append(project)
+
+    if not finalProjects:
+        raise CustomException(404, "No projects")
+
+    return finalProjects
+
 
 def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
-
-    queryEmployee = employeesCollection.where("departamentId","==",departamentId).get()
-
+    queryEmployee = employeesCollection.where("departamentId", "==", departamentId).get()
     employeeIds = []
 
     for doc in queryEmployee:
@@ -251,30 +283,51 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
         employeeIds.append(currentDoc["id"])
 
     if not employeeIds:
-        CustomException(404,"Employees not found in departament")
+        raise CustomException(404, "Employees not found in department")
 
     projectIds = []
-
-    queryProjectEmployee = projectXemployeeCollection.where("employeeId","in",employeeIds).get()
+    queryProjectEmployee = projectXemployeeCollection.where("employeeId", "in", employeeIds).get()
 
     for doc in queryProjectEmployee:
         currentDoc = doc.to_dict()
         projectIds.append(currentDoc["projectId"])
 
     if not projectIds:
-        CustomException(404,"Project not found in members of your departament")
+        raise CustomException(404, "Projects not found for members of your department")
 
     projectsData = []
-
-    queryProject = projectCollection.where("id","in",projectIds).get()
+    queryProject = projectCollection.where("id", "in", projectIds).get()
 
     for doc in queryProject:
-        projectsData.append(doc.to_dict())
+        projectData = doc.to_dict()
 
-    if not queryProject:
-        CustomException(404, "Project not found ")
+        # Fetch complete technology objects
+        technologyIds = projectData.get("technologyStack", [])
+        technologyData = []
+        if technologyIds:
+            technologyQuery = technologyStackCollection.where("id", "in", technologyIds).get()
+            for techDoc in technologyQuery:
+                technologyData.append(techDoc.to_dict())
+            projectData["technologyStack"] = technologyData
+
+        teamRolesData = {}
+        teamRoles = projectData.get("teamRoles", {})
+        if teamRoles:
+            for roleId, roleValue in teamRoles.items():
+                roleDoc = customTeamRoleCollection.document(roleId).get()
+                roleData = roleDoc.to_dict()
+                roleData["value"] = roleValue
+                teamRolesData[roleId] = roleData
+            projectData["teamRoles"] = teamRolesData
+
+        projectsData.append(projectData)
+
+    if not projectsData:
+        raise CustomException(404, "Projects not found")
 
     return projectsData
+
+
 
 
 def getProjectDetailsRepo(projectId):
@@ -288,6 +341,41 @@ def getProjectDetailsRepo(projectId):
 
     if project is None:
         raise CustomException(404,"There is no project with this id")
+
+    teamRolesIds = []
+    teamRolesValues = []
+
+    for key, value in project["teamRoles"].items():
+        teamRolesIds.append(key)
+        teamRolesValues.append(value)
+
+    if teamRolesIds:
+        query = customTeamRoleCollection.where("id","in",teamRolesIds).get()
+        toInsertRoles = []
+
+        for doc, value in zip(query, teamRolesValues):
+            currentDoc = doc.to_dict()
+            # Adding the value from teamRolesValues to currentDoc
+            currentDoc["value"] = value
+            toInsertRoles.append(currentDoc)
+        project["teamRoles"] = toInsertRoles
+
+
+    technologyStackId = []
+    technologyStackToReturn = []
+
+    for value in project["technologyStack"]:
+        technologyStackId.append(value)
+    print(technologyStackId)
+
+    if technologyStackId:
+        query = technologyStackCollection.where("id","in",technologyStackId).get()
+
+        for doc in query:
+            currentDoc = doc.to_dict()
+            technologyStackToReturn.append(currentDoc)
+
+        project["technologyStack"] = technologyStackToReturn
 
     return project
 
