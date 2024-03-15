@@ -327,7 +327,6 @@ def getDepartamentsRepo(organizationId):
     if not departamentManagerId:
         raise CustomException(404, "Departments not found")
 
-    # Querying department managers
     query_departament_manager = departamentManagerCollection.where("id", "in", departamentManagerId).get()
     employeesId = []
 
@@ -352,8 +351,8 @@ def getDepartamentsRepo(organizationId):
         count_members[department_id] = count_members.get(department_id, 0) + 1
 
     values = count_members.values()
-    for i, value in enumerate(values):
-        departaments[i]["numberOfEmployees"] = value
+    for department, value in zip(departaments, values):
+        department["numberOfEmployees"] = value
 
     if not departaments:
         raise CustomException(404, "No departments")

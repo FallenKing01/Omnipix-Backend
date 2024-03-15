@@ -47,7 +47,7 @@ def searchForUserRepo(employee):
 
     return searchResult
 
-def DdeleteProjectManagerRepo(employeeId):
+def deleteProjectManagerRepo(employeeId):
 
     query = projectManagerCollection.where("employeeId","==",employeeId).get()
 
