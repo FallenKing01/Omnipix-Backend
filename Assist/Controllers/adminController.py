@@ -24,7 +24,7 @@ class PostUser(Resource):
                 "adress": api.payload["adress"],
                 "url": api.payload["url"]
             }
-            organizationXadmin={}
+            organizationXadmin = dict()
 
             organization = postOrganizationService(organization)
 
@@ -35,6 +35,8 @@ class PostUser(Resource):
 
             token,organizationXadmin["employeeId"] = postUserService(api.payload)
             organizationXadmin["organizationId"] = organization["id"]
+
+            # TODO: check why organizationXadmin is not being used
             organizationXadmin=postorganizationXadminRepository(organizationXadmin)
 
             return {"Token": token}, 200

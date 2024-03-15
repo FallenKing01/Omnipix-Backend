@@ -1,4 +1,6 @@
 from Domain.extension import departamentCollection
+from http import HTTPStatus
+
 
 def getDepartmentByIdRepo(id):
     query = departamentCollection.where("id", "==", id).limit(1).get()
@@ -10,11 +12,12 @@ def getDepartmentByIdRepo(id):
 
     return department
 
+
 def getDepartamentManagerByEmployeeIdService(id):
 
     isManager = getDepartamentManagerByEmployeeIdRepo(id)
 
     if isManager is None:
-        raise CustomException(404, "The employee is not departament manager!")
+        raise CustomException(HTTPStatus.NOT_FOUND, "The employee is not departament manager!")
 
     return isManager

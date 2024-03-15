@@ -5,6 +5,7 @@ from Application.Services.userServices import getUserByIdService
 from Utils.getDepartamentById import getDepartamentManagerByEmployeeIdService
 from Infrastructure.Repositories.SkillRepo import getSkillsOfEmployeeRepo
 
+
 def postSkillService(skill):
 
     existingOrganization = getOrganizationService(skill["organizationId"])
@@ -26,6 +27,7 @@ def postSkillService(skill):
 
     return skill
 
+
 def getSkillOfEmployeeService(employeeId):
 
     getUserByIdService(employeeId)
@@ -33,6 +35,7 @@ def getSkillOfEmployeeService(employeeId):
     skills = getSkillsOfEmployeeRepo(employeeId)
 
     return skills
+
 
 def getSkillByIdService(id):
 
@@ -43,18 +46,20 @@ def getSkillByIdService(id):
 
     return skills
 
+
 def getSkillByAuthorIdService(id):
 
     skills = getSkillByAutorIdRepo(id)
 
     return skills
 
+
 def updateSkillService(skill):
 
     existSkill = getSkillByIdRepo(skill["skillId"])
 
     if existSkill is None:
-        raise CustomException(404,"Skill not found")
+        raise CustomException(404, "Skill not found")
 
 
     return updateSkillRepo(skill)
