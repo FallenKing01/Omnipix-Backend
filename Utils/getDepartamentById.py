@@ -1,6 +1,7 @@
 from Domain.extension import departamentCollection
 from http import HTTPStatus
-
+from Utils.Exceptions.customException import CustomException
+from Infrastructure.Repositories.DepartamentRepo import getDepartamentManagerByEmployeeIdRepo
 
 def getDepartmentByIdRepo(id):
     query = departamentCollection.where("id", "==", id).limit(1).get()
