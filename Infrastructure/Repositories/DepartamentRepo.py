@@ -1,22 +1,25 @@
 import datetime
 
-from Domain.extension import assignedSkillCollection,dealocationProposalCollection,projectXemployeeCollection,assignementProposalCollection,departamentManagerCollection,departamentCollection,employeesCollection,skillCollection
+from Domain.extension import assignedSkillCollection, dealocationProposalCollection, projectXemployeeCollection, \
+    assignementProposalCollection, departamentManagerCollection, departamentCollection, employeesCollection, \
+    skillCollection
+
 from Utils.Exceptions.customException import CustomException
-import datetime
+
 
 def postDepartamentRepoADDITIONAL(depart):
 
     # IAU DOAR CE AM NEV PENTRU MANAGER
     managerDepartament = {
-        "id" : depart["departamentManagerId"],
-        "employeeId" : None,
+        "id": depart["departamentManagerId"],
+        "employeeId": None,
         "departamentId": depart["departamentId"],
         "organizationId": depart["organizationId"]
     }
 
     departamentManagerCollection.add(managerDepartament)
 
-    #RESTRUCTUREZ FORMA DEPARTAMENT SA ARATE CA IN TABELA
+    # RESTRUCTUREZ FORMA DEPARTAMENT SA ARATE CA IN TABELA
     depart["id"] = depart["departamentId"]
     depart.pop("departamentId")
 
@@ -104,16 +107,10 @@ def updateDepartamentManagerRepo(department):
     return query
 
 
-
 def getDepartmentByIdRepo(id):
-    query = departamentCollection.where("id", "==", id).limit(1).get()
-    department = None
-
-    for doc in query:
-        department = doc.to_dict()
-        break
-
-    return department
+    """ Get department by id """
+    for doc in departamentCollection.where("id", "==", id).limit(1).get():
+        return doc.to_dict()
 
 
 def updateSecondTimeManagerOfDepartamentRepo(user):
@@ -289,17 +286,11 @@ def declineDealocationProposalRepo(id):
     for doc in query:
         doc.reference.delete()
 
+
 def getDepartamentAllocationProposalRepo(departamentId):
+    for doc in assignementProposalCollection.where("departamentId", "==", departamentId).get():
+        yield doc.to_dict()
 
-    query = assignementProposalCollection.where("departamentId","==",departamentId).get()
-
-    allocation = []
-
-    for doc in query:
-        currentDoc = doc.to_dict()
-        allocation.append(currentDoc)
-
-    return allocation
 
 def getDealocationProposalRepo(departamentId):
     query = dealocationProposalCollection.where("departamentId", "==", departamentId).get()

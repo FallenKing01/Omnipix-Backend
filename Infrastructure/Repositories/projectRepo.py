@@ -360,7 +360,6 @@ def getProjectDetailsRepo(projectId):
             toInsertRoles.append(currentDoc)
         project["teamRoles"] = toInsertRoles
 
-
     technologyStackId = []
     technologyStackToReturn = []
 
@@ -381,20 +380,15 @@ def getProjectDetailsRepo(projectId):
 
 
 def projectToDeleteRepo(projectId):
-
-
         query = projectCollection.where("id", "==", projectId).get()
-
         for doc in query:
             doc.reference.delete()
 
         query = projectManagerCollection.where("projectId", "==", projectId).get()
-
         for doc in query:
             doc.reference.delete()
 
-        query = projectStatusCollection.where("projectId","==",projectId).get()
-
+        query = projectStatusCollection.where("projectId", "==" ,projectId).get()
         for doc in query:
             doc.reference.delete()
 

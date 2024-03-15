@@ -11,18 +11,15 @@ from Utils.Exceptions.customException import CustomException
 
 nsOrganization = Namespace("organization", authorizations=authorizations , description="Organizations operations")
 
+
 @nsOrganization.route("/create")
 class PostOrganization(Resource):
     @nsOrganization.expect(organizationPostExpect)
 
     def post(self):
         try:
-            organization = postOrganizationService(api.payload)
-
-            return organization
-
+            return postOrganizationService(api.payload)
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
-
         except Exception as e:
             abort(500, "Something went wrong")

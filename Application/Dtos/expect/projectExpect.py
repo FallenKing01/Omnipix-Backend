@@ -11,18 +11,17 @@ postProjectExpect = api.model("Create project", {
     "teamRoles": fields.Raw,  # Using Raw field to accept any JSON structure
     "status": fields.String,
     "organizationId": fields.String,
-    "employeeId":fields.String
+    "employeeId": fields.String
 })
 
-
-
-updateProjectStatus = api.model("Update project status" , {
-    "projectId":fields.String,
-    "status":fields.String,
+updateProjectStatus = api.model("Update project status", {
+    "projectId": fields.String,
+    "status": fields.String,
 })
-updateProjectExpect =api.model("Update project", {
-    "projectId":fields.String,
-    "status":fields.String,
+
+updateProjectExpect = api.model("Update project", {
+    "projectId": fields.String,
+    "status": fields.String,
     "name": fields.String,
     "period": fields.String,
     "startDate": fields.DateTime,
@@ -34,13 +33,12 @@ updateProjectExpect =api.model("Update project", {
     "teamRolesToDelete": fields.Raw,
 })
 
-assignmentProposalExpect =api.model("Assignment proposal", {
-    "projectId":fields.String,
-    "employeeId":fields.String,
-    "numberOfHours":fields.Integer,
+assignmentProposalExpect = api.model("Assignment proposal", {
+    "projectId": fields.String,
+    "employeeId": fields.String,
+    "numberOfHours": fields.Integer,
     "teamRolesId": fields.List(fields.String),
-    "comment":fields.String,
-    "departamentId":fields.String,
+    "comment": fields.String,
+    "departamentId": fields.String,
 
 })
-
