@@ -201,3 +201,23 @@ class deleteSkillFromDepartament(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
+@nsDepartamentManager.route("/deleteskillfromorganization/<string:skillId>/<string:organizationId>")
+class deleteSkill(Resource):
+    def delete(self, skillId,organizationId):
+
+        try:
+
+            deleteSkillPermanentRepo(skillId,organizationId)
+
+            return {"message": "Skill deleted from organization"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+
+
+

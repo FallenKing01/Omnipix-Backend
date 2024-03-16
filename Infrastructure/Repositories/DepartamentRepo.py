@@ -436,5 +436,8 @@ def deleteSkillFromDepartamentRepo(skillId,departamentId):
     for doc in query:
         doc.reference.delete()
 
-
+def deleteSkillPermanentRepo(skillId,organizationId):
+    [doc.reference.delete() for doc in skillCollection.where("id", "==", skillId).where("organizationId","==",organizationId).get()]
+    [doc.reference.delete() for doc in skillXdepartamentCollection.where("skillId", "==", skillId).get()]
+    [doc.reference.delete() for doc in assignedSkillCollection.where("skillId", "==", skillId).get()]
 
