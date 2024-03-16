@@ -149,11 +149,11 @@ class GetOrganizationEmployees(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
-@nsEmployee.route("/departamentemployees/<string:id>")
+@nsEmployee.route("/departamentemployees/<string:departamentId>")
 class GetDepartamentEmployees(Resource):
-    def get(self,id):
+    def get(self,departamentId):
         try:
-            employees = getDepartamentEmployeeService(id)
+            employees = getDepartamentEmployeeService(departamentId)
 
             return employees
 
