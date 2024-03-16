@@ -197,6 +197,10 @@ def getInfoPastProjectsRepo(employeeId):
     for doc in projectQuery:
         currentDoc = doc.to_dict()
 
+        getStatusOfProject = projectStatusCollection.where("projectId", "==", currentDoc["id"]).get()
+        for docStatus in getStatusOfProject:
+            currentDoc["status"] = docStatus.to_dict()["status"]
+
         if "teamRoles" in currentDoc:
             teamRolesFinal = []
             teamRolesIds = []
@@ -253,6 +257,11 @@ def getInfoCurrentProjectsRepo(employeeId):
 
     for doc in projectQuery:
         currentDoc = doc.to_dict()
+
+        getStatusOfProject = projectStatusCollection.where("projectId", "==", currentDoc["id"]).get()
+
+        for docStatus in getStatusOfProject:
+            currentDoc["status"] = docStatus.to_dict()["status"]
 
         teamRolesFinal = []
         technologyStackIds =[]

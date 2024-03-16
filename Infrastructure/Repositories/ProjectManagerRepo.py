@@ -1,4 +1,4 @@
-from Domain.extension import projectManagerCollection,employeesCollection
+from Domain.extension import projectManagerCollection,employeesCollection,skillCategoryCollection
 def postProjectManagerRepo(id):
 
     insertedProjectManager = {
@@ -54,7 +54,14 @@ def deleteProjectManagerRepo(employeeId):
     for doc in query:
         doc.reference.delete()
 
+def postCategory(category):
 
+    insertedItm = skillCategoryCollection.document()
+    insertedItmId = insertedItm.id
+    category["id"] = insertedItmId
+    insertedItm.add(category)
+
+    return category
 
 
 
