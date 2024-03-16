@@ -6,3 +6,9 @@ technologyStackExpect = api.model("technology stack post",{
     "organizationId":fields.String,
 })
 
+postSkillCategory = api.model("category post",{
+    "skillId":fields.String,
+    "name":fields.String,
+    "departamentId":fields.String,
+    "organizationId":fields.String,
+})

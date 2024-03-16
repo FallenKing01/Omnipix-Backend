@@ -1,4 +1,5 @@
 from Domain.extension import projectManagerCollection,employeesCollection,skillCategoryCollection
+from Utils.Exceptions.customException import CustomException
 def postProjectManagerRepo(id):
 
     insertedProjectManager = {
@@ -59,12 +60,31 @@ def postCategory(category):
     insertedItm = skillCategoryCollection.document()
     insertedItmId = insertedItm.id
     category["id"] = insertedItmId
-    insertedItm.add(category)
+
+    skillCategoryCollection.add(category)
 
     return category
 
+def getSkillCategoriesRepo(organizationId):
+    query = skillCategoryCollection.where("organizationId", "==", organizationId).get()
 
+    categories = []
 
+    for doc in query:
+        category = doc.to_dict()
+        categories.append(category)
+    if not categories:
+        raise CustomException(404, "No categories found")
 
+    return categories
+
+def deleteCategoryRepo(categoryId):
+    query = skillCategoryCollection.where("id","==",categoryId).get()
+
+    if not query:
+        raise CustomException(404, "Category not found")
+
+    for doc in query:
+        doc.reference.delete()
 
 

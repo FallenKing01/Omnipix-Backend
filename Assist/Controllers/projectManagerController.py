@@ -70,6 +70,45 @@ class DemoteProjectManager(Resource):
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
-
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProjectManager.route("/postskillcategory")
+class PostSkillCategory(Resource):
+    @nsProjectManager.expect(postSkillCategory)
+    def post(self):
+        try:
+
+            return postCategory(api.payload)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsProjectManager.route("/getskillcategories/<string:organizationId>")
+class GetSkillCategories(Resource):
+    def get(self,organizationId):
+        try:
+
+            return getSkillCategoriesRepo(organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsProjectManager.route("/deletecategory/<string:categoryId>")
+class DeleteCategory(Resource):
+    def delete(self,categoryId):
+        try:
+
+            deleteCategoryRepo(categoryId)
+
+            return {"message":"Category deleted succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+        except Exception:
+            abort(500, "Something went wrong")
+
