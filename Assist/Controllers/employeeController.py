@@ -138,6 +138,10 @@ class GetSkillsFromProject(Resource):
 
 @nsEmployee.route("/organizationemployees/<string:id>")
 class GetOrganizationEmployees(Resource):
+    method_decorators = [jwt_required()]
+
+    @nsEmployee.doc(security="jsonWebToken")
+
     def get(self,id):
         try:
             employees = getOrganizationEmployeesService(id)

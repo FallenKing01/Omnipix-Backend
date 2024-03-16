@@ -1,11 +1,14 @@
 from flask import abort
 from flask_restx import Namespace, Resource
-from Domain.extension import  authorizations
+from Domain.extension import authorizations
 from Utils.Exceptions.customException import CustomException
 from Application.Services.skillService import *
 from Application.Services.departamentService import *
 from Application.Dtos.expect.departamentManagerExpect import *
-nsDepartamentManager = Namespace("departamentmanager",authorizations=authorizations,description="Departament manager operations")
+
+nsDepartamentManager = Namespace("departamentmanager", authorizations=authorizations,
+                                 description="Departament manager operations")
+
 
 @nsDepartamentManager.route("/createskill")
 class PostSkill(Resource):
@@ -23,6 +26,7 @@ class PostSkill(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
 @nsDepartamentManager.route("/getskills/<string:organizationId>")
 class GetSkills(Resource):
     @nsDepartamentManager.doc(params={'organizationId': 'The ID of the organization for which to retrieve skills'})
@@ -37,6 +41,7 @@ class GetSkills(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
 
 @nsDepartamentManager.route("/ownedskills/<string:authorId>")
 class GetSkillsCreatedByDepartamentManager(Resource):
@@ -74,7 +79,7 @@ class UpdateSkill(Resource):
 
 @nsDepartamentManager.route("/managersnodepartament/<string:id>")
 class GetManagersNoDepartament(Resource):
-    def get(self,id):
+    def get(self, id):
 
         try:
             managers = getDepartamentManagerWithNoDepartamentService(id)
@@ -87,9 +92,10 @@ class GetManagersNoDepartament(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
 @nsDepartamentManager.route("/departamentallocationproposal/<string:departamentId>")
 class GetAllocationsProposals(Resource):
-    def get(self,departamentId):
+    def get(self, departamentId):
 
         try:
             proposals = getDepartamentAllocationProposalRepo(departamentId)
@@ -102,9 +108,10 @@ class GetAllocationsProposals(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
 @nsDepartamentManager.route("/departamentdeallocationonproposal/<string:departamentId>")
 class GetDeallocationsProposals(Resource):
-    def get(self,departamentId):
+    def get(self, departamentId):
 
         try:
             proposals = getDealocationProposalRepo(departamentId)
@@ -117,9 +124,10 @@ class GetDeallocationsProposals(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
 @nsDepartamentManager.route("/getdepartamentsfromorganization/<string:organizationId>")
 class GetDepartamentsFromOrganization(Resource):
-    def get(self,organizationId):
+    def get(self, organizationId):
 
         try:
             return getDepartamentsRepo(organizationId)
@@ -131,10 +139,10 @@ class GetDepartamentsFromOrganization(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
 @nsDepartamentManager.route("/assignskilldirectly")
 class AssignSkillDirectly(Resource):
     @nsDepartamentManager.expect(assignSkillDirectlyExpect)
-
     def post(self):
 
         try:
@@ -147,12 +155,13 @@ class AssignSkillDirectly(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
 @nsDepartamentManager.route("/chartdiagramspecialistlevel/<string:departamentId>/<string:skillId>")
 class ChartSpecialistLevel(Resource):
-    def get(self,departamentId,skillId):
+    def get(self, departamentId, skillId):
 
         try:
-            return getChartSkillsRepo(departamentId,skillId)
+            return getChartSkillsRepo(departamentId, skillId)
 
 
         except CustomException as ce:
@@ -161,3 +170,16 @@ class ChartSpecialistLevel(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
+@nsDepartamentManager.route("/kickemployeefromdepartament/<string:employeeId>")
+class KickEmployeeFromDepartament(Resource):
+    def put(self, employeeId):
+
+        try:
+            return kickEmployeeFromDepartamentRepo(employeeId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

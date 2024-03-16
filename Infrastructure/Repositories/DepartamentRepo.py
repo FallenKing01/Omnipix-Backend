@@ -421,6 +421,12 @@ def getDepartamentNameRepo(employeeId):
 
     return departaments
 
+def kickEmployeeFromDepartamentRepo(employeeId):
+    query = employeesCollection.where("id","==",employeeId).get()
+
+    for doc in query:
+        doc.reference.update({"departamentId":None})
+
 
 
 
