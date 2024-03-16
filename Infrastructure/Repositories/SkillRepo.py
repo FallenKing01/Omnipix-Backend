@@ -63,10 +63,10 @@ def getSkillsOfEmployeeRepo(employeeId):
 
         skillDoc = skillCollection.document(skillId).get()
 
-
         if skillDoc.exists:
             skillDoc = skillDoc.to_dict()
             skillDoc["isApproved"] = data["isApproved"]
+            skillDoc["assignedSkillId"] = data["id"]
             skills.append(skillDoc)
 
     return skills

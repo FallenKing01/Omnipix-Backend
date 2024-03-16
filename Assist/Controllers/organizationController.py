@@ -4,18 +4,16 @@ from flask_restx import Namespace, Resource
 from Infrastructure.Repositories.OrganizationsRepo import getOrganizationRolesRepo
 from Application.Dtos.expect.organizationExpect import organizationPostExpect
 
-
 from Application.Services.organizationServices import postOrganizationService
-from Domain.extension import api,authorizations
+from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 
-nsOrganization = Namespace("organization", authorizations=authorizations , description="Organizations operations")
+nsOrganization = Namespace("organization", authorizations=authorizations, description="Organizations operations")
 
 
 @nsOrganization.route("/create")
 class PostOrganization(Resource):
     @nsOrganization.expect(organizationPostExpect)
-
     def post(self):
         try:
             return postOrganizationService(api.payload)
@@ -24,16 +22,13 @@ class PostOrganization(Resource):
         except Exception as e:
             abort(500, "Something went wrong")
 
+
 @nsOrganization.route("/teamroles/<string:organizationId>")
 class getTeamRoleCollection(Resource):
-    def get(self,organizationId):
+    def get(self, organizationId):
         try:
             return getOrganizationRolesRepo(organizationId)
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
         except Exception as e:
             abort(500, "Something went wrong")
-
-
-
-
