@@ -18,15 +18,9 @@ def getSkillsFromDepartmentRepo(departmentId):
 
     skills = []
 
-    for doc in query:
-
-        skillId = doc.get("skillId")
-
-        doc = skillCollection.document(skillId).get()
-
-        if doc.exists:
-            skill_data = doc.to_dict()
-            skills.append(skill_data.get("name", ""))
+    if query:
+        for doc in query:
+            skills.append(doc.to_dict())
 
     return skills
 
