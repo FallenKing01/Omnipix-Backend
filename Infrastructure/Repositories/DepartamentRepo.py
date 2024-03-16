@@ -2,7 +2,7 @@ import datetime
 
 from Domain.extension import assignedSkillCollection, dealocationProposalCollection, projectXemployeeCollection, \
     assignementProposalCollection, departamentManagerCollection, departamentCollection, employeesCollection, \
-    skillCollection
+    skillCollection,skillXdepartamentCollection
 
 from Utils.Exceptions.customException import CustomException
 
@@ -427,6 +427,14 @@ def kickEmployeeFromDepartamentRepo(employeeId):
     for doc in query:
         doc.reference.update({"departamentId":None})
 
+def deleteSkillFromDepartamentRepo(skillId,departamentId):
+    query = skillXdepartamentCollection.where("skillId","==",skillId).where("departamentId","==",departamentId).get()
+
+    if not query:
+        raise CustomException(404,"Skill not found in departament")
+
+    for doc in query:
+        doc.reference.delete()
 
 
 

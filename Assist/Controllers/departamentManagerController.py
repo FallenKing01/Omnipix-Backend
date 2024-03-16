@@ -183,3 +183,21 @@ class KickEmployeeFromDepartament(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/deleteskillfromdepartament/<string:skillId>/<string:departamentId>")
+class deleteSkillFromDepartament(Resource):
+    def delete(self, skillId,departamentId):
+
+        try:
+
+            deleteSkillFromDepartamentRepo(skillId,departamentId)
+
+            return {"message":"Skill deleted from departament"}
+
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
