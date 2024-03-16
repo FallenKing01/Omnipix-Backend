@@ -252,3 +252,15 @@ def getEmployeesNoDepartament(organizationId):
         employees.append(currentDoc)
 
     return employees
+
+def updateEmployeeEmailNameRepo(employeeId, email, name):
+    query = employeesCollection.where("id", "==", employeeId).limit(1).get()
+
+    queryEmployee = employeesCollection.where("email", "==", email).limit(1).get()
+
+    if queryEmployee:
+        raise CustomException(400, "Email already exists")
+
+    for doc in query:
+        doc.reference.update({"email": email, "name": name})
+

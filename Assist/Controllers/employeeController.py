@@ -269,3 +269,18 @@ class GetEmployeesNotInDepartament(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+
+@nsEmployee.route("/editemailandname/<string:employeeId>/<string:email>/<string:name>")
+class UpdateEmployeeEmailName(Resource):
+    def put(self, employeeId, email, name):
+        try:
+            updateEmployeeEmailNameRepo(employeeId, email, name)
+
+            return {"message":"Updated succesfully"},200
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
