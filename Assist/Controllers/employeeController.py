@@ -249,3 +249,15 @@ class GetInfoParticularyEmployee(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+
+@nsEmployee.route("/employeesnodepartament/<string:organizationId>")
+class GetEmployeesNotInDepartament(Resource):
+    def get(self, organizationId):
+        try:
+            return getEmployeesNoDepartament(organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

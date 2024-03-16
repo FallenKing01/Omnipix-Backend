@@ -240,3 +240,15 @@ def getInfoAboutUserRepo(id):
         userInfo = user_data
 
     return userInfo
+
+def getEmployeesNoDepartament(organizationId):
+    query = employeesCollection.where("organizationId","==",organizationId).where("departamentId","==","null").get()
+
+    employees = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password",None)
+        employees.append(currentDoc)
+
+    return employees
