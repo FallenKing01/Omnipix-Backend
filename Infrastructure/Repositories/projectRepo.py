@@ -480,7 +480,6 @@ def getProjectAfterStatusRepo(status,organizationId):
     for doc in query:
         currentDoc = doc.to_dict()
         projectIds.append(currentDoc["id"])
-    print(projectIds)
 
     projectResult = []
 

@@ -288,9 +288,16 @@ def declineDealocationProposalRepo(id):
 
 
 def getDepartamentAllocationProposalRepo(departamentId):
-    for doc in assignementProposalCollection.where("departamentId", "==", departamentId).get():
-        yield doc.to_dict()
 
+    query = assignementProposalCollection.where("departamentId","==",departamentId).get()
+
+    allocation = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        allocation.append(currentDoc)
+
+    return allocation
 
 def getDealocationProposalRepo(departamentId):
     query = dealocationProposalCollection.where("departamentId", "==", departamentId).get()
