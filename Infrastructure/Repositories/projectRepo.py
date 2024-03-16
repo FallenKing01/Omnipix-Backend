@@ -204,7 +204,7 @@ def getInfoPastProjectsRepo(employeeId):
 
 
 def getInfoCurrentProjectsRepo(employeeId):
-    query = projectXemployeeCollection.where("isActive", "==", True).where("employeeId","==",employeeId).get()
+    query = projectXemployeeCollection.where("isActive", "==", True).where("employeeId", "==", employeeId).get()
 
     projectIds = []
 
@@ -217,13 +217,41 @@ def getInfoCurrentProjectsRepo(employeeId):
 
     projectQuery = projectCollection.where("id", "in", projectIds).get()
 
-    projectData = []
+    projectData = {}  # Initialize projectData as a dictionary
 
     for doc in projectQuery:
         currentDoc = doc.to_dict()
-        projectData.append(currentDoc)
 
-    return projectData
+        teamRolesFinal = []
+        technologyStackIds =[]
+        technologyStackFinal = []
+        teamRolesIds = []
+        teamRolesValues = []
+
+        for key, value in currentDoc["teamRoles"].items():
+            teamRolesIds.append(key)
+            teamRolesValues.append(value)
+        for key in currentDoc["technologyStack"]:
+            technologyStackIds.append(key)
+        if teamRolesIds:
+            teamRoleQuery = customTeamRoleCollection.where("id", "in", teamRolesIds).get()
+
+            for doc, value in zip(teamRoleQuery, teamRolesValues):
+                currentDocRoles = doc.to_dict()
+                currentDocRoles["value"] = value
+                teamRolesFinal.append(currentDocRoles)
+
+            currentDoc["teamRoles"] = teamRolesFinal
+
+        if technologyStackIds:
+            techStackQuery = technologyStackCollection.where("id", "in", technologyStackIds).get()
+            for doc in techStackQuery:
+                currentDocTech = doc.to_dict()
+                technologyStackFinal.append(currentDocTech)
+            currentDoc["technologyStack"] = technologyStackFinal
+        projectData[currentDoc["id"]] = currentDoc
+
+    return list(projectData.values())
 
 def getProjectsFromOrganizationRepo(organizationId):
     query = projectCollection.where("organizationId", "==", organizationId).get()
