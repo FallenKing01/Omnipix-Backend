@@ -188,3 +188,15 @@ class DeleteProject(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/getprojectbystatus/<string:status>/<string:organizationId>")
+class getProjectByStatus(Resource):
+    def get(self,status,organizationId):
+        try:
+            return getProjectAfterStatusRepo(status,organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

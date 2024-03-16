@@ -473,8 +473,26 @@ def projectToDeleteRepo(projectId):
         for doc in query:
             doc.reference.delete()
 
+def getProjectAfterStatusRepo(status,organizationId):
+    query = projectCollection.where("organizationId","==",organizationId).get()
 
+    projectIds = []
+    for doc in query:
+        currentDoc = doc.to_dict()
+        projectIds.append(currentDoc["id"])
+    print(projectIds)
 
+    projectResult = []
+
+    if projectIds:
+        query = projectStatusCollection.where("status","==",status).where("projectId","in",projectIds).get()
+
+        for doc in query:
+            currentDoc = doc.to_dict()
+            currentDoc.pop("creationDate")
+            projectResult.append(currentDoc)
+
+    return projectResult
 
 
 
