@@ -1,7 +1,7 @@
 from flask import abort
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource
-
+from Infrastructure.Repositories.OrganizationsRepo import getOrganizationRolesRepo
 from Application.Dtos.expect.organizationExpect import organizationPostExpect
 
 
@@ -23,3 +23,17 @@ class PostOrganization(Resource):
             abort(ce.statusCode, ce.message)
         except Exception as e:
             abort(500, "Something went wrong")
+
+@nsOrganization.route("/teamroles/<string:organizationId>")
+class getTeamRoleCollection(Resource):
+    def get(self,organizationId):
+        try:
+            return getOrganizationRolesRepo(organizationId)
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+        except Exception as e:
+            abort(500, "Something went wrong")
+
+
+
+

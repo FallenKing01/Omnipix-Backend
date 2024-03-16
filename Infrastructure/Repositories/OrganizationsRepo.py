@@ -1,5 +1,5 @@
-from Domain.extension import organizationCollection
-
+from Domain.extension import organizationCollection,customTeamRoleCollection
+from Utils.Exceptions.customException import CustomException
 
 def postOrganizationRepository(organization):
 
@@ -25,3 +25,16 @@ def getOrganizationByIdRepository(organizationId):
 
     return organization
 
+def getOrganizationRolesRepo(organizationId):
+    query = customTeamRoleCollection.where("organizationId", "==", organizationId).get()
+
+    teamRoles = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        teamRoles.append(currentDoc)
+
+    if not teamRoles:
+        raise CustomException(404,"Team roles not found")
+
+    return teamRoles

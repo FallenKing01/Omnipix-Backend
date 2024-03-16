@@ -1,4 +1,4 @@
-from Domain.extension import endorsmentCollection,assignedSkillCollection,skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
+from Domain.extension import skillCollection,endorsmentCollection,assignedSkillCollection,skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 from Utils.Exceptions.customException import CustomException
@@ -178,10 +178,27 @@ def getInactiveAssignSkills(departamentId):
     skills = []
 
     for doc in query:
-        skills.append(doc.to_dict())
+
+        currentDoc = doc.to_dict()
+        skillQuery = skillCollection.where("id","==",currentDoc["skillId"]).get()
+        if skillQuery:
+            for skillDoc in skillQuery:
+                currentDoc["skillData"] = skillDoc.to_dict()
+
+        queryEmployee = employeesCollection.where("id","==",currentDoc["employeeId"]).get()
+
+        if queryEmployee:
+            for employeeDoc in queryEmployee:
+                currentEmployee = employeeDoc.to_dict()
+                currentEmployee.pop("password",None)
+                currentDoc["employeeData"] = currentEmployee
+
+        skills.append(currentDoc)
+
 
     if not skills:
         raise CustomException(404, "Skills not found")
+
 
     return skills
 
