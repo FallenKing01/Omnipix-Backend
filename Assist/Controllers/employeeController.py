@@ -1,5 +1,6 @@
-from flask import abort,jsonify
+from flask import abort
 from flask_restx import Namespace, Resource
+from flask_jwt_extended import jwt_required
 
 from Application.Dtos.expect.employeeExpect import *
 from Application.Services.userServices import *
@@ -151,6 +152,9 @@ class GetOrganizationEmployees(Resource):
 
 @nsEmployee.route("/departamentemployees/<string:departamentId>")
 class GetDepartamentEmployees(Resource):
+    method_decorators = [jwt_required()]
+
+    @nsEmployee.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
             employees = getDepartamentEmployeeService(departamentId)
