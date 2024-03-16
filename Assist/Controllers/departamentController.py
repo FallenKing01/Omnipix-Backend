@@ -258,3 +258,16 @@ class GetNameDepartament(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartament.route("availableskills/<string:departamentId>/<string:organizationId>")
+class availableSkillsInDepartament(Resource):
+    def get(self,departamentId,organizationId):
+        try:
+
+            return getAvailableDepartamentSkills(departamentId,organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
