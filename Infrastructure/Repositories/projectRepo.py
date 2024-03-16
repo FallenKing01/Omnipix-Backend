@@ -179,8 +179,7 @@ def getCurrentProjectMembersRepo(projectId):
     return employeeData
 
 def getInfoPastProjectsRepo(employeeId):
-
-    query = projectXemployeeCollection.where("isActive", "==", False).where("employeeId","==",employeeId).get()
+    query = projectXemployeeCollection.where("isActive", "==", False).where("employeeId", "==", employeeId).get()
 
     projectIds = []
 
@@ -191,16 +190,49 @@ def getInfoPastProjectsRepo(employeeId):
     if not projectIds:
         raise CustomException(404, "No projects")
 
-
     projectQuery = projectCollection.where("id", "in", projectIds).get()
 
-    projectData = []
+    projectData = {}  # Initialize projectData as a dictionary
 
     for doc in projectQuery:
         currentDoc = doc.to_dict()
-        projectData.append(currentDoc)
 
-    return projectData
+        if "teamRoles" in currentDoc:
+            teamRolesFinal = []
+            teamRolesIds = []
+            teamRolesValues = []
+
+            for key, value in currentDoc["teamRoles"].items():
+                teamRolesIds.append(key)
+                teamRolesValues.append(value)
+
+            teamRoleQuery = customTeamRoleCollection.where("id", "in", teamRolesIds).get()
+
+            for doc, value in zip(teamRoleQuery, teamRolesValues):
+                currentDocRoles = doc.to_dict()
+                currentDocRoles["value"] = value
+                teamRolesFinal.append(currentDocRoles)
+
+            currentDoc["teamRoles"] = teamRolesFinal
+
+        if "technologyStack" in currentDoc:
+            technologyStackFinal = []
+            technologyStackIds = []
+
+            for key in currentDoc["technologyStack"]:
+                technologyStackIds.append(key)
+
+            techStackQuery = technologyStackCollection.where("id", "in", technologyStackIds).get()
+
+            for doc in techStackQuery:
+                currentDocTech = doc.to_dict()
+                technologyStackFinal.append(currentDocTech)
+
+            currentDoc["technologyStack"] = technologyStackFinal
+
+        projectData[currentDoc["id"]] = currentDoc
+
+    return list(projectData.values())
 
 
 def getInfoCurrentProjectsRepo(employeeId):
