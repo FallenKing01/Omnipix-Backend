@@ -22,7 +22,6 @@ def postSkillWithEndorsmentRepo(skillAssigned,endorsementsAssigned):
             endorsementDocumentId = insertedEndorsement.id
 
             endorsement["id"] = endorsementDocumentId
-            endorsement["projectId"] = None
             endorsement["assignedSkillId"] = skillAssigned["id"]
 
             insertedEndorsement.set(endorsement)

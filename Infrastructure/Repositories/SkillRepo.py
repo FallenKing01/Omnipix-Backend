@@ -1,4 +1,4 @@
-from Domain.extension import skillCollection,assignedSkillCollection
+from Domain.extension import skillCollection,assignedSkillCollection,endorsmentCollection,projectCollection
 from Utils.Exceptions.customException import CustomException
 def postSkillRepo(skill):
 
@@ -63,11 +63,40 @@ def getSkillsOfEmployeeRepo(employeeId):
 
         skillDoc = skillCollection.document(skillId).get()
 
+        if data["projectId"]:
+            projectQuery = projectCollection.where("id", "in", data["projectId"]).get()
+            projects = []
+            for project in projectQuery:
+                projects.append(project.to_dict())
+            data["projects"] = projects
+
+
         if skillDoc.exists:
             skillDoc = skillDoc.to_dict()
             skillDoc["isApproved"] = data["isApproved"]
-            skillDoc["assignedSkillId"] = data["id"]
+            skillDoc["level"] = data["level"]
+            skillDoc["experience"] = data["experience"]
+            if data["projectId"]:
+                skillDoc["projectId"] = data["projects"]
+            else:
+                skillDoc["projectId"] = []
+
+
+            endorsmentQuery = endorsmentCollection.where("assignedSkillId", "==", data["id"]).get()
+            endorsments = []
+            if endorsmentQuery:
+                for endor in endorsmentQuery:
+                    endorsments.append(endor.to_dict())
+            if endorsments:
+                skillDoc["endorsements"] = endorsments
+            else:
+                skillDoc["endorsements"] = []
+
+
             skills.append(skillDoc)
+
+
+
 
     return skills
 
