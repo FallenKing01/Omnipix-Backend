@@ -12,11 +12,30 @@ def postProjectRepo(project):
         "projectId":insertedItmId
     }
 
+    data = []
+    data.append("xBAS2AnvKQlsO5JptESp")
     projectStatus = {
         "projectId": insertedItmId,
         "status":project["status"],
         "creationDate": datetime.utcnow()
     }
+
+    projectXemployeeToInsert = {
+        "assignementProposalId":"null",
+        "employeeId":project["employeeId"],
+        "projectId":insertedItmId,
+        "isActive":True,
+        "organizationId":project["organizationId"],
+        "workingHours":0,
+        "employeeRolesId":data
+    }
+
+    insertProjXemployee = projectXemployeeCollection.document()
+    insertProjXemployeeId = insertProjXemployee.id
+    projectXemployeeToInsert["id"] = insertProjXemployeeId
+
+    projectXemployeeCollection.add(projectXemployeeToInsert)
+
 
     project.pop("status")
     updateProjectsOfManager(updateProjects)
