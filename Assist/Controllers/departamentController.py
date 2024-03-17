@@ -271,3 +271,16 @@ class availableSkillsInDepartament(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartament.route("/notassignedskills/<string:departamentId>/<string:organizationId>")
+class notAssignedDepartamentSkills(Resource):
+    def get(self,departamentId,organizationId):
+        try:
+
+            return getNotAssignedSkillsOfDepartamentRepo(departamentId,organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

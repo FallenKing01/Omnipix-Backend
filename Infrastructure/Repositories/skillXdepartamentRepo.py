@@ -63,4 +63,39 @@ def getAvailableDepartamentSkills(departamentId,organizationId):
 
     return availableSkills
 
+def getNotAssignedSkillsOfDepartamentRepo(departamentId,organizationId):
+    query = skillXdepartamentCollection.where("departamentId", "==", departamentId).get()
+    skillsOwnedId = []
 
+    if query:
+        for doc in query:
+            currentDoc = doc.to_dict()
+            skillsOwnedId.append(currentDoc["skillId"])
+
+    if not query:
+        skills = []
+        skillsQuery = skillCollection.where("organizationId", "==",organizationId).get()
+
+        if not skillsQuery:
+            raise CustomException(404, "No skills available for this departament")
+
+        for doc in skillsQuery:
+            currentDoc = doc.to_dict()
+            skills.append(currentDoc)
+
+        return skills
+
+
+    skillsQuery = skillCollection.where("organizationId", "==",organizationId).get()
+
+    if not skillsQuery:
+        raise CustomException(404, "No skills available for this departament")
+
+    skills = []
+
+    for doc in skillsQuery:
+        currentDoc = doc.to_dict()
+        if currentDoc["id"] not in skillsOwnedId:
+            skills.append(currentDoc)
+
+    return skills
