@@ -403,9 +403,10 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
         if teamRoles:
             for roleId, roleValue in teamRoles.items():
                 roleDoc = customTeamRoleCollection.document(roleId).get()
-                roleData = roleDoc.to_dict()
-                roleData["value"] = roleValue
-                teamRolesData[roleId] = roleData
+                if roleDoc:
+                    roleData = roleDoc.to_dict()
+                    roleData["value"] = roleValue
+                    teamRolesData[roleId] = roleData
             projectData["teamRoles"] = teamRolesData
 
         projectsData.append(projectData)
@@ -414,7 +415,6 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
         raise CustomException(404, "Projects not found")
 
     return projectsData
-
 
 
 

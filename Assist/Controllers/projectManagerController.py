@@ -127,3 +127,19 @@ class DeleteCategory(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsProjectManager.route("/gettechnologystacks/<string:organizationId>")
+class GetTechnologyStacks(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
+    def get(self,organizationId):
+        try:
+
+            return getTechnologyStackRepo(organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+        except Exception:
+            abort(500, "Something went wrong")
+
+
+

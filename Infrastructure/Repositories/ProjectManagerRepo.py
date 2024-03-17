@@ -1,4 +1,4 @@
-from Domain.extension import projectManagerCollection,employeesCollection,skillCategoryCollection
+from Domain.extension import projectManagerCollection,employeesCollection,skillCategoryCollection,technologyStackCollection
 from Utils.Exceptions.customException import CustomException
 def postProjectManagerRepo(id):
 
@@ -87,4 +87,16 @@ def deleteCategoryRepo(categoryId):
     for doc in query:
         doc.reference.delete()
 
+def getTechnologyStackRepo(organizationId):
+    query = technologyStackCollection.where("organizationId", "==", organizationId).get()
+
+    technologys = []
+
+    for doc in query:
+        category = doc.to_dict()
+        technologys.append(category)
+    if not technologys:
+        raise CustomException(404, "No categories found")
+
+    return technologys
 
