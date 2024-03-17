@@ -264,3 +264,41 @@ def updateEmployeeEmailNameRepo(employeeId, email, name):
     for doc in query:
         doc.reference.update({"email": email, "name": name})
 
+
+def getNotAssignedSkillsOfEmployeeRepo(employeeId,organizationId):
+
+    query = assignedSkillCollection.where("employeeId","==",employeeId).get()
+
+    assignedSkills = []
+
+    if not query:
+        query = skillCollection.where("organizationId", "==", organizationId).get()
+
+        if not query:
+            raise CustomException(404, "Skills not found")
+
+        skills = []
+        for doc in query:
+            currentDoc = doc.to_dict()
+            skills.append(currentDoc)
+
+        return skills
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        assignedSkills.append(currentDoc["skillId"])
+
+    query = skillCollection.where("organizationId","==",organizationId).get()
+    for doc in query:
+        currentDoc = doc.to_dict()
+        if currentDoc["id"] in assignedSkills:
+            query.remove(doc)
+
+    skills = []
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        skills.append(currentDoc)
+
+    return skills
+

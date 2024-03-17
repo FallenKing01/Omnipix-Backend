@@ -284,3 +284,15 @@ class UpdateEmployeeEmailName(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsEmployee.route("/notassignedskills/<string:employeeId>/<string:organizationId>")
+class GetNotAssignedSkillsOfEmployee(Resource):
+    def get(self, employeeId,organizationId):
+        try:
+            return getNotAssignedSkillsOfEmployeeRepo(employeeId,organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
