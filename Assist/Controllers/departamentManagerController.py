@@ -5,13 +5,15 @@ from Utils.Exceptions.customException import CustomException
 from Application.Services.skillService import *
 from Application.Services.departamentService import *
 from Application.Dtos.expect.departamentManagerExpect import *
-
+from flask_jwt_extended import jwt_required
 nsDepartamentManager = Namespace("departamentmanager", authorizations=authorizations,
                                  description="Departament manager operations")
 
 
 @nsDepartamentManager.route("/createskill")
 class PostSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     @nsDepartamentManager.expect(skillPostExpect)
     def post(self):
         try:
@@ -29,6 +31,8 @@ class PostSkill(Resource):
 
 @nsDepartamentManager.route("/getskills/<string:organizationId>")
 class GetSkills(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     @nsDepartamentManager.doc(params={'organizationId': 'The ID of the organization for which to retrieve skills'})
     def get(self, organizationId):
 
@@ -45,6 +49,8 @@ class GetSkills(Resource):
 
 @nsDepartamentManager.route("/ownedskills/<string:authorId>")
 class GetSkillsCreatedByDepartamentManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     @nsDepartamentManager.doc(params={'authorId': 'The id of man who made the skill'})
     def get(self, authorId):
 
@@ -62,6 +68,8 @@ class GetSkillsCreatedByDepartamentManager(Resource):
 
 @nsDepartamentManager.route("/editskill")
 class UpdateSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     @nsDepartamentManager.expect(skillUpdateExpect)
     def put(self):
 
@@ -79,6 +87,8 @@ class UpdateSkill(Resource):
 
 @nsDepartamentManager.route("/managersnodepartament/<string:id>")
 class GetManagersNoDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def get(self, id):
 
         try:
@@ -95,6 +105,8 @@ class GetManagersNoDepartament(Resource):
 
 @nsDepartamentManager.route("/departamentallocationproposal/<string:departamentId>")
 class GetAllocationsProposals(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def get(self, departamentId):
 
         try:
@@ -111,6 +123,8 @@ class GetAllocationsProposals(Resource):
 
 @nsDepartamentManager.route("/departamentdeallocationonproposal/<string:departamentId>")
 class GetDeallocationsProposals(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def get(self, departamentId):
 
         try:
@@ -127,6 +141,8 @@ class GetDeallocationsProposals(Resource):
 
 @nsDepartamentManager.route("/getdepartamentsfromorganization/<string:organizationId>")
 class GetDepartamentsFromOrganization(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def get(self, organizationId):
 
         try:
@@ -142,6 +158,8 @@ class GetDepartamentsFromOrganization(Resource):
 
 @nsDepartamentManager.route("/assignskilldirectly")
 class AssignSkillDirectly(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     @nsDepartamentManager.expect(assignSkillDirectlyExpect)
     def post(self):
 
@@ -158,6 +176,8 @@ class AssignSkillDirectly(Resource):
 
 @nsDepartamentManager.route("/chartdiagramspecialistlevel/<string:departamentId>/<string:skillId>")
 class ChartSpecialistLevel(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def get(self, departamentId, skillId):
 
         try:
@@ -173,6 +193,8 @@ class ChartSpecialistLevel(Resource):
 
 @nsDepartamentManager.route("/kickemployeefromdepartament/<string:employeeId>")
 class KickEmployeeFromDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def put(self, employeeId):
 
         try:
@@ -186,6 +208,8 @@ class KickEmployeeFromDepartament(Resource):
 
 @nsDepartamentManager.route("/deleteskillfromdepartament/<string:skillId>/<string:departamentId>")
 class deleteSkillFromDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def delete(self, skillId,departamentId):
 
         try:
@@ -204,6 +228,8 @@ class deleteSkillFromDepartament(Resource):
 
 @nsDepartamentManager.route("/deleteskillfromorganization/<string:skillId>/<string:organizationId>")
 class deleteSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
     def delete(self, skillId,organizationId):
 
         try:

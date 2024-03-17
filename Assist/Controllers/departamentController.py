@@ -1,4 +1,7 @@
 import uuid
+
+from flask_jwt_extended import jwt_required
+
 from Application.Dtos.expect.departamentExpect import *
 from flask import abort
 from flask_restx import Namespace, Resource
@@ -11,6 +14,8 @@ nsDepartament = Namespace("departament", authorizations=authorizations, descript
 
 @nsDepartament.route("/createdirectlywithmanagerADDITIONAL")
 class PostDepartamentWithManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(departamentPostExpectWithManager)
     def post(self):
         try:
@@ -29,6 +34,8 @@ class PostDepartamentWithManager(Resource):
 
 @nsDepartament.route("/createADDITIONAL")
 class PostDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(departamentPostExpect)
     def post(self):
         try:
@@ -47,6 +54,8 @@ class PostDepartament(Resource):
 
 @nsDepartament.route("/create")
 class PostDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(departamentPostExpect)
     def post(self):
         try:
@@ -63,6 +72,8 @@ class PostDepartament(Resource):
 
 @nsDepartament.route("/skilltodepartament")
 class PostSkillToDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(postDepartamentSkills)
     def post(self):
         try:
@@ -79,6 +90,8 @@ class PostSkillToDepartament(Resource):
 
 @nsDepartament.route("/promotedepartamentmanagerADDITIONAL")
 class PromoteToManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(promoteDepartamentManager)
     def put(self):
         try:
@@ -95,6 +108,8 @@ class PromoteToManager(Resource):
 
 @nsDepartament.route("/skillsofdepartament/<string:departamentId>")
 class PostDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
 
@@ -108,6 +123,8 @@ class PostDepartament(Resource):
 
 @nsDepartament.route("/updatemanager")
 class UpdateDepartamentManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(updateManagerExpect)
     def put(self):
         try:
@@ -127,6 +144,8 @@ class UpdateDepartamentManager(Resource):
 class UpdateDepartamentName(Resource):
     @nsDepartament.expect(updateDepartamentNameExpect)
     def put(self):
+        # method_decorators = [jwt_required()]
+        # @nsDepartament.doc(security="jsonWebToken")
         try:
 
             updateNameOfDepartamentService(api.payload)
@@ -141,6 +160,8 @@ class UpdateDepartamentName(Resource):
 
 @nsDepartament.route("/deletedepartament/<string:departamentId>")
 class DeleteDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def delete(self,departamentId):
         try:
             deleteDepartamentService(departamentId)
@@ -157,6 +178,8 @@ class DeleteDepartament(Resource):
 
 @nsDepartament.route("/firstpromotedepartamentmanager")
 class PromoteFirstTimeToDepartamentManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(promoteDepartamentManager)
     def put(self):
         try:
@@ -174,6 +197,8 @@ class PromoteFirstTimeToDepartamentManager(Resource):
 
 @nsDepartament.route("/acceptprojectproposal")
 class AcceptProjectProposal(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(acceptProposalExpect)
     def post(self):
         try:
@@ -189,6 +214,8 @@ class AcceptProjectProposal(Resource):
 
 @nsDepartament.route("/declineprojectproposal/<string:id>")
 class DeclineProposal(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def delete(self,id):
         try:
 
@@ -204,6 +231,8 @@ class DeclineProposal(Resource):
 
 @nsDepartament.route("/declinedealocationproposal/<string:id>")
 class DeclineDealocationProposal(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def delete(self,id):
         try:
 
@@ -219,6 +248,8 @@ class DeclineDealocationProposal(Resource):
 
 @nsDepartament.route("/createadealocationproposal")
 class CreateDealocationProposal(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(dealocationProposalExpect)
     def post(self):
         try:
@@ -233,6 +264,8 @@ class CreateDealocationProposal(Resource):
 
 @nsDepartament.route("/acceptdealocatioproposal")
 class AcceptDealocationProposal(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     @nsDepartament.expect(acceptDealocationProposal)
     def put(self):
         try:
@@ -248,6 +281,8 @@ class AcceptDealocationProposal(Resource):
 
 @nsDepartament.route("/getnamedepartament/<string:employeeId>")
 class GetNameDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def get(self,employeeId):
         try:
 
@@ -261,6 +296,8 @@ class GetNameDepartament(Resource):
 
 @nsDepartament.route("availableskills/<string:departamentId>/<string:organizationId>")
 class availableSkillsInDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def get(self,departamentId,organizationId):
         try:
 
@@ -274,6 +311,8 @@ class availableSkillsInDepartament(Resource):
 
 @nsDepartament.route("/notassignedskills/<string:departamentId>/<string:organizationId>")
 class notAssignedDepartamentSkills(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartament.doc(security="jsonWebToken")
     def get(self,departamentId,organizationId):
         try:
 

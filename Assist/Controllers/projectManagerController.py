@@ -2,6 +2,7 @@ from flask_restx import Namespace, Resource
 from flask import abort
 from Domain.extension import  authorizations,api
 from Utils.Exceptions.customException import CustomException
+from flask_jwt_extended import jwt_required
 from Application.Services.tecnologyStackService import createTecnologyStackService
 from Application.Services.projectManagerService import *
 from Application.Dtos.expect.projectManagerExpect import *
@@ -9,6 +10,8 @@ nsProjectManager = Namespace("projectmanager",authorizations=authorizations,desc
 
 @nsProjectManager.route("/searchname/<string:organizationId>/<string:name>")
 class SearchNameUser(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     def get(self,organizationId,name):
         try:
             employee = {
@@ -28,6 +31,8 @@ class SearchNameUser(Resource):
 
 @nsProjectManager.route("/createprojectmanager/<string:id>")
 class PostProjectManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     def post(self,id):
         try:
 
@@ -44,6 +49,8 @@ class PostProjectManager(Resource):
 
 @nsProjectManager.route("/technologystack")
 class PostTechnologyStack(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     @nsProjectManager.expect(technologyStackExpect)
     def post(self):
         try:
@@ -61,6 +68,8 @@ class PostTechnologyStack(Resource):
 
 @nsProjectManager.route("/demoteprojectmanager/<string:employeeId>")
 class DemoteProjectManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     def delete(self,employeeId):
         try:
 
@@ -75,6 +84,8 @@ class DemoteProjectManager(Resource):
 
 @nsProjectManager.route("/postskillcategory")
 class PostSkillCategory(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     @nsProjectManager.expect(postSkillCategory)
     def post(self):
         try:
@@ -88,6 +99,8 @@ class PostSkillCategory(Resource):
 
 @nsProjectManager.route("/getskillcategories/<string:organizationId>")
 class GetSkillCategories(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     def get(self,organizationId):
         try:
 
@@ -100,6 +113,8 @@ class GetSkillCategories(Resource):
 
 @nsProjectManager.route("/deletecategory/<string:categoryId>")
 class DeleteCategory(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProjectManager.doc(security="jsonWebToken")
     def delete(self,categoryId):
         try:
 

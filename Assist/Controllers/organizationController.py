@@ -11,8 +11,12 @@ from Utils.Exceptions.customException import CustomException
 nsOrganization = Namespace("organization", authorizations=authorizations, description="Organizations operations")
 
 
+
+
 @nsOrganization.route("/create")
 class PostOrganization(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsOrganization.doc(security="jsonWebToken")
     @nsOrganization.expect(organizationPostExpect)
     def post(self):
         try:
@@ -25,6 +29,8 @@ class PostOrganization(Resource):
 
 @nsOrganization.route("/teamroles/<string:organizationId>")
 class getTeamRoleCollection(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsOrganization.doc(security="jsonWebToken")
     def get(self, organizationId):
         try:
             return getOrganizationRolesRepo(organizationId)

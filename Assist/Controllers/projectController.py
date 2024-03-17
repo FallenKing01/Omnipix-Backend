@@ -4,10 +4,14 @@ from flask import abort
 from Domain.extension import  authorizations,api
 from Utils.Exceptions.customException import CustomException
 from Application.Services.projectService import postProjectService
+from flask_jwt_extended import jwt_required
 nsProject = Namespace("project",authorizations=authorizations,description="Project operations")
 from Application.Services.projectService import *
+
 @nsProject.route("")
 class CreateProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     @nsProject.expect(postProjectExpect)
     def post(self):
         try:
@@ -23,6 +27,8 @@ class CreateProject(Resource):
             abort(500, "Something went wrong")
 @nsProject.route("/updateproject")
 class UpdateProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     @nsProject.expect(updateProjectExpect)
     def put(self):
 
@@ -40,6 +46,8 @@ class UpdateProject(Resource):
 
 @nsProject.route("/assignproposal")
 class CreateAssignmentProposal(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     @nsProject.expect(assignmentProposalExpect)
     def post(self):
         try:
@@ -56,6 +64,8 @@ class CreateAssignmentProposal(Resource):
 
 @nsProject.route("/assgnmentrequest/<string:departamentId>")
 class GetAssignRequest(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
 
@@ -69,6 +79,8 @@ class GetAssignRequest(Resource):
 
 @nsProject.route("/closeproject/<string:id>")
 class CloseProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def put(self,id):
         try:
 
@@ -84,6 +96,8 @@ class CloseProject(Resource):
 
 @nsProject.route("/inactivemembersproject/<string:projectId>")
 class GetInactiveMembersFromProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,projectId):
         try:
 
@@ -99,6 +113,8 @@ class GetInactiveMembersFromProject(Resource):
 
 @nsProject.route("/activemembersproject/<string:projectId>")
 class GetActiveMembersFromProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,projectId):
         try:
 
@@ -113,6 +129,8 @@ class GetActiveMembersFromProject(Resource):
 
 @nsProject.route("/projectdetailinactive/<string:employeeId>")
 class GetInactiveUserInfoFromProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,employeeId):
         try:
 
@@ -126,6 +144,8 @@ class GetInactiveUserInfoFromProject(Resource):
 
 @nsProject.route("/projectdetailactive/<string:employeeId>")
 class GetActiveUserInfoFromProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,employeeId):
         try:
 
@@ -139,6 +159,8 @@ class GetActiveUserInfoFromProject(Resource):
 
 @nsProject.route("/getprojectsfromorganization/<string:organizationId>")
 class GetProjectsFromOrganization(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,organizationId):
         try:
 
@@ -152,6 +174,8 @@ class GetProjectsFromOrganization(Resource):
 
 @nsProject.route("/getprojectsfromadepartamentmembers/<string:departamentId>")
 class GetProjectsFromOrganization(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
 
@@ -165,6 +189,8 @@ class GetProjectsFromOrganization(Resource):
 
 @nsProject.route("/getprojectdetail/<string:projectId>")
 class GetProjectDetail(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,projectId):
         try:
 
@@ -178,6 +204,8 @@ class GetProjectDetail(Resource):
 
 @nsProject.route("/deleteproject/<string:projectId>")
 class DeleteProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def delete(self,projectId):
         try:
             projectToDeleteRepo(projectId)
@@ -191,6 +219,8 @@ class DeleteProject(Resource):
 
 @nsProject.route("/getprojectbystatus/<string:status>/<string:organizationId>")
 class getProjectByStatus(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
     def get(self,status,organizationId):
         try:
             return getProjectAfterStatusRepo(status,organizationId)

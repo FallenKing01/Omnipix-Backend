@@ -3,6 +3,7 @@ from flask import abort
 from flask_restx import Namespace, Resource
 from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
+from flask_jwt_extended import jwt_required
 from Application.Services.departamentService import *
 createManager = Namespace("test", authorizations=authorizations, description="Departament operations")
 from Application.Services.createDepartService import postDepartManService
@@ -11,6 +12,8 @@ nsTest = Namespace("departamentpromotion", authorizations=authorizations, descri
 
 @nsTest.route("/")
 class PostDepartamentManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsTest.doc(security="jsonWebToken")
     @nsTest.expect(postDepartamentManagerExpect)
     def post(self):
         try:

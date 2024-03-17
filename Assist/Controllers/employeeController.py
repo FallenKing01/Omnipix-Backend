@@ -30,6 +30,8 @@ class PostUser(Resource):
 
 @nsEmployee.route("/postskillinproject")
 class PostProjectSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     @nsEmployee.expect(postProjectSkill)
 
     def post(self):
@@ -47,7 +49,8 @@ class PostProjectSkill(Resource):
 
 @nsEmployee.route("/getskills/<string:userId>")
 class GetUserSkills(Resource):
-
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self,userId):
         try:
 
@@ -61,6 +64,8 @@ class GetUserSkills(Resource):
 
 @nsEmployee.route("/assignskill")
 class AssignSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     @nsEmployee.expect(assignSkill)
     def post(self):
         try:
@@ -79,6 +84,8 @@ class AssignSkill(Resource):
 
 @nsEmployee.route("/assigndepartament")
 class AssignDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     @nsEmployee.expect(assignDepartament)
     def put(self):
         try:
@@ -94,6 +101,8 @@ class AssignDepartament(Resource):
 
 @nsEmployee.route("/roles/<string:id>")
 class GetUserRoles(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self,id):
         try:
             roles = getUserRolesService(id)
@@ -109,6 +118,8 @@ class GetUserRoles(Resource):
 
 @nsEmployee.route("/deleteskillfromproject/<string:id>")
 class DeleteSkillFromProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def delete(self,id):
         try:
             deleteSkillFromProjectService(id)
@@ -123,6 +134,8 @@ class DeleteSkillFromProject(Resource):
 
 @nsEmployee.route("/getskillsfromproject/<string:id>")
 class GetSkillsFromProject(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self,id):
         try:
             skills = getSkillsFromProjectService(id)
@@ -138,8 +151,9 @@ class GetSkillsFromProject(Resource):
 
 @nsEmployee.route("/organizationemployees/<string:id>")
 class GetOrganizationEmployees(Resource):
-    method_decorators = [jwt_required()]
 
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     @nsEmployee.doc(security="jsonWebToken")
 
     def get(self,id):
@@ -156,8 +170,8 @@ class GetOrganizationEmployees(Resource):
 
 @nsEmployee.route("/departamentemployees/<string:departamentId>")
 class GetDepartamentEmployees(Resource):
-    method_decorators = [jwt_required()]
-
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     @nsEmployee.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
@@ -173,6 +187,8 @@ class GetDepartamentEmployees(Resource):
 
 @nsEmployee.route("/inactiveskils/<string:departamentId>")
 class GetInactiveSkills(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
             skills = getInactiveAssignSkills(departamentId)
@@ -190,6 +206,8 @@ class GetInactiveSkills(Resource):
 
 @nsEmployee.route("/activateaskill/<string:skillId>")
 class GetInactiveSkills(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self,skillId):
         try:
             acceptProposalForSkill(skillId)
@@ -204,6 +222,8 @@ class GetInactiveSkills(Resource):
 
 @nsEmployee.route("/activateaskill/<string:skillId>")
 class ActivateSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def put(self,skillId):
         try:
             acceptProposalForSkill(skillId)
@@ -218,6 +238,8 @@ class ActivateSkill(Resource):
 
 @nsEmployee.route("/declineproposalskill/<string:skillId>")
 class DeclineSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def delete(self,skillId):
         try:
             declineProposalForSkill(skillId)
@@ -233,6 +255,8 @@ class DeclineSkill(Resource):
 
 @nsEmployee.route("/getendorsmentofskill/<string:assignedSkillId>")
 class GetEndorsmentOfSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self, assignedSkillId):
         try:
             endorsment = getEndorsmentOfSkill(assignedSkillId)
@@ -247,6 +271,8 @@ class GetEndorsmentOfSkill(Resource):
 
 @nsEmployee.route("/info/<string:employeeId>")
 class GetInfoParticularyEmployee(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self, employeeId):
         try:
             return getInfoAboutUserRepo(employeeId)
@@ -260,6 +286,8 @@ class GetInfoParticularyEmployee(Resource):
 
 @nsEmployee.route("/employeesnodepartament/<string:organizationId>")
 class GetEmployeesNotInDepartament(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self, organizationId):
         try:
             return getEmployeesNoDepartament(organizationId)
@@ -273,6 +301,8 @@ class GetEmployeesNotInDepartament(Resource):
 
 @nsEmployee.route("/editemailandname/<string:employeeId>/<string:email>/<string:name>")
 class UpdateEmployeeEmailName(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def put(self, employeeId, email, name):
         try:
             updateEmployeeEmailNameRepo(employeeId, email, name)
@@ -287,6 +317,8 @@ class UpdateEmployeeEmailName(Resource):
 
 @nsEmployee.route("/notassignedskills/<string:employeeId>/<string:organizationId>")
 class GetNotAssignedSkillsOfEmployee(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
     def get(self, employeeId,organizationId):
         try:
             return getNotAssignedSkillsOfEmployeeRepo(employeeId,organizationId)

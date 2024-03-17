@@ -52,8 +52,9 @@ class PostUser(Resource):
 class DeleteUser(Resource):
     method_decorators = [jwt_required()]
 
-    @nsAdmin.doc(params={"email": "User email"})
     @nsAdmin.doc(security="jsonWebToken")
+    @nsAdmin.doc(params={"email": "User email"})
+
     def delete(self, email):
         try:
             deleteUserService(email)
