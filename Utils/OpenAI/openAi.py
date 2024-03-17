@@ -1,5 +1,6 @@
 from openai import AzureOpenAI
 from Domain.extension import assignedSkillCollection,employeesCollection,skillCollection
+import json
 
 def getMatchEmployees(organizationId):
     employeesQuery = employeesCollection.where("organizationId", "==", organizationId).get()
@@ -44,8 +45,12 @@ def getMatchEmployees(organizationId):
                         finalResponse["workingHours"] = docEmployee["workingHours"]
 
                 result.append(finalResponse)
+    print(result)
     return result
 
+
+
+import json
 
 def getResponseFromChat(data):
     api_key = "ded4845c62e94742896cccf6dad671ee"
@@ -75,4 +80,10 @@ def getResponseFromChat(data):
         stop=None
     )
 
-    return completion.choices[0].message.content
+    # Access the JSON string within the ChatCompletionMessage object
+    completion_message_json = completion.choices[0].message.content
+
+    # Parse the JSON string
+    message_json = json.loads(completion_message_json)
+
+    return message_json
