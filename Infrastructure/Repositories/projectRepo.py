@@ -56,7 +56,7 @@ def updateProjectRepo(project):
     # technologyToAdd = project.get("technologyToAdd", [])
     # teamRolesToAdd = project.get("teamRolesToAdd", [])
     # teamRolesToDelete = project.get("teamRolesToDelete", [])
-
+    #check conflict
     for doc in docs:
         doc.reference.update({
             "technologyStack": project["technologyStack"],
