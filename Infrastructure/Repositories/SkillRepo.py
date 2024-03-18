@@ -52,7 +52,7 @@ def getSkillByAutorIdRepo(id):
 
 def getSkillsOfEmployeeRepo(employeeId):
 
-    query = assignedSkillCollection.where("employeeId", "==", employeeId).get()
+    query = assignedSkillCollection.where("employeeId", "==", employeeId).where("isApproved","==",True).get()
 
     skills = []
     for doc in query:
@@ -94,9 +94,6 @@ def getSkillsOfEmployeeRepo(employeeId):
 
 
             skills.append(skillDoc)
-
-
-
 
     return skills
 
