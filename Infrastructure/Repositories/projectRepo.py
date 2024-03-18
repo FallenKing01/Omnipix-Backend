@@ -2,7 +2,6 @@ from Domain.extension import assignedSkillCollection,skillCollection,technologyS
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 from Utils.Exceptions.customException import CustomException
-import spacy
 
 def postProjectRepo(project):
 
@@ -552,27 +551,26 @@ def getProposedMembersRepo(projectId):
 
     return proposedMembers
 
-def partiallyAvailableEmployeesRepo(organizationId, projectId):
-    nlp = spacy.load("en_core_web_md")
 
+def partiallyAvailableEmployeesRepo(organizationId, projectId):
     query = employeesCollection.where("organizationId", "==", organizationId).get()
     projectQuery = projectCollection.where("id", "==", projectId).get()
     projectSkillsRequired = []
     projectSkills = []
     technologyStackNames = []
+
     for doc in projectQuery:
         currentDoc = doc.to_dict()
         projectSkills = currentDoc["technologyStack"]
 
     projectSkillsRequired = technologyStackCollection.where("id", "in", projectSkills).get()
 
-
     for doc in projectSkillsRequired:
         currentDoc = doc.to_dict()
         technologyStackNames.append(currentDoc["name"])
-    # print(technologyStackNames)
 
     finalResult = []
+
     if query:
         for doc in query:
             currentDoc = doc.to_dict()
@@ -586,21 +584,19 @@ def partiallyAvailableEmployeesRepo(organizationId, projectId):
                     currentSkill = skills.to_dict()
                     skillsIds.append(currentSkill["skillId"])
 
-
                 currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
                 for skill in currentEmployeeSkills:
                     currentSkill = skill.to_dict()
                     skillName.append(currentSkill["name"])
 
                 print(skillName)
-                # print(projectSkillsRequired)
-                # print(skillName)
-                # Calculate semantic similarity between skill names and technology stack names
+                print(technologyStackNames)
+
                 for skill in skillName:
                     for tech_stack in technologyStackNames:
-                        similarity = nlp(skill).similarity(nlp(tech_stack))
-                        # You can set a threshold for similarity and consider a match if it's above the threshold
-                        if similarity > 0.0:  # Example threshold, adjust as needed
+                        if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
                             finalResult.append(currentDoc)
 
     return finalResult
+
+
