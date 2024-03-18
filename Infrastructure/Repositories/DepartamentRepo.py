@@ -473,3 +473,9 @@ def getProposalForSkillsFromDepartamentRepo(departamentId):
             finalResult.append(skill)
 
     return finalResult
+
+def approveSkillRepo(assignedSkillId):
+    assignedSkillCollection.document(assignedSkillId).update({"isApproved": True})
+
+def denySkillRepo(assignedSkillId):
+    assignedSkillCollection.document(assignedSkillId).delete()

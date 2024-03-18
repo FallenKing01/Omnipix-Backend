@@ -277,3 +277,35 @@ class GetProposalsForSkills(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsDepartamentManager.route("/denyproposalsforskills/<string:proposalId>")
+class DenyProposalsForSkills(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
+    def delete(self, proposalId):
+
+        try:
+            denySkillRepo(proposalId)
+
+            return {"message":"Proposal denied"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+@nsDepartamentManager.route("/approveproposalsforskills/<string:proposalId>")
+class ApproveProposalsForSkills(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
+    def put(self, proposalId):
+
+        try:
+            approveSkillRepo(proposalId)
+
+            return {"message":"Proposal approved"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
