@@ -52,10 +52,10 @@ def updateProjectRepo(project):
     query = projectCollection.where("id", "==", project["projectId"])
     docs = query.get()
 
-    technologyToDelete = project.get("technologyToDelete", [])
-    technologyToAdd = project.get("technologyToAdd", [])
-    teamRolesToAdd = project.get("teamRolesToAdd", [])
-    teamRolesToDelete = project.get("teamRolesToDelete", [])
+    # technologyToDelete = project.get("technologyToDelete", [])
+    # technologyToAdd = project.get("technologyToAdd", [])
+    # teamRolesToAdd = project.get("teamRolesToAdd", [])
+    # teamRolesToDelete = project.get("teamRolesToDelete", [])
 
     for doc in docs:
         doc.reference.update({
@@ -68,30 +68,30 @@ def updateProjectRepo(project):
             "description": project["description"],
         })
 
-        current_technology_stack = doc.to_dict().get("technologyStack", [])
-
-        for tech in technologyToDelete:
-            if tech in current_technology_stack:
-                current_technology_stack.remove(tech)
-
-        for tech in technologyToAdd:
-            current_technology_stack.append(tech)
-
-        doc.reference.update({
-            "technologyStack": current_technology_stack
-        })
-
-        current_team_roles = doc.to_dict().get("teamRoles", {})
-
-        for role_id in teamRolesToDelete:
-            if role_id in current_team_roles:
-                del current_team_roles[role_id]
-
-        current_team_roles.update(teamRolesToAdd)
-
-        doc.reference.update({
-            "teamRoles": current_team_roles
-        })
+        # current_technology_stack = doc.to_dict().get("technologyStack", [])
+        #
+        # for tech in technologyToDelete:
+        #     if tech in current_technology_stack:
+        #         current_technology_stack.remove(tech)
+        #
+        # for tech in technologyToAdd:
+        #     current_technology_stack.append(tech)
+        #
+        # doc.reference.update({
+        #     "technologyStack": current_technology_stack
+        # })
+        #
+        # current_team_roles = doc.to_dict().get("teamRoles", {})
+        #
+        # for role_id in teamRolesToDelete:
+        #     if role_id in current_team_roles:
+        #         del current_team_roles[role_id]
+        #
+        # current_team_roles.update(teamRolesToAdd)
+        #
+        # doc.reference.update({
+        #     "teamRoles": current_team_roles
+        # })
 
 def getProjectByIdRepo(id):
     query = projectCollection.where("id","==",id).get()
