@@ -63,11 +63,15 @@ def updateProjectRepo(project):
         doc.reference.update({
             "technologyStack": project["technologyStack"],
             "teamRoles": project["teamRoles"],
-            "status": project["status"],
             "name": project["name"],
             "period": project["period"],
             "startDate": project["startDate"],
             "description": project["description"],
+        })
+    query = projectStatusCollection.where("projectId", "==", project["projectId"]).get()
+    for doc in query:
+        doc.reference.update({
+            "status": project["status"]
         })
 
         # current_technology_stack = doc.to_dict().get("technologyStack", [])

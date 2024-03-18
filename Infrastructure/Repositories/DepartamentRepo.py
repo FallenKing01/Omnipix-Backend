@@ -449,3 +449,21 @@ def demoteDepartamentManagerRepo(employeeId):
 
     for doc in query:
         doc.reference.delete()
+
+def getProposalForSkillsFromDepartamentRepo(departamentId):
+
+    assignedSkillCollectionQuery = assignedSkillCollection.where("departamentId", "==", departamentId).where("isApproved", "==", None).get()
+
+    skills = []
+    if assignedSkillCollectionQuery:
+        for skill in assignedSkillCollectionQuery:
+            skills.append(skill.to_dict())
+
+    finalResult = []
+    if skills:
+        for skill in skills:
+            employee = employeesCollection.document(skill["employeeId"]).get().to_dict()
+            skill["employeeId"] = employee
+            finalResult.append(skill)
+
+    return finalResult

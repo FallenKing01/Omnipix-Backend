@@ -8,4 +8,8 @@ flask_cors==4.0.0
 firebase-admin==6.4.0
 bcrypt==4.1.2
 openai==1.14.1
-spacy==3.7.4
+spacy==3.1.0
+en-core-web-md==3.1.0
+
+
+
