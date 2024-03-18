@@ -248,7 +248,7 @@ class deleteSkill(Resource):
 class DemoteDepartamentManager(Resource):
     # method_decorators = [jwt_required()]
     # @nsDepartamentManager.doc(security="jsonWebToken")
-    def put(self, employeeId):
+    def delete(self, employeeId):
 
         try:
             demoteDepartamentManagerRepo(employeeId)
