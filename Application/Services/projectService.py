@@ -19,7 +19,6 @@ def postProjectService(project):
 
 def updateProjectService(project):
 
-    getProjectByIdService(project["projectId"])
     updateProjectRepo(project)
 
 def assignProposalService(assignRequest):
