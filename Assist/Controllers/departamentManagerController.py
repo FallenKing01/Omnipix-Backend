@@ -244,6 +244,21 @@ class deleteSkill(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsDepartamentManager.route("/demotedepartamentmanager/<string:employeeId>")
+class DemoteDepartamentManager(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
+    def put(self, employeeId):
 
+        try:
+            demoteDepartamentManagerRepo(employeeId)
+
+            return {"message":"Departament manager demoted"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
 
 

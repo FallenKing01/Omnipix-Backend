@@ -33,7 +33,7 @@ def postUserRepository(user):
     insertedItm = employeesCollection.document()
     documentId = insertedItm.id
 
-    user["departamentId"]="null"
+    user["departamentId"]=None
     user["workingHours"]=0
     user["id"] = documentId
 
@@ -251,7 +251,7 @@ def getInfoAboutUserRepo(id):
     return userInfo
 
 def getEmployeesNoDepartament(organizationId):
-    query = employeesCollection.where("organizationId","==",organizationId).where("departamentId","==","null").get()
+    query = employeesCollection.where("organizationId","==",organizationId).where("departamentId","==",None).get()
 
     employees = []
 

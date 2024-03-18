@@ -21,7 +21,7 @@ def postProjectRepo(project):
     }
 
     projectXemployeeToInsert = {
-        "assignementProposalId":"null",
+        "assignementProposalId":None,
         "employeeId":project["employeeId"],
         "projectId":insertedItmId,
         "isActive":True,
