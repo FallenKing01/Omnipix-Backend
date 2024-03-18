@@ -38,3 +38,18 @@ def getOrganizationRolesRepo(organizationId):
         raise CustomException(404,"Team roles not found")
 
     return teamRoles
+
+def getOrganizationRepo(organizationId):
+
+        query = organizationCollection.where("id", "==", organizationId).limit(1).get()
+
+        organization = None
+        if query:
+            for doc in query:
+                organization = doc.to_dict()
+                break
+
+        if organization == None:
+            raise CustomException(404,"Organization not found")
+
+        return organization

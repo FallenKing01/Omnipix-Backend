@@ -1,7 +1,7 @@
 from flask import abort
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource
-from Infrastructure.Repositories.OrganizationsRepo import getOrganizationRolesRepo
+from Infrastructure.Repositories.OrganizationsRepo import getOrganizationRolesRepo, getOrganizationRepo
 from Application.Dtos.expect.organizationExpect import organizationPostExpect
 
 from Application.Services.organizationServices import postOrganizationService
@@ -34,6 +34,18 @@ class getTeamRoleCollection(Resource):
     def get(self, organizationId):
         try:
             return getOrganizationRolesRepo(organizationId)
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+        except Exception as e:
+            abort(500, "Something went wrong")
+
+@nsOrganization.route("/<string:organizationId>")
+class getOrganization(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsOrganization.doc(security="jsonWebToken")
+    def get(self, organizationId):
+        try:
+            return getOrganizationRepo(organizationId)
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
         except Exception as e:
