@@ -28,7 +28,7 @@ updateProjectExpect = api.model("Update project", {
     "deadlineDate": fields.DateTime,
     "description": fields.String,
     "technologyStack": fields.List(fields.String),
-    "teamRoles": fields.List(fields.String),
+    "teamRoles": fields.Raw,  # Using Raw field to accept any JSON structure
 })
 
 assignmentProposalExpect = api.model("Assignment proposal", {
