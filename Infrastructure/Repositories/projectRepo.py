@@ -599,4 +599,96 @@ def partiallyAvailableEmployeesRepo(organizationId, projectId):
 
     return finalResult
 
+def unavibleEmployeesRepo(organizationId, projectId):
+    query = employeesCollection.where("organizationId", "==", organizationId).get()
+    projectQuery = projectCollection.where("id", "==", projectId).get()
+    projectSkillsRequired = []
+    projectSkills = []
+    technologyStackNames = []
+
+    for doc in projectQuery:
+        currentDoc = doc.to_dict()
+        projectSkills = currentDoc["technologyStack"]
+
+    projectSkillsRequired = technologyStackCollection.where("id", "in", projectSkills).get()
+
+    for doc in projectSkillsRequired:
+        currentDoc = doc.to_dict()
+        technologyStackNames.append(currentDoc["name"])
+
+    finalResult = []
+
+    if query:
+        for doc in query:
+            currentDoc = doc.to_dict()
+            if currentDoc["workingHours"] ==8:
+                currentDoc.pop("password", None)
+                skillName = []
+                assignedSkills = assignedSkillCollection.where("employeeId", "==", currentDoc["id"]).get()
+                skillsIds = []
+
+                for skills in assignedSkills:
+                    currentSkill = skills.to_dict()
+                    skillsIds.append(currentSkill["skillId"])
+
+                currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
+                for skill in currentEmployeeSkills:
+                    currentSkill = skill.to_dict()
+                    skillName.append(currentSkill["name"])
+
+                for skill in skillName:
+                    for tech_stack in technologyStackNames:
+                        if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
+                            finalResult.append(currentDoc)
+
+    return finalResult
+
+def freeEmployeesRepo(organizationId, projectId):
+    query = employeesCollection.where("organizationId", "==", organizationId).get()
+    projectQuery = projectCollection.where("id", "==", projectId).get()
+    projectSkillsRequired = []
+    projectSkills = []
+    technologyStackNames = []
+
+    for doc in projectQuery:
+        currentDoc = doc.to_dict()
+        projectSkills = currentDoc["technologyStack"]
+
+    projectSkillsRequired = technologyStackCollection.where("id", "in", projectSkills).get()
+
+    for doc in projectSkillsRequired:
+        currentDoc = doc.to_dict()
+        technologyStackNames.append(currentDoc["name"])
+
+    finalResult = []
+
+    if query:
+        for doc in query:
+            currentDoc = doc.to_dict()
+            if currentDoc["workingHours"] == 0:
+                currentDoc.pop("password", None)
+                skillName = []
+                assignedSkills = assignedSkillCollection.where("employeeId", "==", currentDoc["id"]).get()
+                skillsIds = []
+
+                for skills in assignedSkills:
+                    currentSkill = skills.to_dict()
+                    skillsIds.append(currentSkill["skillId"])
+
+                if skillsIds:  # Check if skillsIds is not empty before executing the query
+                    currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
+                    for skill in currentEmployeeSkills:
+                        currentSkill = skill.to_dict()
+                        skillName.append(currentSkill["name"])
+
+                for skill in skillName:
+                    for tech_stack in technologyStackNames:
+                        if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
+                            finalResult.append(currentDoc)
+
+    return finalResult
+
+
+
+
 

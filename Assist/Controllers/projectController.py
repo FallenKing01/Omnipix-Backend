@@ -259,3 +259,31 @@ class getPartialyAvailableEmployees(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/unavailableavailableemployees/<string:organizationId>/<string:projectId>")
+class getUnavailableEmployees(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
+    def get(self,organizationId,projectId):
+        try:
+            return unavibleEmployeesRepo(organizationId,projectId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsProject.route("/freeemployees/<string:organizationId>/<string:projectId>")
+class getUnavailableEmployees(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
+    def get(self,organizationId,projectId):
+        try:
+            return freeEmployeesRepo(organizationId,projectId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
