@@ -87,8 +87,6 @@ def getUserRolesService(id):
 
 def postSkillInProjectService(skill):
 
-    getProjectByIdService(skill["projectId"])
-
     return postSkillInProjectRepo(skill)
 
 def deleteSkillFromProjectService(id):
