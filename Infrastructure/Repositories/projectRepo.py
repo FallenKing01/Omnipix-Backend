@@ -1,7 +1,9 @@
-from Domain.extension import skillCollection,technologyStackCollection,customTeamRoleCollection,dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
+from Domain.extension import assignedSkillCollection,skillCollection,technologyStackCollection,customTeamRoleCollection,dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 from Utils.Exceptions.customException import CustomException
+import spacy
+
 def postProjectRepo(project):
 
     insertedItm = projectCollection.document()
@@ -546,24 +548,55 @@ def getProposedMembersRepo(projectId):
 
     return proposedMembers
 
-def partialyAvailableEmployeesRepo(organizationId,projectId):
+def partiallyAvailableEmployeesRepo(organizationId, projectId):
+    nlp = spacy.load("en_core_web_md")
+
     query = employeesCollection.where("organizationId", "==", organizationId).get()
-    projectQuery = projectCollection.where("id","==",projectId).get()
+    projectQuery = projectCollection.where("id", "==", projectId).get()
+    projectSkillsRequired = []
+    projectSkills = []
+    technologyStackNames = []
+    for doc in projectQuery:
+        currentDoc = doc.to_dict()
+        projectSkills = currentDoc["technologyStack"]
+
+    projectSkillsRequired = technologyStackCollection.where("id", "in", projectSkills).get()
 
 
-    employees = []
+    for doc in projectSkillsRequired:
+        currentDoc = doc.to_dict()
+        technologyStackNames.append(currentDoc["name"])
+    # print(technologyStackNames)
+
+    finalResult = []
     if query:
         for doc in query:
             currentDoc = doc.to_dict()
-            if currentDoc[("workingHours")] < 8 and currentDoc[("workingHours")] > 0:
-                currentDoc.pop("password",None)
-                employees.append(currentDoc)
+            if currentDoc["workingHours"] < 8 and currentDoc["workingHours"] > 0:
+                currentDoc.pop("password", None)
                 skillName = []
-                currentEmployeeSkills = skillCollection.where("employeeId","==",currentDoc["id"]).get()
-                for skills in currentEmployeeSkills:
+                assignedSkills = assignedSkillCollection.where("employeeId", "==", currentDoc["id"]).get()
+                skillsIds = []
+
+                for skills in assignedSkills:
                     currentSkill = skills.to_dict()
+                    skillsIds.append(currentSkill["skillId"])
+
+
+                currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
+                for skill in currentEmployeeSkills:
+                    currentSkill = skill.to_dict()
                     skillName.append(currentSkill["name"])
 
-    return employees
+                print(skillName)
+                # print(projectSkillsRequired)
+                # print(skillName)
+                # Calculate semantic similarity between skill names and technology stack names
+                for skill in skillName:
+                    for tech_stack in technologyStackNames:
+                        similarity = nlp(skill).similarity(nlp(tech_stack))
+                        # You can set a threshold for similarity and consider a match if it's above the threshold
+                        if similarity > 0.0:  # Example threshold, adjust as needed
+                            finalResult.append(currentDoc)
 
-
+    return finalResult
