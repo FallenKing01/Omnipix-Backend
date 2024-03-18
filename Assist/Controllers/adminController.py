@@ -9,7 +9,7 @@ from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.organizationXadminRepo import postorganizationXadminRepository
 from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo, \
-    deleteOrganizationAdminRoleRepo, updateCustomRoleRepo, getCustomRoleFromOrganizationRepo
+    deleteOrganizationAdminRoleRepo, updateCustomRoleRepo, getCustomRoleFromOrganizationRepo, deleteCustomTeamRoleRepo
 
 nsAdmin = Namespace("admin", authorizations=authorizations, description="Admin operations")
 
@@ -157,6 +157,21 @@ class GetCustomRole(Resource):
             roles = getCustomRoleFromOrganizationRepo(organizationId)
 
             return roles
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsAdmin.route("/deletecustomrole/<string:customRoleId>/<string:organizationId>")
+class DeleteCustomRole(Resource):
+    def delete(self,customRoleId,organizationId):
+        try:
+
+            deleteCustomTeamRoleRepo(customRoleId, organizationId)
+
+            return {"message":"Role deleted succesfully"}
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

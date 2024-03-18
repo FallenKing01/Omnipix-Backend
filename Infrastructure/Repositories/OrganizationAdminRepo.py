@@ -53,17 +53,20 @@ def getCustomRoleFromOrganizationRepo(organizationId):
     return teamRoles
 
 def deleteCustomTeamRoleRepo(customRoleId, organizationId):
-    # Delete the custom role from customTeamRoleCollection
+
     query = customTeamRoleCollection.where("id", "==", customRoleId).get()
     for doc in query:
         doc.reference.delete()
 
-    # Update documents in projectXemployeeCollection
     query = projectXemployeeCollection.where("organizationId", "==", organizationId).get()
     for doc in query:
         roles = []
-        employeeRoles = doc.get("employeeRoles", [])
+        currentDoc = doc.to_dict()
+        employeeRoles = currentDoc["employeeRolesId"]
         for value in employeeRoles:
             if value != customRoleId:
                 roles.append(value)
-        doc.reference.update({"employeeRoles": roles})
+        doc.reference.update({"employeeRolesId": roles})
+
+
+
