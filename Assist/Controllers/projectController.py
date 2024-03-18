@@ -243,4 +243,19 @@ class getProposedMembers(Resource):
             abort(ce.statusCode, ce.message)
 
         except Exception:
+            abort(500, "Something went wrong")\
+
+
+@nsProject.route("/getpartialyavailableemployees/<string:organizationId>")
+class getPartialyAvailableEmployees(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
+    def get(self,organizationId):
+        try:
+            return partialyAvailableEmployeesRepo(organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
             abort(500, "Something went wrong")

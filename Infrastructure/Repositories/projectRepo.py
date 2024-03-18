@@ -543,6 +543,17 @@ def getProposedMembersRepo(projectId):
 
     return proposedMembers
 
+def partialyAvailableEmployeesRepo(organizationId):
+    query = employeesCollection.where("organizationId", "==", organizationId).get()
 
+    employees = []
+    if query:
+        for doc in query:
+            currentDoc = doc.to_dict()
+            if currentDoc[("workingHours")] < 8 and currentDoc[("workingHours")] > 0:
+                currentDoc.pop("password",None)
+                employees.append(currentDoc)
+
+    return employees
 
 
