@@ -1,4 +1,4 @@
-from Domain.extension import technologyStackCollection,customTeamRoleCollection,dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
+from Domain.extension import skillCollection,technologyStackCollection,customTeamRoleCollection,dealocationProposalCollection,skillXprojectCollection,projectCollection,projectManagerCollection,assignementProposalCollection,projectStatusCollection,employeesCollection,projectXemployeeCollection
 from Infrastructure.Repositories.ProjectManagerRepo import updateProjectsOfManager
 from datetime import datetime
 from Utils.Exceptions.customException import CustomException
@@ -401,6 +401,7 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
             projectData["technologyStack"] = technologyData
 
         teamRolesData = {}
+        teamRolesToAppend = []
         teamRoles = projectData.get("teamRoles", {})
         if teamRoles:
             for roleId, roleValue in teamRoles.items():
@@ -408,8 +409,10 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
                 if roleDoc:
                     roleData = roleDoc.to_dict()
                     roleData["value"] = roleValue
-                    teamRolesData[roleId] = roleData
-            projectData["teamRoles"] = teamRolesData
+                    teamRolesToAppend.append(roleData)
+
+                projectData["teamRoles"] = teamRolesToAppend
+
 
         projectsData.append(projectData)
 
@@ -543,8 +546,10 @@ def getProposedMembersRepo(projectId):
 
     return proposedMembers
 
-def partialyAvailableEmployeesRepo(organizationId):
+def partialyAvailableEmployeesRepo(organizationId,projectId):
     query = employeesCollection.where("organizationId", "==", organizationId).get()
+    projectQuery = projectCollection.where("id","==",projectId).get()
+
 
     employees = []
     if query:
@@ -553,6 +558,11 @@ def partialyAvailableEmployeesRepo(organizationId):
             if currentDoc[("workingHours")] < 8 and currentDoc[("workingHours")] > 0:
                 currentDoc.pop("password",None)
                 employees.append(currentDoc)
+                skillName = []
+                currentEmployeeSkills = skillCollection.where("employeeId","==",currentDoc["id"]).get()
+                for skills in currentEmployeeSkills:
+                    currentSkill = skills.to_dict()
+                    skillName.append(currentSkill["name"])
 
     return employees
 
