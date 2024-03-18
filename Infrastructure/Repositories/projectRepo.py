@@ -405,7 +405,10 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
                 technologyData.append(techDoc.to_dict())
             projectData["technologyStack"] = technologyData
 
-        teamRolesData = {}
+        statusQuery = projectStatusCollection.where("projectId", "==", projectData["id"]).get()
+        for statusDoc in statusQuery:
+            currentStatus = statusDoc.to_dict()
+            projectData["status"] = currentStatus["status"]
         teamRolesToAppend = []
         teamRoles = projectData.get("teamRoles", {})
         if teamRoles:
@@ -588,9 +591,6 @@ def partiallyAvailableEmployeesRepo(organizationId, projectId):
                 for skill in currentEmployeeSkills:
                     currentSkill = skill.to_dict()
                     skillName.append(currentSkill["name"])
-
-                print(skillName)
-                print(technologyStackNames)
 
                 for skill in skillName:
                     for tech_stack in technologyStackNames:
