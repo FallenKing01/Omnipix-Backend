@@ -1,4 +1,4 @@
-from Domain.extension import organizationCollection,organizationXadminCollection
+from Domain.extension import organizationCollection,organizationXadminCollection,customTeamRoleCollection
 
 def postOrganizationAdminRepository(organizationAdmin):
 
@@ -31,3 +31,10 @@ def deleteOrganizationAdminRoleRepo(employeeId):
 
     for doc in query:
         doc.reference.delete()
+
+def updateCustomRoleRepo(customRoleId,newRoleName):
+
+    query = customTeamRoleCollection.where("id","==",customRoleId).get()
+
+    for doc in query:
+        doc.reference.update({"name":newRoleName})

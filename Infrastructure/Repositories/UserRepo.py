@@ -1,8 +1,11 @@
-from Domain.extension import skillCollection,endorsmentCollection,assignedSkillCollection,skillXprojectCollection,employeesCollection,customTeamRoleCollection,organizationXadminCollection,projectManagerCollection,departamentManagerCollection
+from Domain.extension import (skillCollection,endorsmentCollection,assignedSkillCollection,
+                              skillXprojectCollection,employeesCollection,customTeamRoleCollection,
+                              organizationXadminCollection,projectManagerCollection,departamentManagerCollection,salt)
+import bcrypt
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 from Utils.Exceptions.customException import CustomException
-import time
+
 def signUpToken(user):
 
     userData = {
@@ -68,11 +71,17 @@ def deleteUserByEmailRepository(email):
     for doc in query:
         doc.reference.delete()
 
+
 def updatePasswordRepository(email, new_password):
+    # Hash the new password with bcrypt
+    hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+    # Update the password in the database
     query = employeesCollection.where("email", "==", email).limit(1).get()
 
     for doc in query:
-        doc.reference.update({"password": new_password})
+        doc.reference.update({"password": hashed_password.decode('utf-8')})
+
 
 def updateUserDepartamentRepository(user):
 

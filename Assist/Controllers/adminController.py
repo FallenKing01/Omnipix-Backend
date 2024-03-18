@@ -8,7 +8,8 @@ from Application.Services.organizationServices import *
 from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.organizationXadminRepo import postorganizationXadminRepository
-from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo,deleteOrganizationAdminRoleRepo
+from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo, \
+    deleteOrganizationAdminRoleRepo, updateCustomRoleRepo
 
 nsAdmin = Namespace("admin", authorizations=authorizations, description="Admin operations")
 
@@ -68,7 +69,7 @@ class DeleteUser(Resource):
             abort(500, "Something went wrong")
 
 
-@nsAdmin.route("/updatePassword/<string:email>/<string:newPassword>")
+@nsAdmin.route("/updatepassword/<string:email>/<string:newPassword>")
 class UpdatePassword(Resource):
     method_decorators = [jwt_required()]
 
@@ -135,5 +136,19 @@ class DemoteOrganizationAdmin(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
+@nsAdmin.route("/updatecustomrole/<string:customRoleId>/<string:newRoleName>")
+class UpdateCustomRole(Resource):
+    def put(self,customRoleId,newRoleName):
+        try:
+
+            updateCustomRoleRepo(customRoleId,newRoleName)
+
+            return {"message":"Role updated succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
 
 
