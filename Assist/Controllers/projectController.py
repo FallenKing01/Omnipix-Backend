@@ -230,3 +230,17 @@ class getProjectByStatus(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/getproposedmembers/<string:projectId>")
+class getProposedMembers(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsProject.doc(security="jsonWebToken")
+    def get(self,projectId):
+        try:
+            return getProposedMembersRepo(projectId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

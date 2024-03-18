@@ -523,6 +523,25 @@ def getProjectAfterStatusRepo(status,organizationId):
 
     return projectResult
 
+def getProposedMembersRepo(projectId):
+    query = assignementProposalCollection.where("projectId","==",projectId).get()
+
+    proposedMembers = []
+
+    if query:
+        for doc in query:
+            currentDoc = doc.to_dict()
+
+            queryEmployee =employeesCollection.where("id","==",currentDoc["employeeId"]).get()
+
+            if queryEmployee:
+                for docEmployee in queryEmployee:
+                    currentEmployee = docEmployee.to_dict()
+                    currentEmployee.pop("password",None)
+                    currentDoc["employeeId"] = currentEmployee
+                proposedMembers.append(currentDoc)
+
+    return proposedMembers
 
 
 
