@@ -462,8 +462,14 @@ def getProposalForSkillsFromDepartamentRepo(departamentId):
     finalResult = []
     if skills:
         for skill in skills:
+            currentSkill = skillCollection.document(skill["skillId"]).get().to_dict()
             employee = employeesCollection.document(skill["employeeId"]).get().to_dict()
-            skill["employeeId"] = employee
+            skill["employeeName"] = employee["name"]
+            skill["skillId"] = currentSkill
+            skill.pop("projectId", None)
+            skill.pop("departamentId", None)
+            skill.pop("isApproved", None)
+            skill.pop("dateTime", None)
             finalResult.append(skill)
 
     return finalResult

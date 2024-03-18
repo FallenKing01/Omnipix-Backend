@@ -45,12 +45,11 @@ def getMatchEmployees(organizationId):
                         finalResponse["workingHours"] = docEmployee["workingHours"]
 
                 result.append(finalResponse)
-    print(result)
     return result
 
 
 
-import json
+
 
 def getResponseFromChat(data):
     api_key = "ded4845c62e94742896cccf6dad671ee"
@@ -86,4 +85,8 @@ def getResponseFromChat(data):
     # Parse the JSON string
     message_json = json.loads(completion_message_json)
 
-    return message_json
+    # Check if the response contains information about employees
+    if "employees" in message_json.get("message", {}):
+        return []  # Return an empty list if employee information is present
+    else:
+        return message_json
