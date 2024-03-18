@@ -9,7 +9,7 @@ from Domain.extension import api, authorizations
 from Utils.Exceptions.customException import CustomException
 from Infrastructure.Repositories.organizationXadminRepo import postorganizationXadminRepository
 from Infrastructure.Repositories.OrganizationAdminRepo import createNewOrganizationAdminRepo, \
-    deleteOrganizationAdminRoleRepo, updateCustomRoleRepo
+    deleteOrganizationAdminRoleRepo, updateCustomRoleRepo, getCustomRoleFromOrganizationRepo
 
 nsAdmin = Namespace("admin", authorizations=authorizations, description="Admin operations")
 
@@ -51,9 +51,8 @@ class PostUser(Resource):
 
 @nsAdmin.route("/delete/<string:email>")
 class DeleteUser(Resource):
-    method_decorators = [jwt_required()]
-
-    @nsAdmin.doc(security="jsonWebToken")
+    # method_decorators = [jwt_required()]
+    # @nsAdmin.doc(security="jsonWebToken")
     @nsAdmin.doc(params={"email": "User email"})
 
     def delete(self, email):
@@ -71,9 +70,8 @@ class DeleteUser(Resource):
 
 @nsAdmin.route("/updatepassword/<string:email>/<string:newPassword>")
 class UpdatePassword(Resource):
-    method_decorators = [jwt_required()]
-
-    @nsAdmin.doc(security="jsonWebToken")
+    # method_decorators = [jwt_required()]
+    # @nsAdmin.doc(security="jsonWebToken")
     @nsAdmin.doc(params={"email": "User email", "newPassword": "New password"})
     def put(self, email, newPassword):
         try:
@@ -144,6 +142,21 @@ class UpdateCustomRole(Resource):
             updateCustomRoleRepo(customRoleId,newRoleName)
 
             return {"message":"Role updated succesfully"}
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsAdmin.route("/getcustomrole/<string:organizationId>")
+class GetCustomRole(Resource):
+    def get(self,organizationId):
+        try:
+
+            roles = getCustomRoleFromOrganizationRepo(organizationId)
+
+            return roles
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

@@ -154,7 +154,6 @@ class GetOrganizationEmployees(Resource):
 
     # method_decorators = [jwt_required()]
     # @nsEmployee.doc(security="jsonWebToken")
-    @nsEmployee.doc(security="jsonWebToken")
 
     def get(self,id):
         try:
@@ -172,7 +171,6 @@ class GetOrganizationEmployees(Resource):
 class GetDepartamentEmployees(Resource):
     # method_decorators = [jwt_required()]
     # @nsEmployee.doc(security="jsonWebToken")
-    @nsEmployee.doc(security="jsonWebToken")
     def get(self,departamentId):
         try:
             employees = getDepartamentEmployeeService(departamentId)

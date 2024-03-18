@@ -1,4 +1,4 @@
-from Domain.extension import organizationCollection,organizationXadminCollection,customTeamRoleCollection
+from Domain.extension import organizationCollection,organizationXadminCollection,customTeamRoleCollection,projectXemployeeCollection
 
 def postOrganizationAdminRepository(organizationAdmin):
 
@@ -38,3 +38,32 @@ def updateCustomRoleRepo(customRoleId,newRoleName):
 
     for doc in query:
         doc.reference.update({"name":newRoleName})
+
+def getCustomRoleFromOrganizationRepo(organizationId):
+
+    query = customTeamRoleCollection.where("organizationId","==",organizationId).get()
+
+    teamRoles = []
+
+    if query:
+        for doc in query:
+            currentDoc = doc.to_dict()
+            teamRoles.append(currentDoc)
+
+    return teamRoles
+
+def deleteCustomTeamRoleRepo(customRoleId, organizationId):
+    # Delete the custom role from customTeamRoleCollection
+    query = customTeamRoleCollection.where("id", "==", customRoleId).get()
+    for doc in query:
+        doc.reference.delete()
+
+    # Update documents in projectXemployeeCollection
+    query = projectXemployeeCollection.where("organizationId", "==", organizationId).get()
+    for doc in query:
+        roles = []
+        employeeRoles = doc.get("employeeRoles", [])
+        for value in employeeRoles:
+            if value != customRoleId:
+                roles.append(value)
+        doc.reference.update({"employeeRoles": roles})
