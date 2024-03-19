@@ -22,7 +22,7 @@ def getMatchEmployees(organizationId):
 
         for doc in assignedSkills:
             if doc["isApproved"] == True:
-                finalResponse = {}  # Create a new dictionary for each iteration
+                finalResponse = {}
                 finalResponse["level"] = doc["level"]
                 finalResponse["employeeId"] = doc["employeeId"]
                 finalResponse["departamentId"] = doc["departamentId"]
@@ -50,16 +50,21 @@ def getMatchEmployees(organizationId):
 
 
 
-import json
-
 def getResponseFromChat(data):
     api_key = "ded4845c62e94742896cccf6dad671ee"
     x = getMatchEmployees(data["organizationId"])
-    data["content"] = data["content"] + "din datele" + str(x)
+    data["content"] = (" avand lista de angajati de mai jos, "
+                       "te rog sa imi raspunzi la intrebarea urmatoare. "
+                       "In cazul in care nu gasesti, te rog da-mi un json "
+                       '{"message":"Nu am gasit angajatul."},daca gasesti raspunde-mi {"message": "rezultatele pe care le-ai gasit"} setul de date este urmatorul: '
+                       "foloseste doar setul meu de date. "
+                       "Setul de date este: " + str(x) +
+                       "Iar intrebarea este: " + data["content"])
+
     print(x)
 
     message_text = [
-        {"role": "system", "content": "You are a very helpful assistant. You respond only in json format."},
+        {"role": "system", "content": "You respond only in json format."},
         {"role": "user", "content": data["content"]}  # Remove 'description' property
     ]
 
