@@ -2,7 +2,7 @@ import datetime
 
 from Domain.extension import assignedSkillCollection, dealocationProposalCollection, projectXemployeeCollection, \
     assignementProposalCollection, departamentManagerCollection, departamentCollection, employeesCollection, \
-    skillCollection,skillXdepartamentCollection
+    skillCollection,skillXdepartamentCollection,customTeamRoleCollection
 
 from Utils.Exceptions.customException import CustomException
 
@@ -295,6 +295,25 @@ def getDepartamentAllocationProposalRepo(departamentId):
 
     for doc in query:
         currentDoc = doc.to_dict()
+        print(currentDoc)
+        employeeQuery = employeesCollection.where("id","==",currentDoc["employeeId"]).get()
+
+        for docEmployee in employeeQuery:
+            currentEmployee = docEmployee.to_dict()
+            currentDoc["employeeName"] = currentEmployee["name"]
+            break
+
+        teamRolesToAppend = []
+
+        for teamRole in currentDoc["teamRolesId"]:
+
+            teamRoleQuery = customTeamRoleCollection.where("id","==",teamRole).get()
+            if teamRoleQuery:
+                for docTeamRole in teamRoleQuery:
+                    teamRolesToAppend.append(docTeamRole.to_dict())
+
+        currentDoc["teamRolesId"] = teamRolesToAppend
+        currentDoc.pop("employeeId",None)
         allocation.append(currentDoc)
 
     return allocation
