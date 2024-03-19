@@ -2,7 +2,7 @@ import datetime
 
 from Domain.extension import assignedSkillCollection, dealocationProposalCollection, projectXemployeeCollection, \
     assignementProposalCollection, departamentManagerCollection, departamentCollection, employeesCollection, \
-    skillCollection,skillXdepartamentCollection,customTeamRoleCollection
+    skillCollection,skillXdepartamentCollection,customTeamRoleCollection,projectCollection
 
 from Utils.Exceptions.customException import CustomException
 
@@ -251,6 +251,14 @@ def dealocationProposalRepo(dealocation):
     insertedItmId = insertedItm.id
 
     dealocation["id"] = insertedItmId
+    print(dealocation)
+    emplyeeQuery = employeesCollection.where("id", "==", dealocation["employeeId"]).get()
+
+    for doc in emplyeeQuery:
+        currnetDoc = doc.to_dict()
+        currnetDoc.pop("password", None)
+        dealocation["departamentId"] = currnetDoc["departamentId"]
+        break
 
     dealocationProposalCollection.add(dealocation)
 
@@ -325,7 +333,22 @@ def getDealocationProposalRepo(departamentId):
 
     for doc in query:
         currentDoc = doc.to_dict()
+        print(currentDoc)
+        currentDoc.pop("departamentId", None)
+        employeeQuery = employeesCollection.where("id", "==", currentDoc["employeeId"]).get()
+
+        for docEmployee in employeeQuery:
+            currentEmployee = docEmployee.to_dict()
+            currentDoc["employeeName"] = currentEmployee["name"]
+            break
+        projectQuery = projectCollection.where("id","==",currentDoc["projectId"]).get()
+        for docProject in projectQuery:
+            currentProject = docProject.to_dict()
+            currentDoc["projectName"] = currentProject["name"]
+            break
+
         dealocations.append(currentDoc)
+
 
     return dealocations
 

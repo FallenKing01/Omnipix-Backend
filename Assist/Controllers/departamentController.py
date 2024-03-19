@@ -212,7 +212,7 @@ class AcceptProjectProposal(Resource):
             abort(500, "Something went wrong")
 
 
-@nsDepartament.route("/declineprojectproposal/<string:id>")
+@nsDepartament.route("/declineprojectproposal/<string:proposalId>")
 class DeclineProposal(Resource):
     # method_decorators = [jwt_required()]
     # @nsDepartament.doc(security="jsonWebToken")
