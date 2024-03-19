@@ -215,10 +215,10 @@ class AcceptProjectProposal(Resource):
 class DeclineProposal(Resource):
     # method_decorators = [jwt_required()]
     # @nsDepartament.doc(security="jsonWebToken")
-    def delete(self,id):
+    def delete(self,proposalId):
         try:
 
-            declineProposalProjectRepo(id)
+            declineProposalProjectRepo(proposalId)
 
             return {"message":"Declined a employee succesfully"}
 

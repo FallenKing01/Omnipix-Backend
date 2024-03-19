@@ -18,7 +18,7 @@ def postProjectRepo(project):
     projectStatus = {
         "projectId": insertedItmId,
         "status":project["status"],
-        "creationDate": datetime.utcnow()
+        "canDelete": True,
     }
 
     projectXemployeeToInsert = {
@@ -69,6 +69,8 @@ def updateProjectRepo(project):
         })
     query = projectStatusCollection.where("projectId", "==", project["projectId"]).get()
     for doc in query:
+        if project["status"] == "In Progress" or project["status"] == "Closed" or project["status"] == "Closed":
+            project["canDelete"] = False
         doc.reference.update({
             "status": project["status"]
         })
