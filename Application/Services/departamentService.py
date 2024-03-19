@@ -94,8 +94,8 @@ def updateDepartamentManagerService(departament):
 
     isManager = getDepartamentManagerByEmployeeIdRepo(departament["employeeId"])
 
-    if isManager is not None:
-        raise CustomException(409, "The user is already manager")
+    if isManager is  None:
+        raise CustomException(409, "The user can t be manager")
 
     updateDepartamentManagerRepo(departament)
 
