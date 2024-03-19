@@ -195,15 +195,14 @@ class PromoteFirstTimeToDepartamentManager(Resource):
             abort(500, "Something went wrong")
 
 
-@nsDepartament.route("/acceptprojectproposal")
+@nsDepartament.route("/acceptprojectproposal/<string:proposalId>")
 class AcceptProjectProposal(Resource):
     # method_decorators = [jwt_required()]
     # @nsDepartament.doc(security="jsonWebToken")
-    @nsDepartament.expect(acceptProposalExpect)
-    def post(self):
+    def post(self,proposalId):
         try:
 
-            return acceptProjectProposalService(api.payload)
+            return acceptProjectProposalService(proposalId)
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

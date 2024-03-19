@@ -209,7 +209,14 @@ def getDepartamentManagerWithNoDepartament(id):
 
 
 
-def acceptProjectProposalRepo(project):
+def acceptProjectProposalRepo(proposalId):
+
+    query = assignementProposalCollection.where("id", "==", proposalId).get()
+    project = None
+
+    for doc in query:
+        project = doc.to_dict()
+        break
 
     insertedItm = projectXemployeeCollection.document()
     insertedItmId = insertedItm.id
@@ -222,13 +229,13 @@ def acceptProjectProposalRepo(project):
         currentDoc = doc.to_dict()
         currentDoc.pop("password", None)
 
-        totalWorkingHours = currentDoc.get("workingHours", 0) + project.get("workingHours", 0)
+        totalWorkingHours = currentDoc.get("workingHours", 0) + project.get("numberOfHours", 0)
 
         if totalWorkingHours <= 8:
             employeesCollection.document(doc.id).update({"workingHours": totalWorkingHours})
 
             # Delete the proposal document from the collection
-            proposal_query = assignementProposalCollection.where("id", "==", project["assignementProposalId"]).limit(1).get()
+            proposal_query = assignementProposalCollection.where("id", "==", proposalId).limit(1).get()
             for proposal_doc in proposal_query:
                 proposal_doc.reference.delete()
         else:
