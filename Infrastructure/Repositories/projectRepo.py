@@ -121,11 +121,16 @@ def getEmployeesPartiallyAvailable(id):
     return employeeSorted
 
 def assignProposalRepo(assignRequest):
-
     insertedItm = assignementProposalCollection.document()
     insertedItmId= insertedItm.id
 
     assignRequest["id"] = insertedItmId
+
+    query = employeesCollection.where("id","==",assignRequest["employeeId"]).get()
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password",None)
+        assignRequest["departamentId"] = currentDoc["departamentId"]
 
     assignementProposalCollection.add(assignRequest)
 

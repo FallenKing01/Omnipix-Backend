@@ -37,6 +37,4 @@ assignmentProposalExpect = api.model("Assignment proposal", {
     "numberOfHours": fields.Integer,
     "teamRolesId": fields.List(fields.String),
     "comment": fields.String,
-    "departamentId": fields.String,
-
 })
