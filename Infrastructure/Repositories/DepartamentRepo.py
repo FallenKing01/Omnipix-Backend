@@ -87,7 +87,7 @@ def updateDepartamentManagerRepo(department):
         oldDepartamentMangerId = currentDoc["id"]
         pastManager = currentDoc["employeeId"]
         pastDepartament = currentDoc["departamentId"]
-        doc.reference.update({"departamentId": None})
+        doc.reference.update.delete()
 
     #actualizez departamentId pentru noul departamentManager
     employeeQuery = employeesCollection.where("id","==",department["employeeId"]).get()
