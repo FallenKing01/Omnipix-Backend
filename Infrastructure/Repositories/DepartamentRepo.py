@@ -77,25 +77,44 @@ def getDepartamentManagerByEmployeeIdRepo(id):
 
 
 def updateDepartamentManagerRepo(department):
+
     query = departamentManagerCollection.where("departamentId", "==", department["departamentId"]).limit(1).get()
 
+
     for doc in query:
-        documentRef = doc.reference
+        currentDoc = doc.to_dict()
 
-        pastManager = doc.to_dict().get("employeeId")
+        oldDepartamentMangerId = currentDoc["id"]
+        pastManager = currentDoc["employeeId"]
+        pastDepartament = currentDoc["departamentId"]
+        doc.reference.update({"departamentId": None})
 
-        documentRef.update({"employeeId": department["employeeId"]})
-
-        #actualizez departamentId pentru noul departamentManager
-        employeeQuery = employeesCollection.where("id","==",department["employeeId"]).get()
-        for updateEmployee in employeeQuery:
-            employeeRef = updateEmployee.reference
-            employeeRef.update({"departamentId" : department["departamentId"]})
-
+    #actualizez departamentId pentru noul departamentManager
+    employeeQuery = employeesCollection.where("id","==",department["employeeId"]).get()
+    print(employeeQuery)
+    for updateEmployee in employeeQuery:
+        print(updateEmployee.to_dict())
+        currentEmployee = updateEmployee.to_dict()
+        updateEmployee.reference.update({"departamentId" : pastDepartament})
         # actualizez departamentId pentru vechiul departamentManager in tabela employee
-        pastManagerQuery = employeesCollection.where("id", "==", pastManager).get()
-        for updatePastManager in pastManagerQuery:
-            updatePastManager.reference.update({"departamentId": None})
+    pastManagerQuery = employeesCollection.where("id", "==", pastManager).get()
+
+    for updatePastManager in pastManagerQuery:
+        updatePastManager.reference.update({"departamentId": None})
+
+    newDepartamentManagerQuery = departamentManagerCollection.where("employeeId", "==", department["employeeId"]).limit(1).get()
+    for doc in newDepartamentManagerQuery:
+        currentDoc = doc.to_dict()
+        doc.reference.update({"departamentId": department["departamentId"]})
+        newDepartamentManagerId = currentDoc["id"]
+
+    #actualizez departamentManagerId pentru departament
+
+    query = departamentCollection.where("departamentManagerId", "==", oldDepartamentMangerId).limit(1).get()
+    for doc in query:
+        doc.reference.update({"departamentManagerId": newDepartamentManagerId})
+
+
 
         #actualizez skilurile
         skillQuery = skillCollection.where("currentManager", "==", pastManager).get()
