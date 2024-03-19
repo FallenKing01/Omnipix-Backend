@@ -22,7 +22,6 @@ def postProjectRepo(project):
     }
 
     projectXemployeeToInsert = {
-        "assignementProposalId":None,
         "employeeId":project["employeeId"],
         "projectId":insertedItmId,
         "isActive":True,
@@ -69,10 +68,12 @@ def updateProjectRepo(project):
         })
     query = projectStatusCollection.where("projectId", "==", project["projectId"]).get()
     for doc in query:
-        if project["status"] == "In Progress" or project["status"] == "Closed" or project["status"] == "Closed":
+        if project["status"] == "In Progress" or project["status"] == "Closed" or project["status"] == "Closing":
             project["canDelete"] = False
+
         doc.reference.update({
-            "status": project["status"]
+            "status": project["status"] ,
+            "canDelete": project["canDelete"]
         })
 
         # current_technology_stack = doc.to_dict().get("technologyStack", [])
