@@ -24,6 +24,6 @@ assignSkillDirectlyExpect = api.model("Assign skill directly",
                                           "departamentId": fields.String,
                                           "employeeId": fields.String,
                                           "experience": fields.String,
-                                          "level": fields.String,
+                                          "level": fields.Integer,
                                           "skillId": fields.String,
                                       })
