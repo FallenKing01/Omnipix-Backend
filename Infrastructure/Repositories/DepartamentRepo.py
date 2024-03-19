@@ -241,6 +241,7 @@ def acceptProjectProposalRepo(proposalId):
         else:
             raise CustomException(409, "An employee can't work more than 8 hours a day")
 
+        project["isActive"] = True
         projectXemployeeCollection.add(project)
     return project
 
