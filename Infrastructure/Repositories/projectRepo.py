@@ -27,8 +27,8 @@ def postProjectRepo(project):
         "projectId":insertedItmId,
         "isActive":True,
         "organizationId":project["organizationId"],
-        "workingHours":0,
-        "employeeRolesId":data
+        "numberOfHours":0,
+        "teamRolesId":data
     }
 
     insertProjXemployee = projectXemployeeCollection.document()
@@ -164,7 +164,7 @@ def closeProjectRepo(id):
 
 def getPastProjectMembersRepo(projectId):
 
-    query = projectXemployeeCollection.where("projectId","==",projectId).where("isActive","==",False    ).get()
+    query = projectXemployeeCollection.where("projectId","==",projectId).where("isActive","==",False).get()
 
     employeeIds= []
 
@@ -207,6 +207,23 @@ def getCurrentProjectMembersRepo(projectId):
     for doc in employeesQuery:
         currentDoc = doc.to_dict()
         currentDoc.pop('password', None)
+
+
+        queryRoles = projectXemployeeCollection.where("projectId","==",projectId).where("employeeId","==",currentDoc["id"]).get()
+
+        for docRoles in queryRoles:
+            currentDocRoles = docRoles.to_dict()
+            ownedRolesId=currentDocRoles["teamRolesId"]
+
+        queryRoles = customTeamRoleCollection.where("id","in",ownedRolesId).get()
+        dataRoles = []
+        print(queryRoles)
+        for roleName in queryRoles:
+            currentRole = roleName.to_dict()
+            dataRoles.append(currentRole)
+
+        currentDoc["teamRolesId"] = dataRoles
+
         employeeData.append(currentDoc)
 
     return employeeData

@@ -152,7 +152,7 @@ def deleteDepartamentRepo(id):
     query = departamentManagerCollection.where("departamentId",'==',id).get()
 
     for doc in query:
-        doc.reference.delete()
+        doc.reference.update({"departamentId": None})
 
     query = employeesCollection.where("departamentId",'==',id).get()
 
