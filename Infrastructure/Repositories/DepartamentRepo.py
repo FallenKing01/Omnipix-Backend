@@ -285,13 +285,14 @@ def acceptDealocationProposalRepo(dealocationId):
 
     for projectEmployeeDoc in projectEmployeeQuery:
         projectEmployeeDoc.reference.update({"isActive": False})
+        print(projectEmployeeDoc.to_dict())
 
     employeeQuery = employeesCollection.where("id", "==", deallocation["employeeId"]).get()
 
     for employeeDoc in employeeQuery:
         employeeDocDict = employeeDoc.to_dict()
         employeeDocDict.pop("password", None)
-        updatedWorkingHours = employeeDocDict["workingHours"] - projectEmployeeDoc.to_dict()["workingHours"]
+        updatedWorkingHours = employeeDocDict["workingHours"] - projectEmployeeDoc.to_dict()["numberOfHours"]
         employeeDoc.reference.update({"workingHours": updatedWorkingHours})
 
     # Delete dealocation proposal

@@ -268,7 +268,9 @@ class AcceptDealocationProposal(Resource):
     def put(self,proposalId):
         try:
 
-            return acceptDealocationProposalService(proposalId)
+            acceptDealocationProposalService(proposalId)
+
+            return {"message":"Dealocation proposal accepted succesfully"}
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
