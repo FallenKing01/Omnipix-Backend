@@ -368,10 +368,10 @@ def getProjectsFromOrganizationRepo(organizationId):
     return finalProjects
 
 
-def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
-    queryEmployee = employeesCollection.where("departamentId", "==", departamentId).get()
+def getProjectsForDepartamentManagerEmployeeRepo(departmentId):
+    queryEmployee = employeesCollection.where("departamentId", "==", departmentId).get()
     employeeIds = []
-
+    print(queryEmployee)
     for doc in queryEmployee:
         currentDoc = doc.to_dict()
         currentDoc.pop('password', None)
@@ -409,23 +409,23 @@ def getProjectsForDepartamentManagerEmployeeRepo(departamentId):
         for statusDoc in statusQuery:
             currentStatus = statusDoc.to_dict()
             projectData["status"] = currentStatus["status"]
+
         teamRolesToAppend = []
         teamRoles = projectData.get("teamRoles", {})
         if teamRoles:
             for roleId, roleValue in teamRoles.items():
                 roleDoc = customTeamRoleCollection.document(roleId).get()
-                if roleDoc:
+                if roleDoc.exists:
                     roleData = roleDoc.to_dict()
                     roleData["value"] = roleValue
                     teamRolesToAppend.append(roleData)
 
-                projectData["teamRoles"] = teamRolesToAppend
-
+            projectData["teamRoles"] = teamRolesToAppend
 
         projectsData.append(projectData)
 
     if not projectsData:
-        raise CustomException(404, "Projects not found")
+        raise CustomException(404, "No projects found for department")
 
     return projectsData
 
