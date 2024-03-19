@@ -264,7 +264,15 @@ def dealocationProposalRepo(dealocation):
 
     return dealocation
 
-def acceptDealocationProposalRepo(deallocation):
+def acceptDealocationProposalRepo(dealocationId):
+    dealocQuery = dealocationProposalCollection.where("id", "==", dealocationId).get()
+
+    deallocation = None
+
+    for doc in dealocQuery:
+        deallocation = doc.to_dict()
+        break
+
     projectEmployeeQuery = projectXemployeeCollection.where("projectId", "==", deallocation["projectId"]).where("employeeId", "==", deallocation["employeeId"]).get()
 
     for projectEmployeeDoc in projectEmployeeQuery:
@@ -279,7 +287,7 @@ def acceptDealocationProposalRepo(deallocation):
         employeeDoc.reference.update({"workingHours": updatedWorkingHours})
 
     # Delete dealocation proposal
-    dealocationQuery = dealocationProposalCollection.where("id", "==", deallocation["dealocatedId"]).get()
+    dealocationQuery = dealocationProposalCollection.where("id", "==", dealocationId).get()
 
     for dealocationDoc in dealocationQuery:
         dealocationDoc.reference.delete()

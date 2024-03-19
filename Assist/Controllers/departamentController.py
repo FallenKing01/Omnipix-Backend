@@ -262,15 +262,14 @@ class CreateDealocationProposal(Resource):
         except Exception:
             abort(500, "Something went wrong")
 
-@nsDepartament.route("/acceptdealocatioproposal")
+@nsDepartament.route("/acceptdealocatioproposal/<string:proposalId>")
 class AcceptDealocationProposal(Resource):
     # method_decorators = [jwt_required()]
     # @nsDepartament.doc(security="jsonWebToken")
-    @nsDepartament.expect(acceptDealocationProposal)
-    def put(self):
+    def put(self,proposalId):
         try:
 
-            return acceptDealocationProposalService(api.payload)
+            return acceptDealocationProposalService(proposalId)
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)
