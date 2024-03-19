@@ -62,11 +62,11 @@ def deleteCustomTeamRoleRepo(customRoleId, organizationId):
     for doc in query:
         roles = []
         currentDoc = doc.to_dict()
-        employeeRoles = currentDoc["teamRolesId"]
+        employeeRoles = currentDoc["employeeRolesId"]
         for value in employeeRoles:
             if value != customRoleId:
                 roles.append(value)
-        doc.reference.update({"teamRolesId": roles})
+        doc.reference.update({"employeeRolesId": roles})
 
 
 
