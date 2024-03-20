@@ -56,7 +56,7 @@ def getResponseFromChat(data):
     data["content"] = (" avand lista de angajati de mai jos, "
                        "te rog sa imi raspunzi la intrebarea urmatoare. "
                        "In cazul in care nu gasesti, te rog da-mi un json "
-                       '{"message":"Nu am gasit angajatul."},daca gasesti raspunde-mi {"message": "angajati potriviti"} setul de date este urmatorul: '
+                       '{"message":"Nu am gasit angajatul."},daca gasesti raspunde-mi {"message": "JSONUL CU ANGAJATII CARE SE POTRIVES"}  '
                        "foloseste doar setul meu de date. "
                        "Setul de date este: " + str(x) +
                        "Iar intrebarea este: " + data["content"])
