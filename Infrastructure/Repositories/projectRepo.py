@@ -639,20 +639,20 @@ def partiallyAvailableEmployeesRepo(organizationId, projectId):
                     skillName = []
                     assignedSkills = assignedSkillCollection.where("employeeId", "==", currentDoc["id"]).get()
                     skillsIds = []
-
-                    for skills in assignedSkills:
-                        currentSkill = skills.to_dict()
-                        skillsIds.append(currentSkill["skillId"])
-
-                    currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
-                    for skill in currentEmployeeSkills:
-                        currentSkill = skill.to_dict()
-                        skillName.append(currentSkill["name"])
-
-                    for skill in skillName:
-                        for tech_stack in technologyStackNames:
-                            if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
-                                finalResult.append(currentDoc)
+                    if assignedSkills:
+                        for skills in assignedSkills:
+                            currentSkill = skills.to_dict()
+                            skillsIds.append(currentSkill["skillId"])
+                    if skillsIds:
+                        currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
+                        for skill in currentEmployeeSkills:
+                            currentSkill = skill.to_dict()
+                            skillName.append(currentSkill["name"])
+                    if skillName:
+                        for skill in skillName:
+                            for tech_stack in technologyStackNames:
+                                if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
+                                    finalResult.append(currentDoc)
 
     return finalResult
 
@@ -685,19 +685,21 @@ def unavibleEmployeesRepo(organizationId, projectId):
                     assignedSkills = assignedSkillCollection.where("employeeId", "==", currentDoc["id"]).get()
                     skillsIds = []
 
-                    for skills in assignedSkills:
-                        currentSkill = skills.to_dict()
-                        skillsIds.append(currentSkill["skillId"])
+                    if assignedSkills:
+                        for skills in assignedSkills:
+                            currentSkill = skills.to_dict()
+                            skillsIds.append(currentSkill["skillId"])
+                    if skillsIds:
+                        currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
+                        for skill in currentEmployeeSkills:
+                            currentSkill = skill.to_dict()
+                            skillName.append(currentSkill["name"])
 
-                    currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
-                    for skill in currentEmployeeSkills:
-                        currentSkill = skill.to_dict()
-                        skillName.append(currentSkill["name"])
-
-                    for skill in skillName:
-                        for tech_stack in technologyStackNames:
-                            if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
-                                finalResult.append(currentDoc)
+                    if skillName:
+                        for skill in skillName:
+                            for tech_stack in technologyStackNames:
+                                if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
+                                    finalResult.append(currentDoc)
 
     return finalResult
 
@@ -730,21 +732,21 @@ def freeEmployeesRepo(organizationId, projectId):
                     skillName = []
                     assignedSkills = assignedSkillCollection.where("employeeId", "==", currentDoc["id"]).get()
                     skillsIds = []
-
-                    for skills in assignedSkills:
-                        currentSkill = skills.to_dict()
-                        skillsIds.append(currentSkill["skillId"])
+                    if assignedSkills:
+                        for skills in assignedSkills:
+                            currentSkill = skills.to_dict()
+                            skillsIds.append(currentSkill["skillId"])
 
                     if skillsIds:  # Check if skillsIds is not empty before executing the query
                         currentEmployeeSkills = skillCollection.where("id", "in", skillsIds).get()
                         for skill in currentEmployeeSkills:
                             currentSkill = skill.to_dict()
                             skillName.append(currentSkill["name"])
-
-                    for skill in skillName:
-                        for tech_stack in technologyStackNames:
-                            if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
-                                finalResult.append(currentDoc)
+                    if skillName:
+                        for skill in skillName:
+                            for tech_stack in technologyStackNames:
+                                if tech_stack.lower() in skill.lower() or skill.lower() in tech_stack.lower():
+                                    finalResult.append(currentDoc)
 
     return finalResult
 
