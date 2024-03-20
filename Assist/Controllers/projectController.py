@@ -287,3 +287,15 @@ class getUnavailableEmployees(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsProject.route("/canbedeleted/<string:projectId>")
+class CanDeleteProject(Resource):
+    def get(self,projectId):
+        try:
+            return projectCanBeDeletedRepo(projectId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

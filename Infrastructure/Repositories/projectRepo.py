@@ -183,7 +183,22 @@ def getPastProjectMembersRepo(projectId):
     for doc in employeesQuery:
         currentDoc = doc.to_dict()
         currentDoc.pop('password', None)
+        teamRoleIdQuery = projectXemployeeCollection.where("projectId","==",projectId).where("employeeId","==",currentDoc["id"]).get()
+        teamRoleIds = []
+        for docId in teamRoleIdQuery:
+            currentTeamRoleId = docId.to_dict()
+            teamRoleIds=currentTeamRoleId["teamRolesId"]
+        teamRoleData = []
+        if teamRoleIds:
+            teamRoleQuery = customTeamRoleCollection.where("id","in",teamRoleIds).get()
+
+            for teamRoleName in teamRoleQuery:
+                currentTeamRole = teamRoleName.to_dict()
+                teamRoleData.append(currentTeamRole)
+
+        currentDoc["teamRolesId"] = teamRoleData
         employeeData.append(currentDoc)
+
 
     return employeeData
 
@@ -215,13 +230,13 @@ def getCurrentProjectMembersRepo(projectId):
         for docRoles in queryRoles:
             currentDocRoles = docRoles.to_dict()
             ownedRolesId=currentDocRoles["teamRolesId"]
-
-        queryRoles = customTeamRoleCollection.where("id","in",ownedRolesId).get()
         dataRoles = []
-        print(queryRoles)
-        for roleName in queryRoles:
-            currentRole = roleName.to_dict()
-            dataRoles.append(currentRole)
+
+        if ownedRolesId:
+            queryRoles = customTeamRoleCollection.where("id","in",ownedRolesId).get()
+            for roleName in queryRoles:
+                currentRole = roleName.to_dict()
+                dataRoles.append(currentRole)
 
         currentDoc["teamRolesId"] = dataRoles
 
@@ -717,7 +732,15 @@ def freeEmployeesRepo(organizationId, projectId):
 
     return finalResult
 
+def projectCanBeDeletedRepo(projectId):
+    query = projectStatusCollection.where("projectId", "==", projectId).get()
 
+    for doc in query:
+        currentDoc = doc.to_dict()
+        if currentDoc["canDelete"] == False:
+            return False#nu poate fi sters
+
+    return True#poate fi sters
 
 
 
