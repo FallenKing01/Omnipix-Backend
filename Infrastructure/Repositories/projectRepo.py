@@ -590,6 +590,22 @@ def getProposedMembersRepo(projectId):
                     currentEmployee = docEmployee.to_dict()
                     currentEmployee.pop("password",None)
                     currentDoc["employeeId"] = currentEmployee
+                    currentDoc["organizationId"] = currentEmployee["organizationId"]
+                    currentDoc["workingHours"] = currentEmployee["workingHours"]
+                    currentDoc["email"] = currentEmployee["email"]
+                    currentDoc["name"] = currentEmployee["name"]
+                    currentDoc.pop("numberOfHours",None)
+                    currentDoc.pop("projectId",None)
+                    currentDoc.pop("employeeId",None)
+                    currentDoc.pop("comment",None)
+                    teamRoles = []
+                    teamRolesIds = currentDoc["teamRolesId"]
+                    for teamRoleId in teamRolesIds:
+                        queryTeamRole = customTeamRoleCollection.where("id","==",teamRoleId).get()
+                        for docTeamRole in queryTeamRole:
+                            currentTeamRole = docTeamRole.to_dict()
+                            teamRoles.append(currentTeamRole)
+                    currentDoc["teamRolesId"] = teamRoles
                 proposedMembers.append(currentDoc)
 
     return proposedMembers
