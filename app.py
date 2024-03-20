@@ -12,7 +12,7 @@ from Assist.Controllers.projectManagerController import nsProjectManager
 from Assist.Controllers.promoteDepartController import nsTest
 from Assist.Controllers.projectController import nsProject
 from Assist.Controllers.openaiController import nsOpenAi
-
+from Assist.Controllers.notificationsController import nsNotifications
 from Domain.extension import api
 
 from Infrastructure.Repositories.UserRepo import getUserByIdRepository
@@ -35,6 +35,7 @@ api.add_namespace(nsProjectManager)
 api.add_namespace(nsTest)
 api.add_namespace(nsProject)
 api.add_namespace(nsOpenAi)
+api.add_namespace(nsNotifications)
 
 jwt = JWTManager(app)
 
