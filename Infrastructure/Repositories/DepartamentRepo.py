@@ -558,3 +558,41 @@ def approveSkillRepo(assignedSkillId):
 
 def denySkillRepo(assignedSkillId):
     assignedSkillCollection.document(assignedSkillId).delete()
+
+def ownedDepartamentRepo(employeeId):
+    query = departamentManagerCollection.where("employeeId","==",employeeId).get()
+    departamentId = []
+    for doc in query:
+        currentDoc = doc.to_dict()
+        if currentDoc["departamentId"] is not None:
+            departamentId.append(currentDoc["departamentId"])
+        else:
+            raise CustomException(404,"Department not found for the employee")
+
+    # Check if departamentId is empty
+    if not departamentId:
+        raise CustomException(404, "No departments found for the employee")
+    queryName = employeesCollection.where("id","==",employeeId).get()
+    for doc in queryName:
+        currentDoc = doc.to_dict()
+        name = currentDoc["name"]
+        employeeId = currentDoc["id"]
+        break
+    num = 0
+    numberOfEmployeeQuery = employeesCollection.where("departamentId","in",departamentId).get()
+    for doc in numberOfEmployeeQuery:
+        currentDoc = doc.to_dict()
+        currentDoc.pop("password",None)
+        if currentDoc["departamentId"] in departamentId:
+            num+=1
+
+    query = departamentCollection.where("id","in",departamentId).get()
+    departaments = []
+    for doc in query:
+        currentDoc = doc.to_dict()
+        currentDoc["managersName"] = name
+        currentDoc["employeeId"] = employeeId
+        currentDoc["numberOfEmployees"] = num
+        departaments.append(currentDoc)
+
+    return departaments

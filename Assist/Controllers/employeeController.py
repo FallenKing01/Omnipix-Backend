@@ -1,7 +1,6 @@
 from flask import abort
 from flask_restx import Namespace, Resource
 from flask_jwt_extended import jwt_required
-
 from Application.Dtos.expect.employeeExpect import *
 from Application.Services.userServices import *
 from Domain.extension import api,authorizations
@@ -320,6 +319,20 @@ class GetNotAssignedSkillsOfEmployee(Resource):
     def get(self, employeeId,organizationId):
         try:
             return getNotAssignedSkillsOfEmployeeRepo(employeeId,organizationId)
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")
+
+@nsEmployee.route("/abletoassignskill/<string:employeeId>")
+class AbleToAssignSkill(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsEmployee.doc(security="jsonWebToken")
+    def get(self, employeeId):
+        try:
+            return ableToAssignSkillRepo(employeeId)
 
         except CustomException as ce:
             abort(ce.statusCode, ce.message)

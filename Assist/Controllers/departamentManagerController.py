@@ -309,3 +309,20 @@ class ApproveProposalsForSkills(Resource):
 
         except Exception:
             abort(500, "Something went wrong")
+
+@nsDepartamentManager.route("/owneddepartaments/<string:employeeId>")
+class GetOwnedDepartaments(Resource):
+    # method_decorators = [jwt_required()]
+    # @nsDepartamentManager.doc(security="jsonWebToken")
+    def get(self, employeeId):
+
+        try:
+            departaments = ownedDepartamentRepo(employeeId)
+
+            return departaments
+
+        except CustomException as ce:
+            abort(ce.statusCode, ce.message)
+
+        except Exception:
+            abort(500, "Something went wrong")

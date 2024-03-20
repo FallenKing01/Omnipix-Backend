@@ -311,3 +311,12 @@ def getNotAssignedSkillsOfEmployeeRepo(employeeId,organizationId):
 
     return skills
 
+def ableToAssignSkillRepo(employeeId):
+
+    query = employeesCollection.where("id","==",employeeId).get()
+
+    for doc in query:
+        currentDoc = doc.to_dict()
+        if currentDoc["departamentId"] is None:
+            return False
+    return True
