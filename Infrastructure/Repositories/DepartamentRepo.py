@@ -413,9 +413,10 @@ def getDepartamentsRepo(organizationId):
     # Querying employee names
     query_employee = employeesCollection.where("id", "in", employeesId).get()
     managerNames = [doc.to_dict()["name"] for doc in query_employee]
-
+    managerId = [doc.to_dict()["id"] for doc in query_employee]
     for i, doc in enumerate(managerNames):
         departaments[i]["managersName"] = doc
+        departaments[i]["employeeId"] = managerId[i]
 
     # Counting members per department
     query_employee = employeesCollection.where("organizationId", "==", organizationId).get()
