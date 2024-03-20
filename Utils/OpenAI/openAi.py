@@ -24,7 +24,7 @@ def getMatchEmployees(organizationId):
             if doc["isApproved"] == True:
                 finalResponse = {}
                 finalResponse["level"] = doc["level"]
-                finalResponse["employeeId"] = doc["employeeId"]
+                finalResponse["id"] = doc["employeeId"]
                 finalResponse["departamentId"] = doc["departamentId"]
 
                 # Check if "experience" key exists in currentDoc before accessing it
