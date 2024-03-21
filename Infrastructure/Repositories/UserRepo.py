@@ -267,11 +267,19 @@ def updateEmployeeEmailNameRepo(employeeId, email, name):
 
     queryEmployee = employeesCollection.where("email", "==", email).limit(1).get()
 
-    if queryEmployee:
-        raise CustomException(400, "Email already exists")
+    for doc in queryEmployee:
+        currentDoc = doc.to_dict()
+        emailDb = currentDoc["email"]
 
-    for doc in query:
-        doc.reference.update({"email": email, "name": name})
+
+    if emailDb == email:
+        doc.reference.update({"name": name})
+    else:
+        queryEmployee = employeesCollection.where("email", "==", email).limit(1).get()
+        if queryEmployee:
+            raise CustomException(409,"Email is already used")
+
+        doc.reference.update({"email":email,"name": name})
 
 
 def getNotAssignedSkillsOfEmployeeRepo(employeeId,organizationId):

@@ -90,5 +90,6 @@ def getResponseFromChat(data):
 
     # Parse the JSON string
     message_json = json.loads(completion_message_json)
-
+    print(message_json)
+    message_json["message"]["message"].first["employeeId"]
     return message_json
