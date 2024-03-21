@@ -45,7 +45,7 @@ def getMatchEmployees(organizationId):
                         finalResponse["workingHours"] = docEmployee["workingHours"]
 
                 result.append(finalResponse)
-    print(result)
+
     return result
 
 
@@ -61,7 +61,6 @@ def getResponseFromChat(data):
                        "Setul de date este: " + str(x) +
                        "Iar intrebarea este: " + data["content"])
 
-    print(x)
 
     message_text = [
         {"role": "system", "content": "You respond only in json format."},
@@ -88,8 +87,25 @@ def getResponseFromChat(data):
     # Access the JSON string within the ChatCompletionMessage object
     completion_message_json = completion.choices[0].message.content
 
-    # Parse the JSON string
     message_json = json.loads(completion_message_json)
-    print(message_json)
-    message_json["message"]["message"].first["employeeId"]
-    return message_json
+    if message_json.get("message") == "Nu am gasit angajatul.":
+        return message_json
+
+    value = message_json.get("message")
+    employeeIds = []
+    i=0
+    for doc in value:
+        employeeIds.append(value[i]["id"])
+        i+=1
+
+    if employeeIds:
+        query = employeesCollection.where("id", "in", employeeIds).get()
+        employees = []
+        for doc in query:
+            currentDoc = doc.to_dict()
+            currentDoc.pop("password", None)
+            employees.append(currentDoc)
+    else:
+        return message_json
+
+    return employees
