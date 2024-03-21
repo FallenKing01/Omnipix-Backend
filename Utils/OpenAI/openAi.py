@@ -95,7 +95,8 @@ def getResponseFromChat(data):
     employeeIds = []
     i=0
     for doc in value:
-        employeeIds.append(value[i]["id"])
+        employeeIds.append(doc["id"])
+
         i+=1
 
     if employeeIds:
