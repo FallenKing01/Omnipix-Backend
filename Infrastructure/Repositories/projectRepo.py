@@ -157,6 +157,14 @@ def closeProjectRepo(id):
 
     for doc in query:
         doc.reference.update({"isActive":False})
+        currentDoc = doc.to_dict()
+        hoursToDealoc = currentDoc["numberOfHours"]
+        employeeId = currentDoc["employeeId"]
+        for employeeDoc in employeesCollection.where("id","==",employeeId).get():
+            currentEmployee = employeeDoc.to_dict()
+            currentEmployee["workingHours"] = currentEmployee["workingHours"] - hoursToDealoc
+            employeeDoc.reference.update(currentEmployee)
+
 
     query = projectStatusCollection.where("projectId","==",id).get()
 
