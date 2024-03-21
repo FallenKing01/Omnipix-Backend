@@ -283,13 +283,13 @@ def getInfoPastProjectsRepo(employeeId):
             for key, value in currentDoc["teamRoles"].items():
                 teamRolesIds.append(key)
                 teamRolesValues.append(value)
+            if teamRolesIds:
+                teamRoleQuery = customTeamRoleCollection.where("id", "in", teamRolesIds).get()
 
-            teamRoleQuery = customTeamRoleCollection.where("id", "in", teamRolesIds).get()
-
-            for doc, value in zip(teamRoleQuery, teamRolesValues):
-                currentDocRoles = doc.to_dict()
-                currentDocRoles["value"] = value
-                teamRolesFinal.append(currentDocRoles)
+                for doc, value in zip(teamRoleQuery, teamRolesValues):
+                    currentDocRoles = doc.to_dict()
+                    currentDocRoles["value"] = value
+                    teamRolesFinal.append(currentDocRoles)
 
             currentDoc["teamRoles"] = teamRolesFinal
 

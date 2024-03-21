@@ -424,11 +424,12 @@ def getDepartamentsRepo(organizationId):
     for doc in query_employee:
         current_doc = doc.to_dict()
         department_id = current_doc.get("departamentId")  # Assuming this is the department ID field
-        # Increment the count for the department
-        count_members[department_id] = count_members.get(department_id, 0) + 1
-
+        if str(department_id)!='None':
+            count_members[str(department_id)] = count_members.get(str(department_id), 0) + 1
+    print(count_members)
     values = count_members.values()
     for department, value in zip(departaments, values):
+
         department["numberOfEmployees"] = value
 
     if not departaments:
