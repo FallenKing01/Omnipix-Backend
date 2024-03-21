@@ -391,46 +391,53 @@ def getDealocationProposalRepo(departamentId):
 def getDepartamentsRepo(organizationId):
     # Querying departments
     query_departments = departamentCollection.where("organizationId", "==", organizationId).get()
-    departaments = []
 
+    departaments = []
     departamentManagerId = []
+    employeesId = []
+    managerNames = []
+    employeesCount=[]
     for doc in query_departments:
         current_doc = doc.to_dict()
         departaments.append(current_doc)
         if current_doc["departamentManagerId"] is not None:
             departamentManagerId.append(current_doc["departamentManagerId"])
+            print(current_doc["departamentManagerId"])
+            query_departament_manager = departamentManagerCollection.where("id", "==", current_doc["departamentManagerId"]).get()
+            print(query_departament_manager)
+            for doc in query_departament_manager:
+                current_doc1 = doc.to_dict()
+                employeesId.append(current_doc1["employeeId"])
+                query_employee = employeesCollection.where("id", "==", current_doc1["employeeId"]).get()
+                for doc in query_employee:
+                    current_doc2 = doc.to_dict()
+                    managerNames.append(current_doc2["name"])
+        query_employee = employeesCollection.where("departamentId", "==", current_doc["id"]).get()
+        employeesCount.append(len(list(query_employee)))
 
     if not departamentManagerId:
         raise CustomException(404, "Departments not found")
 
-    query_departament_manager = departamentManagerCollection.where("id", "in", departamentManagerId).get()
-    employeesId = []
 
-    for doc in query_departament_manager:
-        current_doc = doc.to_dict()
-        employeesId.append(current_doc["employeeId"])
-
-    # Querying employee names
-    query_employee = employeesCollection.where("id", "in", employeesId).get()
-    managerNames = [doc.to_dict()["name"] for doc in query_employee]
-    managerId = [doc.to_dict()["id"] for doc in query_employee]
     for i, doc in enumerate(managerNames):
         departaments[i]["managersName"] = doc
-        departaments[i]["employeeId"] = managerId[i]
+        departaments[i]["employeeId"] = employeesId[i]
+        departaments[i]["numberOfEmployees"] = employeesCount[i]
+
+
+
+
+    # Querying employee names
+
+
+   # managerNames = [doc.to_dict()["name"] for doc in query_employee]
+   # managerId = [doc.to_dict()["id"] for doc in query_employee]
+
+
+
 
     # Counting members per department
-    query_employee = employeesCollection.where("organizationId", "==", organizationId).get()
-    count_members = {}
-    for doc in query_employee:
-        current_doc = doc.to_dict()
-        department_id = current_doc.get("departamentId")  # Assuming this is the department ID field
-        if str(department_id)!='None':
-            count_members[str(department_id)] = count_members.get(str(department_id), 0) + 1
-    print(count_members)
-    values = count_members.values()
-    for department, value in zip(departaments, values):
 
-        department["numberOfEmployees"] = value
 
     if not departaments:
         raise CustomException(404, "No departments")
