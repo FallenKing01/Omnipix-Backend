@@ -165,7 +165,7 @@ def closeProjectRepo(id):
             currentEmployee["workingHours"] = currentEmployee["workingHours"] - hoursToDealoc
             employeeDoc.reference.update(currentEmployee)
 
-
+    #BUG FIX
     query = projectStatusCollection.where("projectId","==",id).get()
 
     for doc in query:
