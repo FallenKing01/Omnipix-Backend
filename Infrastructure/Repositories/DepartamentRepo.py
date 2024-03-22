@@ -463,20 +463,21 @@ def assignSkillDirectlyRepo(skill):
 def getChartSkillsRepo(departmentId, skillId):
     # Query employees in the specified department
     query_employee = employeesCollection.where("departamentId", "==", departmentId).stream()
-    employees = [doc.id for doc in query_employee]
 
+    employees = [doc.id for doc in query_employee]
+    print(employees)
     # Check if employees exist in the department
     if not employees:
         raise CustomException(404, "No employees found in the department")
 
     # Query assigned skills for the retrieved employees and specified skillId
-    query_skills = assignedSkillCollection.where("employeeId", "in", employees).where("skillId", "==", skillId).stream()
-
+    query_skills = assignedSkillCollection.where("employeeId", "in", employees).where("skillId", "==", skillId).where("departamentId","==",departmentId).where("isApproved","==",True).stream()
     # Initialize counters for each skill level
     skill_levels = {level: 0 for level in range(1, 6)}
 
     # Count occurrences of each skill level
     for doc in query_skills:
+
         current_doc = doc.to_dict()
         level = current_doc.get("level")
         if level in skill_levels:
